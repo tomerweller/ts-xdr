@@ -7,7 +7,7 @@
     "noUncheckedIndexedAccess": true,
     "noEmit": true,
     "paths": {
-      "ts-xdr": ["../src/index.ts"]
+      "ts-stellar-xdr": ["../src/index.ts"]
     }
   },
   "include": ["*.ts"]

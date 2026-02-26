@@ -1,6 +1,6 @@
-# ts-xdr
+# ts-stellar-xdr
 
-A modern, TypeScript-first [XDR (RFC 4506)](https://www.rfc-editor.org/rfc/rfc4506) codec library. Zero runtime dependencies, fully type-safe, with support for binary, Base64, and JSON formats. Aligned with [SEP-0051](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0051.md) JSON representation.
+A modern, TypeScript-first [XDR (RFC 4506)](https://www.rfc-editor.org/rfc/rfc4506) codec library for the [Stellar network](https://stellar.org). Zero runtime dependencies, fully type-safe, with support for binary, Base64, JSON, and Stellar strkey formats. Aligned with [SEP-0051](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0051.md) JSON representation.
 
 Built to replace the aging `@stellar/js-xdr` as the foundation for the next-generation TypeScript Stellar SDK. Inspired by [`rs-stellar-xdr`](https://github.com/stellar/rs-stellar-xdr) (Rust) but tailored to TypeScript idioms.
 
@@ -8,6 +8,7 @@ Built to replace the aging `@stellar/js-xdr` as the foundation for the next-gene
 
 - **RFC 4506 compliant** — full XDR specification support
 - **SEP-0051 aligned** — JSON serialization follows the Stellar JSON standard
+- **Stellar strkey support** — encode/decode all Stellar address types (G, S, M, T, X, P, C, L, B)
 - **Zero runtime dependencies** — only TypeScript and Vitest as dev dependencies
 - **Type-safe** — externally-tagged unions, string-literal enums, readonly interfaces
 - **Native BigInt** — 64-bit integers use JavaScript's native `bigint`
@@ -17,9 +18,9 @@ Built to replace the aging `@stellar/js-xdr` as the foundation for the next-gene
 
 ## Comparison with `@stellar/js-xdr`
 
-`ts-xdr` is a ground-up replacement for [`@stellar/js-xdr`](https://github.com/stellar/js-xdr). Here's how they differ:
+`ts-stellar-xdr` is a ground-up replacement for [`@stellar/js-xdr`](https://github.com/stellar/js-xdr). Here's how they differ:
 
-| | `@stellar/js-xdr` | `ts-xdr` |
+| | `@stellar/js-xdr` | `ts-stellar-xdr` |
 |---|---|---|
 | **Language** | JavaScript | TypeScript |
 | **Type safety** | None built-in (requires separate [`dts-xdr`](https://github.com/stellar/dts-xdr) for `.d.ts` generation) | First-class — all types inferred from codec definitions |
@@ -44,7 +45,7 @@ asset.switch().name;             // 'assetTypeCreditAlphanum4'
 asset.alphaNum4().assetCode();   // Buffer
 ```
 
-**`ts-xdr`:**
+**`ts-stellar-xdr`:**
 ```typescript
 const asset = Asset.fromXdr(bytes);
 if (is(asset, 'credit_alphanum4')) {
@@ -57,7 +58,7 @@ asset === 'native'; // true
 ## Installation
 
 ```bash
-npm install ts-xdr
+npm install ts-stellar-xdr
 ```
 
 Requires Node.js >= 18.
@@ -69,7 +70,7 @@ import {
   int32, uint32, bool, xdrString,
   fixedOpaque, varArray, option,
   xdrStruct, xdrEnum, taggedUnion, is,
-} from 'ts-xdr';
+} from 'ts-stellar-xdr';
 
 // Define an enum (snake_case per SEP-0051)
 const Color = xdrEnum({ red: 0, green: 1, blue: 2 });
@@ -156,7 +157,7 @@ interface XdrCodec<T> {
 ### Primitives
 
 ```typescript
-import { int32, uint32, int64, uint64, float32, float64, bool, xdrVoid } from 'ts-xdr';
+import { int32, uint32, int64, uint64, float32, float64, bool, xdrVoid } from 'ts-stellar-xdr';
 
 int32.toXdr(-42);          // Uint8Array
 uint64.toXdr(100n);        // bigint for 64-bit types
@@ -166,7 +167,7 @@ bool.toXdr(true);
 ### Containers
 
 ```typescript
-import { fixedOpaque, varOpaque, xdrString, fixedArray, varArray, option } from 'ts-xdr';
+import { fixedOpaque, varOpaque, xdrString, fixedArray, varArray, option } from 'ts-stellar-xdr';
 
 // Fixed-length opaque data (padded to 4-byte boundary)
 const hash = fixedOpaque(32);
@@ -192,7 +193,7 @@ maybeInt.toXdr(null);  // absent
 ### Structs
 
 ```typescript
-import { xdrStruct, int32, xdrString } from 'ts-xdr';
+import { xdrStruct, int32, xdrString } from 'ts-stellar-xdr';
 
 interface Person {
   readonly name: string;
@@ -212,7 +213,7 @@ const bytes = Person.toXdr({ name: 'Alice', age: 30 });
 Enums use string literals for type safety and expose integer values as properties:
 
 ```typescript
-import { xdrEnum } from 'ts-xdr';
+import { xdrEnum } from 'ts-stellar-xdr';
 
 type AssetType = 'native' | 'credit_alphanum4' | 'credit_alphanum12';
 
@@ -232,7 +233,7 @@ AssetType.fromXdr(bytes);     // 'native' | 'credit_alphanum4' | 'credit_alphanu
 Unions use an externally-tagged format (SEP-0051). Void arms decode as plain strings, value arms as single-key objects:
 
 ```typescript
-import { taggedUnion, xdrStruct, xdrEnum, fixedOpaque, is } from 'ts-xdr';
+import { taggedUnion, xdrStruct, xdrEnum, fixedOpaque, is } from 'ts-stellar-xdr';
 
 // Assuming AlphaNum4 and AlphaNum12 structs are defined...
 
@@ -278,7 +279,7 @@ const TransactionExt = taggedUnion({
 The `is()` function is a type guard for checking which arm of a union is present:
 
 ```typescript
-import { is } from 'ts-xdr';
+import { is } from 'ts-stellar-xdr';
 
 const asset = Asset.fromXdr(bytes);
 if (is(asset, 'credit_alphanum4')) {
@@ -311,7 +312,7 @@ const restored = Asset.fromJsonValue(jsonVal);
 Use `lazy()` to break circular type references in generated code:
 
 ```typescript
-import { lazy } from 'ts-xdr';
+import { lazy } from 'ts-stellar-xdr';
 
 const Tree: XdrCodec<Tree> = xdrStruct<Tree>([
   ['value', int32],
@@ -324,7 +325,7 @@ const Tree: XdrCodec<Tree> = xdrStruct<Tree>([
 For advanced use, work directly with the binary stream:
 
 ```typescript
-import { XdrReader, XdrWriter } from 'ts-xdr';
+import { XdrReader, XdrWriter } from 'ts-stellar-xdr';
 
 // Write
 const writer = new XdrWriter();
@@ -344,10 +345,67 @@ reader.ensureEnd();  // throws if bytes remain
 Convert between `Uint8Array` and hex strings:
 
 ```typescript
-import { bytesToHex, hexToBytes } from 'ts-xdr';
+import { bytesToHex, hexToBytes } from 'ts-stellar-xdr';
 
 bytesToHex(new Uint8Array([0xde, 0xad])); // 'dead'
 hexToBytes('dead');                        // Uint8Array([0xde, 0xad])
+```
+
+### Strkey (Stellar Addresses)
+
+Encode and decode Stellar strkey addresses — public keys (G...), private keys (S...), muxed accounts (M...), pre-auth transactions (T...), hash-x (X...), signed payloads (P...), contracts (C...), liquidity pools (L...), and claimable balances (B...):
+
+```typescript
+import {
+  strkeyFromString, strkeyToString,
+  encodeStrkey, decodeStrkey,
+  type Strkey,
+  STRKEY_ED25519_PUBLIC,
+} from 'ts-stellar-xdr';
+
+// Parse a Stellar address into a typed object
+const key = strkeyFromString('GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF');
+// { type: 'public_key_ed25519', data: Uint8Array(32) }
+
+// Convert back to string
+const addr = strkeyToString(key); // 'GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF'
+
+// Muxed accounts include an embedded ID
+const muxed = strkeyFromString('MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2LQ');
+// { type: 'muxed_account_ed25519', ed25519: Uint8Array(32), id: 0n }
+
+// Low-level: encode/decode raw version byte + payload
+const raw = decodeStrkey(addr); // { version: 48, payload: Uint8Array(32) }
+const str = encodeStrkey(STRKEY_ED25519_PUBLIC, raw.payload);
+```
+
+**Version byte constants:**
+
+| Constant | Prefix | Type |
+|---|---|---|
+| `STRKEY_ED25519_PUBLIC` | G | Public key |
+| `STRKEY_ED25519_PRIVATE` | S | Private key |
+| `STRKEY_MUXED_ED25519` | M | Muxed account |
+| `STRKEY_PRE_AUTH_TX` | T | Pre-auth transaction |
+| `STRKEY_HASH_X` | X | Hash-x |
+| `STRKEY_SIGNED_PAYLOAD` | P | Signed payload |
+| `STRKEY_CONTRACT` | C | Contract |
+| `STRKEY_LIQUIDITY_POOL` | L | Liquidity pool |
+| `STRKEY_CLAIMABLE_BALANCE` | B | Claimable balance |
+
+**`Strkey` type:**
+
+```typescript
+type Strkey =
+  | { type: 'public_key_ed25519'; data: Uint8Array }
+  | { type: 'private_key_ed25519'; data: Uint8Array }
+  | { type: 'pre_auth_tx'; data: Uint8Array }
+  | { type: 'hash_x'; data: Uint8Array }
+  | { type: 'muxed_account_ed25519'; ed25519: Uint8Array; id: bigint }
+  | { type: 'signed_payload_ed25519'; ed25519: Uint8Array; payload: Uint8Array }
+  | { type: 'contract'; data: Uint8Array }
+  | { type: 'liquidity_pool'; data: Uint8Array }
+  | { type: 'claimable_balance_v0'; data: Uint8Array };
 ```
 
 ### Limits
@@ -355,7 +413,7 @@ hexToBytes('dead');                        // Uint8Array([0xde, 0xad])
 Control resource consumption with depth and byte limits:
 
 ```typescript
-import { DEFAULT_LIMITS } from 'ts-xdr';
+import { DEFAULT_LIMITS } from 'ts-stellar-xdr';
 
 // Default: { depth: 512, len: 256 * 1024 * 1024 }
 
@@ -368,7 +426,7 @@ const decoded = SomeType.fromXdr(bytes, { depth: 100, len: 1024 });
 All errors throw `XdrError` with a typed error code:
 
 ```typescript
-import { XdrError, XdrErrorCode } from 'ts-xdr';
+import { XdrError, XdrErrorCode } from 'ts-stellar-xdr';
 
 try {
   SomeType.fromXdr(malformedBytes);
@@ -408,7 +466,7 @@ export const SomeStruct: XdrCodec<SomeStruct> = xdrStruct([['field', int32]]);
 ## Project Structure
 
 ```
-ts-xdr/
+ts-stellar-xdr/
 ├── src/                    # Runtime library
 │   ├── index.ts            # Public API
 │   ├── reader.ts           # XdrReader (deserialization)
@@ -417,6 +475,8 @@ ts-xdr/
 │   ├── primitives.ts       # int32, uint32, int64, uint64, float, bool, void
 │   ├── containers.ts       # opaque, string, arrays, option
 │   ├── composites.ts       # struct, enum, union, lazy, is
+│   ├── strkey.ts           # Stellar strkey encoding/decoding
+│   ├── stellar.ts          # Stellar-specific codec helpers
 │   ├── hex.ts              # Hex encode/decode utilities
 │   ├── errors.ts           # XdrError and error codes
 │   ├── limits.ts           # Depth/byte limit tracking
@@ -427,6 +487,7 @@ ts-xdr/
 │   ├── primitives.test.ts
 │   ├── containers.test.ts
 │   ├── composites.test.ts
+│   ├── strkey.test.ts
 │   ├── integration.test.ts
 │   └── rs-compat/          # Cross-implementation tests against rs-stellar-xdr
 ├── generated/              # Generated Stellar XDR types
@@ -456,7 +517,7 @@ npm run test
 2. **SEP-0051 alignment** — JSON serialization follows the Stellar ecosystem standard.
 3. **Zero runtime dependencies** — the library has no production dependencies.
 4. **Codec composability** — small, composable codec building blocks that combine to represent any XDR schema.
-5. **Correctness** — strict validation of values, padding, and limits. Cross-verified against the Rust `rs-stellar-xdr` implementation.
+5. **Correctness** — strict validation of values, padding, and limits. Cross-verified against the Rust `rs-stellar-xdr` and `rs-stellar-strkey` implementations.
 6. **Simplicity** — minimal API surface. One way to do things.
 
 ## License

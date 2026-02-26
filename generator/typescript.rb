@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # xdrgen TypeScript backend — generates a single {namespace}_generated.ts file
-# that imports from 'ts-xdr' and uses the type-value duality pattern.
+# that imports from 'ts-stellar-xdr' and uses the type-value duality pattern.
 #
 # Install as: lib/xdrgen/generators/typescript.rb in stellar/xdrgen
 
@@ -214,7 +214,7 @@ module Xdrgen
         @out.puts "  xdrStruct,"
         @out.puts "  xdrEnum,"
         @out.puts "  taggedUnion,"
-        @out.puts "} from 'ts-xdr';"
+        @out.puts "} from 'ts-stellar-xdr';"
         @out.puts ""
       end
 

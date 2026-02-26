@@ -62,9 +62,9 @@ fee.toBigInt();         // extra conversion step
 ```
 
 **No TypeScript type narrowing for unions:**
-The hand-maintained `.d.ts` declarations (15,885 lines for XDR types alone, maintained via a separate `dts-xdr` tool) cannot express discriminated union narrowing. `switch(asset.switch().name)` gives `string`, not a narrowed literal type.
+The hand-maintained `.d.ts` declarations (15,885 lines for XDR types alone, maintained via a separate `dts-stellar-xdr` tool) cannot express discriminated union narrowing. `switch(asset.switch().name)` gives `string`, not a narrowed literal type.
 
-**ts-xdr solves all of these:**
+**ts-stellar-xdr solves all of these:**
 ```typescript
 // Plain objects, direct property access, full type narrowing
 const asset: Asset = { tag: 'CreditAlphanum4', value: { assetCode, issuer } };
@@ -81,7 +81,7 @@ const fee: bigint = 100n;
 
 ## Goal
 
-Rewrite `js-stellar-base` as a TypeScript-first, tree-shakeable library built on `ts-xdr`, while maintaining backward compatibility via a permanent compat layer for the js-xdr class-based API.
+Rewrite `js-stellar-base` as a TypeScript-first, tree-shakeable library built on `ts-stellar-xdr`, while maintaining backward compatibility via a permanent compat layer for the js-xdr class-based API.
 
 ## Architecture
 
@@ -94,7 +94,7 @@ Rewrite `js-stellar-base` as a TypeScript-first, tree-shakeable library built on
 │   │   ├── runtime.ts              # Generic factories (createCompatStruct, etc.)
 │   │   └── hyper.ts                # CompatHyper / CompatUnsignedHyper
 │   ├── generated/
-│   │   ├── stellar.ts              # ts-xdr types (from xdrgen, tree-shakeable)
+│   │   ├── stellar.ts              # ts-stellar-xdr types (from xdrgen, tree-shakeable)
 │   │   └── stellar_compat.ts       # Compat wrappers (from xdrgen)
 │   ├── keypair.ts, transaction.ts, asset.ts, ...  # Hand-written modules
 │   └── ...
@@ -126,7 +126,7 @@ Rewrite `js-stellar-base` as a TypeScript-first, tree-shakeable library built on
 ```
 
 Two entry points:
-- **`@stellar/stellar-base`** — new API. Tree-shakeable named exports. Plain ts-xdr objects. `Uint8Array` everywhere.
+- **`@stellar/stellar-base`** — new API. Tree-shakeable named exports. Plain ts-stellar-xdr objects. `Uint8Array` everywhere.
 - **`@stellar/stellar-base/compat`** — permanent backward-compat API. Exports the `xdr` namespace object with js-xdr-style classes, `Hyper`/`UnsignedHyper`, `Buffer`-based serialization.
 
 ---
@@ -135,14 +135,14 @@ Two entry points:
 
 | Current | Replacement | Savings |
 |---|---|---|
-| `@stellar/js-xdr` (~50-80 KB) | `ts-xdr` (~8-10 KB, zero deps) | ~50 KB |
+| `@stellar/js-xdr` (~50-80 KB) | `ts-stellar-xdr` (~8-10 KB, zero deps) | ~50 KB |
 | `buffer` (~25 KB) | Native `Uint8Array` | ~25 KB (browser) |
 | `bignumber.js` (~20 KB) | Native `BigInt` | ~20 KB |
 | `sha.js` (~5 KB) | `@noble/hashes/sha256` (already bundled via `@noble/curves`) | ~5 KB |
 | `base32.js` (~3 KB) | Keep or inline (~50 lines) | — |
 
 **Remaining runtime dependencies:**
-- `ts-xdr` — XDR codec engine
+- `ts-stellar-xdr` — XDR codec engine
 - `@noble/curves` — ed25519 (already the current choice, well-audited, TS-native)
 - `@noble/hashes` — SHA-256 (transitive dep of `@noble/curves`, now used directly)
 
@@ -166,8 +166,8 @@ The compat layer is **permanent** and lives in `src/compat/`. It provides the ex
 | `Union.switchName(value)` | Factory methods per switch member |
 | `.switch()` / `.arm()` / `.value()` | Methods on union instances |
 | `.alphaNum4()` (arm-named accessors) | Generated per-arm accessor methods |
-| `.toXDR(format?)` | Encodes via ts-xdr, converts to `Buffer`/base64/hex |
-| `Type.fromXDR(input, format?)` | Parses input format, decodes via ts-xdr, wraps result |
+| `.toXDR(format?)` | Encodes via ts-stellar-xdr, converts to `Buffer`/base64/hex |
+| `Type.fromXDR(input, format?)` | Parses input format, decodes via ts-stellar-xdr, wraps result |
 | `Type.validateXDR(input, format?)` | Try/catch around `fromXDR`, returns boolean |
 | `Type.isValid(value)` | Duck-typing check (structName/unionName/enumName) |
 | `Hyper` / `UnsignedHyper` | Wrapper class around native `bigint` with `.toString()`, `.toBigInt()` |
@@ -187,7 +187,7 @@ function createCompatStruct(
 function createCompatEnum(
   name: string,
   members: Record<string, number>,       // legacyName → integer value
-  tsNameMap: Record<string, string>,      // legacyName → ts-xdr name
+  tsNameMap: Record<string, string>,      // legacyName → ts-stellar-xdr name
   tsCodec: XdrCodec<any>,
 ): CompatEnumClass;
 
@@ -264,7 +264,7 @@ The existing JS modules are clean ES-module code with JSDoc comments. Conversion
 1. Rename `.js` → `.ts`
 2. Add type annotations (guided by the existing `types/index.d.ts`)
 3. Replace `Buffer` with `Uint8Array` in the public API
-4. Replace `@stellar/js-xdr` imports with `ts-xdr` imports
+4. Replace `@stellar/js-xdr` imports with `ts-stellar-xdr` imports
 5. Replace `bignumber.js` arithmetic with native `BigInt`
 6. Replace `sha.js` with `@noble/hashes/sha256`
 
@@ -391,7 +391,7 @@ The existing tests serve as the **acceptance criteria** — the migrated code mu
 
 ## Migration Phases
 
-### Phase 1: ts-xdr completion
+### Phase 1: ts-stellar-xdr completion
 **Status: mostly done (this repo)**
 - [x] Core runtime (reader, writer, codecs)
 - [x] All tests passing
@@ -414,7 +414,7 @@ Create `ts-stellar-base` (or a branch of `js-stellar-base`):
 - [ ] Set up TypeScript build (tsc, dual ESM/CJS output)
 - [ ] Set up Vitest
 - [ ] Convert source files to TypeScript (mechanical: types, Uint8Array, BigInt, imports)
-- [ ] Replace `@stellar/js-xdr` + `curr_generated.js` with `ts-xdr` + `stellar.ts`
+- [ ] Replace `@stellar/js-xdr` + `curr_generated.js` with `ts-stellar-xdr` + `stellar.ts`
 - [ ] Wire up compat entry point (`/compat` exports `xdr` namespace)
 - [ ] Replace `bignumber.js` with native BigInt stroop arithmetic
 - [ ] Replace `sha.js` with `@noble/hashes/sha256`
@@ -429,7 +429,7 @@ Create `ts-stellar-base` (or a branch of `js-stellar-base`):
 - [ ] Run full SDK test suite
 
 ### Phase 5: Ecosystem rollout
-- [ ] Publish `ts-xdr` to npm
+- [ ] Publish `ts-stellar-xdr` to npm
 - [ ] Publish updated `@stellar/stellar-base` (major version bump)
 - [ ] Migration guide for downstream consumers
 - [ ] Deprecation timeline for compat entry point (if ever)
@@ -440,7 +440,7 @@ Create `ts-stellar-base` (or a branch of `js-stellar-base`):
 
 | Component | Size (est.) | Notes |
 |---|---|---|
-| ts-xdr runtime | ~8 KB | Zero deps, minimal |
+| ts-stellar-xdr runtime | ~8 KB | Zero deps, minimal |
 | XDR types (tree-shaken) | ~10-50 KB | Depends on what's imported (vs 355 KB today) |
 | `@noble/curves` | ~45 KB | Unchanged |
 | Application source | ~60-80 KB | TypeScript, no polyfills |

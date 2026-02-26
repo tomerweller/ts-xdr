@@ -1,8 +1,8 @@
-# `ts-xdr` — TypeScript XDR Library Specification
+# `ts-stellar-xdr` — TypeScript XDR Library Specification
 
 ## Context
 
-Stellar needs a modern, TypeScript-first XDR library to replace the aging `@stellar/js-xdr` (runtime class-based, no TypeScript types). This spec defines `ts-xdr`: a generic RFC 4506 XDR codec library that will serve as the foundation for a new TypeScript Stellar SDK. The design is inspired by `rs-stellar-xdr` (Rust) but tailored to TypeScript idioms.
+Stellar needs a modern, TypeScript-first XDR library to replace the aging `@stellar/js-xdr` (runtime class-based, no TypeScript types). This spec defines `ts-stellar-xdr`: a generic RFC 4506 XDR codec library that will serve as the foundation for a new TypeScript Stellar SDK. The design is inspired by `rs-stellar-xdr` (Rust) but tailored to TypeScript idioms.
 
 ### Design Decisions (Confirmed)
 
@@ -20,10 +20,10 @@ Stellar needs a modern, TypeScript-first XDR library to replace the aging `@stel
 
 ## 1. Package Architecture
 
-### 1.1 npm package: `ts-xdr`
+### 1.1 npm package: `ts-stellar-xdr`
 
 ```
-ts-xdr/
+ts-stellar-xdr/
   src/
     index.ts          # Public API re-exports
     reader.ts         # XdrReader class
@@ -49,7 +49,7 @@ ts-xdr/
 
 ### 1.2 xdrgen backend: `lib/xdrgen/generators/typescript.rb`
 
-A single Ruby file added to `stellar/xdrgen`, inheriting from `Xdrgen::Generators::Base`. Outputs a single `{namespace}_generated.ts` file. Generated code imports from `ts-xdr`.
+A single Ruby file added to `stellar/xdrgen`, inheriting from `Xdrgen::Generators::Base`. Outputs a single `{namespace}_generated.ts` file. Generated code imports from `ts-stellar-xdr`.
 
 ---
 
@@ -529,7 +529,7 @@ AssetType.CreditAlphanum4   // 1
 const decoded = Asset.fromXdr(bytes, { depth: 100, len: 1024 });
 
 // ---- Error handling ----
-import { XdrError, XdrErrorCode } from 'ts-xdr';
+import { XdrError, XdrErrorCode } from 'ts-stellar-xdr';
 try {
   Asset.fromXdr(malformedBytes);
 } catch (err) {
@@ -543,7 +543,7 @@ try {
 
 ## 6. Implementation Phases
 
-### Phase 1: Core Runtime (`ts-xdr`)
+### Phase 1: Core Runtime (`ts-stellar-xdr`)
 Files in dependency order:
 1. `errors.ts` → `limits.ts` → `base64.ts`
 2. `reader.ts` → `writer.ts`
@@ -611,7 +611,7 @@ expect(uint64.fromXdr(twoU32s)).toBe((1n << 32n) | 2n);
 ```jsonc
 // package.json
 {
-  "name": "ts-xdr",
+  "name": "ts-stellar-xdr",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -649,4 +649,4 @@ Zero runtime dependencies. Browser + Node.js compatible.
 2. **rs-stellar-xdr compatibility**: All ported test vectors from `stellar/rs-stellar-xdr/tests/` pass byte-for-byte (see Phase 2b above)
 3. **Integration test**: Hand-write a small `.x` schema, generate TS via the xdrgen backend, verify encode/decode roundtrip matches known binary fixtures
 4. **Stellar compatibility test**: Generate types from `stellar/stellar-xdr` `.x` files, decode real Stellar transaction envelopes (base64 from Horizon API), verify fields match expected values
-5. **Cross-implementation test**: Encode values with `ts-xdr`, decode with `rs-stellar-xdr` (and vice versa) to verify binary compatibility
+5. **Cross-implementation test**: Encode values with `ts-stellar-xdr`, decode with `rs-stellar-xdr` (and vice versa) to verify binary compatibility

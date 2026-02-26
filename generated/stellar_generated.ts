@@ -21,7 +21,7 @@ import {
   xdrStruct,
   xdrEnum,
   taggedUnion,
-} from 'ts-xdr';
+} from 'ts-stellar-xdr';
 
 export type Uint32 = number;
 export const Uint32: XdrCodec<Uint32> = uint32;
