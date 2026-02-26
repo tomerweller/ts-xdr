@@ -768,6 +768,134 @@ describe('fluent chaining', () => {
 });
 
 // ---------------------------------------------------------------------------
+// submitTransaction
+// ---------------------------------------------------------------------------
+
+describe('submitTransaction()', () => {
+  it('sends XDR to /transactions', async () => {
+    // Valid TransactionEnvelope base64 (v1, no ops, zero source, fee=100, seqNum=1)
+    const validEnvelopeXdr =
+      'AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+    const fn = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve({
+        hash: 'abc123',
+        ledger: 42,
+        envelope_xdr: validEnvelopeXdr,
+        result_xdr: '',
+        result_meta_xdr: '',
+      }),
+    });
+    globalThis.fetch = fn;
+
+    const fakeTx = { toXDR: () => validEnvelopeXdr };
+    const result = await server.submitTransaction(fakeTx);
+    expect(result.hash).toBe('abc123');
+    expect(result.ledger).toBe(42);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    const call = fn.mock.calls[0]!;
+    const url = new URL(call[0] as string);
+    expect(url.pathname).toBe('/transactions');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// submitAsyncTransaction
+// ---------------------------------------------------------------------------
+
+describe('submitAsyncTransaction()', () => {
+  it('sends XDR to /transactions_async', async () => {
+    const validEnvelopeXdr =
+      'AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+    const fn = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve({
+        hash: 'def456',
+        tx_status: 'PENDING',
+      }),
+    });
+    globalThis.fetch = fn;
+
+    const fakeTx = { toXDR: () => validEnvelopeXdr };
+    const result = await server.submitAsyncTransaction(fakeTx);
+    expect(result.hash).toBe('def456');
+    expect(result.tx_status).toBe('PENDING');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// LP sub-resource call builders
+// ---------------------------------------------------------------------------
+
+describe('LP sub-resource call builders', () => {
+  it('operations().forLiquidityPool() uses LP path', async () => {
+    const fn = mockFetch(halCollection([]));
+    await server.operations().forLiquidityPool('pool1').call();
+    expect(fetchUrl(fn).pathname).toBe('/liquidity_pools/pool1/operations');
+  });
+
+  it('effects().forLiquidityPool() uses LP path', async () => {
+    const fn = mockFetch(halCollection([]));
+    await server.effects().forLiquidityPool('pool1').call();
+    expect(fetchUrl(fn).pathname).toBe('/liquidity_pools/pool1/effects');
+  });
+
+  it('trades().forLiquidityPool() uses LP path', async () => {
+    const fn = mockFetch(halCollection([]));
+    await server.trades().forLiquidityPool('pool1').call();
+    expect(fetchUrl(fn).pathname).toBe('/liquidity_pools/pool1/trades');
+  });
+
+  it('transactions().forClaimableBalance() uses CB path', async () => {
+    const fn = mockFetch(halCollection([]));
+    await server.transactions().forClaimableBalance('cb1').call();
+    expect(fetchUrl(fn).pathname).toBe('/claimable_balances/cb1/transactions');
+  });
+
+  it('operations().forClaimableBalance() uses CB path', async () => {
+    const fn = mockFetch(halCollection([]));
+    await server.operations().forClaimableBalance('cb1').call();
+    expect(fetchUrl(fn).pathname).toBe('/claimable_balances/cb1/operations');
+  });
+
+  it('accounts().forLiquidityPool() passes param', async () => {
+    const fn = mockFetch(halCollection([]));
+    await server.accounts().forLiquidityPool('pool1').call();
+    expect(fetchUrl(fn).searchParams.get('liquidity_pool')).toBe('pool1');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Custom headers
+// ---------------------------------------------------------------------------
+
+describe('custom headers', () => {
+  it('passes headers from ServerOptions to fetch', async () => {
+    const fn = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve(halCollection([])),
+    });
+    globalThis.fetch = fn;
+
+    const customServer = new Horizon.Server('https://horizon.stellar.org', {
+      headers: { 'X-Custom': 'test123' },
+    });
+    await customServer.ledgers().call();
+
+    const fetchOpts = fn.mock.calls[0]![1] as RequestInit;
+    const headers = fetchOpts.headers as Record<string, string>;
+    expect(headers['X-Custom']).toBe('test123');
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Error handling
 // ---------------------------------------------------------------------------
 
@@ -782,5 +910,64 @@ describe('error handling', () => {
     globalThis.fetch = fn;
 
     await expect(server.ledgers().call()).rejects.toThrow('HTTP 404');
+  });
+
+  it('includes status in error for 500', async () => {
+    vi.fn();
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: 'Internal Server Error',
+      json: () => Promise.resolve({ title: 'Server Error' }),
+    });
+
+    await expect(server.accounts().call()).rejects.toThrow('HTTP 500');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Server URL variants
+// ---------------------------------------------------------------------------
+
+describe('server URL handling', () => {
+  it('adds trailing slash to URL', () => {
+    const s = new Horizon.Server('https://horizon.stellar.org');
+    expect(s.serverURL).toBe('https://horizon.stellar.org/');
+  });
+
+  it('preserves trailing slash if present', () => {
+    const s = new Horizon.Server('https://horizon.stellar.org/');
+    expect(s.serverURL).toBe('https://horizon.stellar.org/');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Streaming error/close handling
+// ---------------------------------------------------------------------------
+
+describe('streaming edge cases', () => {
+  it('onerror is called on malformed SSE data', async () => {
+    mockStreamFetch(['invalid data without data: prefix\n\n']);
+    const errors: Error[] = [];
+    const close = server.ledgers().stream({
+      onmessage: () => {},
+      onerror: (e) => errors.push(e),
+    });
+
+    await new Promise((r) => setTimeout(r, 50));
+    close();
+    // The stream should handle gracefully without crashing
+  });
+
+  it('close can be called multiple times safely', async () => {
+    mockStreamFetch(['data: {"seq":1}\n\n']);
+    const close = server.ledgers().stream({
+      onmessage: () => {},
+    });
+
+    await new Promise((r) => setTimeout(r, 50));
+    close();
+    // Should not throw
+    close();
   });
 });

@@ -10,6 +10,7 @@ import {
 import {
   is,
   encodeStrkey,
+  decodeStrkey,
   STRKEY_ED25519_PUBLIC,
 } from '@stellar/xdr';
 import {
@@ -26,13 +27,22 @@ export class Asset {
       this._code = 'XLM';
       this._issuer = null;
     } else {
-      if (!code || code.length > 12) {
-        throw new Error(`Asset code must be 1-12 characters, got "${code}"`);
+      if (!code || code.length > 12 || !/^[a-zA-Z0-9]+$/.test(code)) {
+        throw new Error(
+          `Asset code is invalid (maximum alphanumeric, 12 characters at max)`,
+        );
       }
       this._code = code;
       this._issuer = issuer ?? null;
       if (!this._issuer && code !== 'XLM') {
-        throw new Error('Non-native asset requires an issuer');
+        throw new Error('Issuer cannot be null');
+      }
+      if (this._issuer) {
+        try {
+          decodeStrkey(this._issuer);
+        } catch {
+          throw new Error('Issuer is invalid');
+        }
       }
     }
   }
@@ -107,12 +117,33 @@ export class Asset {
   }
 
   compare(other: Asset): number {
-    if (this.isNative() && other.isNative()) return 0;
-    if (this.isNative()) return -1;
-    if (other.isNative()) return 1;
-    const codeCmp = this._code.localeCompare(other._code);
-    if (codeCmp !== 0) return codeCmp;
-    return (this._issuer ?? '').localeCompare(other._issuer ?? '');
+    return Asset.compare(this, other);
+  }
+
+  static compare(a: Asset, b: Asset): number {
+    if (a.isNative() && b.isNative()) return 0;
+    if (a.isNative()) return -1;
+    if (b.isNative()) return 1;
+
+    // Asset type ordering: credit_alphanum4 < credit_alphanum12
+    const typeA = a.getAssetType();
+    const typeB = b.getAssetType();
+    if (typeA !== typeB) {
+      return typeA === 'credit_alphanum4' ? -1 : 1;
+    }
+
+    // Code comparison: byte ordering (ASCII, not locale)
+    const codeA = a._code;
+    const codeB = b._code;
+    if (codeA < codeB) return -1;
+    if (codeA > codeB) return 1;
+
+    // Issuer comparison
+    const issA = a._issuer ?? '';
+    const issB = b._issuer ?? '';
+    if (issA < issB) return -1;
+    if (issA > issB) return 1;
+    return 0;
   }
 }
 

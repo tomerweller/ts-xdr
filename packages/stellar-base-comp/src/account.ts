@@ -3,11 +3,24 @@
  * Stores address and sequence as strings.
  */
 
+import { StrKey } from './strkey.js';
+
 export class Account {
   private readonly _accountId: string;
   private _sequence: bigint;
 
   constructor(accountId: string, sequence: string) {
+    if (!StrKey.isValidEd25519PublicKey(accountId)) {
+      if (StrKey.isValidMed25519PublicKey(accountId)) {
+        throw new Error(
+          'accountId is a MuxedAccount (M-address); use MuxedAccount instead',
+        );
+      }
+      throw new Error('accountId is invalid');
+    }
+    if (typeof sequence !== 'string') {
+      throw new Error('sequence must be of type string');
+    }
     this._accountId = accountId;
     this._sequence = BigInt(sequence);
   }
