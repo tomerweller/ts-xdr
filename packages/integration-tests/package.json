@@ -1,0 +1,13 @@
+{
+  "name": "@stellar/integration-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@stellar/tx-builder": "*",
+    "@stellar/rpc-client": "*",
+    "@stellar/friendbot-client": "*"
+  }
+}

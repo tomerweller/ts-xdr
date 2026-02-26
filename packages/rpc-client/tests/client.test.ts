@@ -8,7 +8,7 @@ import {
   SCVal,
   SorobanTransactionData,
   SorobanAuthorizationEntry,
-  LedgerEntry,
+  LedgerEntryData,
   AccountEntry,
   LedgerHeader,
   LedgerCloseMeta,
@@ -246,24 +246,20 @@ describe('getLedgerEntries', () => {
     const key: LedgerKey = { Account: { accountID: { PublicKeyTypeEd25519: new Uint8Array(32) } } };
     const keyBase64 = LedgerKey.toBase64(key);
 
-    // Create a LedgerEntry for the response
-    const entry: LedgerEntry = {
-      lastModifiedLedgerSeq: 50,
-      data: {
-        Account: {
-          accountID: { PublicKeyTypeEd25519: new Uint8Array(32) },
-          balance: 10000000n,
-          seqNum: 42n,
-          numSubEntries: 0,
-          inflationDest: null,
-          flags: 0,
-          homeDomain: '',
-          thresholds: new Uint8Array([1, 0, 0, 0]),
-          signers: [],
-          ext: '0',
-        },
+    // Create LedgerEntryData for the response (RPC returns data union, not full LedgerEntry)
+    const data: LedgerEntryData = {
+      Account: {
+        accountID: { PublicKeyTypeEd25519: new Uint8Array(32) },
+        balance: 10000000n,
+        seqNum: 42n,
+        numSubEntries: 0,
+        inflationDest: null,
+        flags: 0,
+        homeDomain: '',
+        thresholds: new Uint8Array([1, 0, 0, 0]),
+        signers: [],
+        ext: '0',
       },
-      ext: '0',
     };
 
     const fetchFn = mockRpcResponse({
@@ -271,7 +267,7 @@ describe('getLedgerEntries', () => {
       entries: [
         {
           key: keyBase64,
-          xdr: LedgerEntry.toBase64(entry),
+          xdr: LedgerEntryData.toBase64(data),
           lastModifiedLedgerSeq: 50,
         },
       ],
@@ -317,11 +313,7 @@ describe('getAccount', () => {
       ext: '0',
     };
 
-    const entry: LedgerEntry = {
-      lastModifiedLedgerSeq: 50,
-      data: { Account: accountEntry },
-      ext: '0',
-    };
+    const data: LedgerEntryData = { Account: accountEntry };
 
     const key: LedgerKey = { Account: { accountID: { PublicKeyTypeEd25519: pubkeyBytes } } };
 
@@ -329,7 +321,7 @@ describe('getAccount', () => {
       latestLedger: 100,
       entries: [{
         key: LedgerKey.toBase64(key),
-        xdr: LedgerEntry.toBase64(entry),
+        xdr: LedgerEntryData.toBase64(data),
         lastModifiedLedgerSeq: 50,
       }],
     });

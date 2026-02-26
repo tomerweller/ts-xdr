@@ -2,6 +2,7 @@ import {
   DiagnosticEvent,
   LedgerCloseMeta,
   LedgerEntry,
+  LedgerEntryData,
   LedgerHeader,
   LedgerHeaderHistoryEntry,
   LedgerKey,
@@ -166,10 +167,9 @@ interface RawGetLedgerEntriesResponse {
 }
 
 function parseLedgerEntry(raw: RawLedgerEntryResult): LedgerEntryResult {
-  const entry = LedgerEntry.fromBase64(raw.xdr);
   return {
     key: LedgerKey.fromBase64(raw.key),
-    val: entry.data,
+    val: LedgerEntryData.fromBase64(raw.xdr),
     lastModifiedLedgerSeq: raw.lastModifiedLedgerSeq,
     liveUntilLedgerSeq: raw.liveUntilLedgerSeq,
   };
