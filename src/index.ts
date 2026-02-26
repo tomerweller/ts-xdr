@@ -30,12 +30,18 @@ export {
   crc16xmodem,
   encodeStrkey,
   decodeStrkey,
+  strkeyToString,
+  strkeyFromString,
+  type Strkey,
   STRKEY_ED25519_PUBLIC,
+  STRKEY_ED25519_PRIVATE,
   STRKEY_MUXED_ED25519,
   STRKEY_PRE_AUTH_TX,
   STRKEY_HASH_X,
   STRKEY_CONTRACT,
   STRKEY_SIGNED_PAYLOAD,
+  STRKEY_LIQUIDITY_POOL,
+  STRKEY_CLAIMABLE_BALANCE,
 } from './strkey.js';
 export {
   stellarPublicKey,
