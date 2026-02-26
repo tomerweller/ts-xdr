@@ -10,6 +10,10 @@ export interface XdrCodec<T> {
   fromXdr(input: Uint8Array | ArrayBufferLike, limits?: Limits): T;
   toBase64(value: T, limits?: Limits): string;
   fromBase64(input: string, limits?: Limits): T;
+  toJsonValue(value: T): unknown;
+  fromJsonValue(json: unknown): T;
+  toJson(value: T): string;
+  fromJson(input: string): T;
 }
 
 export abstract class BaseCodec<T> implements XdrCodec<T> {
@@ -36,5 +40,21 @@ export abstract class BaseCodec<T> implements XdrCodec<T> {
 
   fromBase64(input: string, limits?: Limits): T {
     return this.fromXdr(decodeBase64(input), limits);
+  }
+
+  toJsonValue(value: T): unknown {
+    return value;
+  }
+
+  fromJsonValue(json: unknown): T {
+    return json as T;
+  }
+
+  toJson(value: T): string {
+    return JSON.stringify(this.toJsonValue(value));
+  }
+
+  fromJson(input: string): T {
+    return this.fromJsonValue(JSON.parse(input));
   }
 }

@@ -27,6 +27,12 @@ class Int64Codec extends BaseCodec<bigint> {
   decode(reader: XdrReader): bigint {
     return reader.readInt64();
   }
+  toJsonValue(value: bigint): unknown {
+    return String(value);
+  }
+  fromJsonValue(json: unknown): bigint {
+    return BigInt(json as string);
+  }
 }
 
 class Uint64Codec extends BaseCodec<bigint> {
@@ -35,6 +41,12 @@ class Uint64Codec extends BaseCodec<bigint> {
   }
   decode(reader: XdrReader): bigint {
     return reader.readUint64();
+  }
+  toJsonValue(value: bigint): unknown {
+    return String(value);
+  }
+  fromJsonValue(json: unknown): bigint {
+    return BigInt(json as string);
   }
 }
 
@@ -71,6 +83,12 @@ class VoidCodec extends BaseCodec<void> {
   }
   decode(_reader: XdrReader): void {
     // void decodes nothing
+  }
+  toJsonValue(_value: void): unknown {
+    return null;
+  }
+  fromJsonValue(_json: unknown): void {
+    // void
   }
 }
 

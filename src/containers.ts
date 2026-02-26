@@ -1,5 +1,6 @@
 import { BaseCodec, type XdrCodec } from './codec.js';
 import { XdrError, XdrErrorCode } from './errors.js';
+import { bytesToHex, hexToBytes } from './hex.js';
 import { XdrReader } from './reader.js';
 import { XdrWriter } from './writer.js';
 
@@ -11,6 +12,12 @@ export function fixedOpaque(n: number): XdrCodec<Uint8Array> {
     decode(reader: XdrReader): Uint8Array {
       return reader.readFixedOpaque(n);
     }
+    toJsonValue(value: Uint8Array): unknown {
+      return bytesToHex(value);
+    }
+    fromJsonValue(json: unknown): Uint8Array {
+      return hexToBytes(json as string);
+    }
   })();
 }
 
@@ -21,6 +28,12 @@ export function varOpaque(maxLength?: number): XdrCodec<Uint8Array> {
     }
     decode(reader: XdrReader): Uint8Array {
       return reader.readVarOpaque(maxLength);
+    }
+    toJsonValue(value: Uint8Array): unknown {
+      return bytesToHex(value);
+    }
+    fromJsonValue(json: unknown): Uint8Array {
+      return hexToBytes(json as string);
     }
   })();
 }
@@ -59,6 +72,12 @@ export function fixedArray<T>(
       }
       return result;
     }
+    toJsonValue(value: readonly T[]): unknown {
+      return value.map((v) => codec.toJsonValue(v));
+    }
+    fromJsonValue(json: unknown): readonly T[] {
+      return (json as unknown[]).map((v) => codec.fromJsonValue(v));
+    }
   })();
 }
 
@@ -93,25 +112,43 @@ export function varArray<T>(
       }
       return result;
     }
+    toJsonValue(value: readonly T[]): unknown {
+      return value.map((v) => codec.toJsonValue(v));
+    }
+    fromJsonValue(json: unknown): readonly T[] {
+      return (json as unknown[]).map((v) => codec.fromJsonValue(v));
+    }
   })();
 }
 
-export function option<T>(codec: XdrCodec<T>): XdrCodec<T | undefined> {
-  return new (class extends BaseCodec<T | undefined> {
-    encode(writer: XdrWriter, value: T | undefined): void {
-      if (value === undefined) {
+export function option<T>(codec: XdrCodec<T>): XdrCodec<T | null> {
+  return new (class extends BaseCodec<T | null> {
+    encode(writer: XdrWriter, value: T | null): void {
+      if (value === null) {
         writer.writeInt32(0);
       } else {
         writer.writeInt32(1);
         codec.encode(writer, value);
       }
     }
-    decode(reader: XdrReader): T | undefined {
+    decode(reader: XdrReader): T | null {
       const present = reader.readBool();
       if (present) {
         return codec.decode(reader);
       }
-      return undefined;
+      return null;
+    }
+    toJsonValue(value: T | null): unknown {
+      if (value === null) {
+        return null;
+      }
+      return codec.toJsonValue(value);
+    }
+    fromJsonValue(json: unknown): T | null {
+      if (json === null || json === undefined) {
+        return null;
+      }
+      return codec.fromJsonValue(json);
     }
   })();
 }

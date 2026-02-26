@@ -3,6 +3,8 @@
  * compatibility tests. These mirror what the xdrgen TypeScript backend would
  * generate from the Stellar .x schema files.
  *
+ * SEP-0051 aligned: snake_case fields, externally-tagged unions, null optionals.
+ *
  * Source: https://github.com/nickmccurdy/xdr/tree/master/Stellar
  */
 import {
@@ -58,15 +60,15 @@ export const Int64: XdrCodec<Int64> = int64;
 // PublicKey
 // ============================================================
 
-export type PublicKeyType = 'Ed25519';
+export type PublicKeyType = 'ed25519';
 export const PublicKeyType = xdrEnum({
-  Ed25519: 0,
+  ed25519: 0,
 });
 
-export type PublicKey = { readonly tag: 'Ed25519'; readonly value: Uint8Array };
+export type PublicKey = { readonly ed25519: Uint8Array };
 export const PublicKey: XdrCodec<PublicKey> = taggedUnion({
   switchOn: PublicKeyType,
-  arms: [{ tags: ['Ed25519'], codec: Uint256 }],
+  arms: [{ tags: ['ed25519'], codec: Uint256 }],
 }) as XdrCodec<PublicKey>;
 
 export type AccountId = PublicKey;
@@ -77,17 +79,17 @@ export const AccountId: XdrCodec<AccountId> = PublicKey;
 // ============================================================
 
 export type CryptoKeyType =
-  | 'Ed25519'
-  | 'PreAuthTx'
-  | 'HashX'
-  | 'Ed25519SignedPayload'
-  | 'MuxedEd25519';
+  | 'ed25519'
+  | 'pre_auth_tx'
+  | 'hash_x'
+  | 'ed25519_signed_payload'
+  | 'muxed_ed25519';
 export const CryptoKeyType = xdrEnum({
-  Ed25519: 0,
-  PreAuthTx: 1,
-  HashX: 2,
-  Ed25519SignedPayload: 3,
-  MuxedEd25519: 0x100,
+  ed25519: 0,
+  pre_auth_tx: 1,
+  hash_x: 2,
+  ed25519_signed_payload: 3,
+  muxed_ed25519: 0x100,
 });
 
 export interface MuxedAccountMed25519 {
@@ -101,13 +103,13 @@ export const MuxedAccountMed25519: XdrCodec<MuxedAccountMed25519> =
   ]);
 
 export type MuxedAccount =
-  | { readonly tag: 'Ed25519'; readonly value: Uint8Array }
-  | { readonly tag: 'MuxedEd25519'; readonly value: MuxedAccountMed25519 };
+  | { readonly ed25519: Uint8Array }
+  | { readonly muxed_ed25519: MuxedAccountMed25519 };
 export const MuxedAccount: XdrCodec<MuxedAccount> = taggedUnion({
   switchOn: CryptoKeyType,
   arms: [
-    { tags: ['Ed25519'], codec: Uint256 },
-    { tags: ['MuxedEd25519'], codec: MuxedAccountMed25519 },
+    { tags: ['ed25519'], codec: Uint256 },
+    { tags: ['muxed_ed25519'], codec: MuxedAccountMed25519 },
   ],
 }) as XdrCodec<MuxedAccount>;
 
@@ -116,30 +118,30 @@ export const MuxedAccount: XdrCodec<MuxedAccount> = taggedUnion({
 // ============================================================
 
 export interface TimeBounds {
-  readonly minTime: bigint;
-  readonly maxTime: bigint;
+  readonly min_time: bigint;
+  readonly max_time: bigint;
 }
 export const TimeBounds: XdrCodec<TimeBounds> = xdrStruct<TimeBounds>([
-  ['minTime', TimePoint],
-  ['maxTime', TimePoint],
+  ['min_time', TimePoint],
+  ['max_time', TimePoint],
 ]);
 
-export type PreconditionType = 'None' | 'Time' | 'V2';
+export type PreconditionType = 'none' | 'time' | 'v2';
 export const PreconditionType = xdrEnum({
-  None: 0,
-  Time: 1,
-  V2: 2,
+  none: 0,
+  time: 1,
+  v2: 2,
 });
 
 // Simplified: only None and Time arms (V2 omitted for test subset)
 export type Preconditions =
-  | { readonly tag: 'None' }
-  | { readonly tag: 'Time'; readonly value: TimeBounds };
+  | 'none'
+  | { readonly time: TimeBounds };
 export const Preconditions: XdrCodec<Preconditions> = taggedUnion({
   switchOn: PreconditionType,
   arms: [
-    { tags: ['None'] },
-    { tags: ['Time'], codec: TimeBounds },
+    { tags: ['none'] },
+    { tags: ['time'], codec: TimeBounds },
   ],
 }) as XdrCodec<Preconditions>;
 
@@ -147,29 +149,29 @@ export const Preconditions: XdrCodec<Preconditions> = taggedUnion({
 // Memo
 // ============================================================
 
-export type MemoType = 'None' | 'Text' | 'Id' | 'Hash' | 'Return';
+export type MemoType = 'none' | 'text' | 'id' | 'hash' | 'return';
 export const MemoType = xdrEnum({
-  None: 0,
-  Text: 1,
-  Id: 2,
-  Hash: 3,
-  Return: 4,
+  none: 0,
+  text: 1,
+  id: 2,
+  hash: 3,
+  return: 4,
 });
 
 export type Memo =
-  | { readonly tag: 'None' }
-  | { readonly tag: 'Text'; readonly value: string }
-  | { readonly tag: 'Id'; readonly value: bigint }
-  | { readonly tag: 'Hash'; readonly value: Uint8Array }
-  | { readonly tag: 'Return'; readonly value: Uint8Array };
+  | 'none'
+  | { readonly text: string }
+  | { readonly id: bigint }
+  | { readonly hash: Uint8Array }
+  | { readonly return: Uint8Array };
 export const Memo: XdrCodec<Memo> = taggedUnion({
   switchOn: MemoType,
   arms: [
-    { tags: ['None'] },
-    { tags: ['Text'], codec: xdrString(28) },
-    { tags: ['Id'], codec: uint64 },
-    { tags: ['Hash'], codec: Hash },
-    { tags: ['Return'], codec: Hash },
+    { tags: ['none'] },
+    { tags: ['text'], codec: xdrString(28) },
+    { tags: ['id'], codec: uint64 },
+    { tags: ['hash'], codec: Hash },
+    { tags: ['return'], codec: Hash },
   ],
 }) as XdrCodec<Memo>;
 
@@ -178,45 +180,45 @@ export const Memo: XdrCodec<Memo> = taggedUnion({
 // ============================================================
 
 export type AssetType =
-  | 'Native'
-  | 'CreditAlphanum4'
-  | 'CreditAlphanum12'
-  | 'PoolShare';
+  | 'native'
+  | 'credit_alphanum4'
+  | 'credit_alphanum12'
+  | 'pool_share';
 export const AssetType = xdrEnum({
-  Native: 0,
-  CreditAlphanum4: 1,
-  CreditAlphanum12: 2,
-  PoolShare: 3,
+  native: 0,
+  credit_alphanum4: 1,
+  credit_alphanum12: 2,
+  pool_share: 3,
 });
 
 export interface AlphaNum4 {
-  readonly assetCode: Uint8Array;
+  readonly asset_code: Uint8Array;
   readonly issuer: AccountId;
 }
 export const AlphaNum4: XdrCodec<AlphaNum4> = xdrStruct<AlphaNum4>([
-  ['assetCode', AssetCode4],
+  ['asset_code', AssetCode4],
   ['issuer', AccountId],
 ]);
 
 export interface AlphaNum12 {
-  readonly assetCode: Uint8Array;
+  readonly asset_code: Uint8Array;
   readonly issuer: AccountId;
 }
 export const AlphaNum12: XdrCodec<AlphaNum12> = xdrStruct<AlphaNum12>([
-  ['assetCode', AssetCode12],
+  ['asset_code', AssetCode12],
   ['issuer', AccountId],
 ]);
 
 export type Asset =
-  | { readonly tag: 'Native' }
-  | { readonly tag: 'CreditAlphanum4'; readonly value: AlphaNum4 }
-  | { readonly tag: 'CreditAlphanum12'; readonly value: AlphaNum12 };
+  | 'native'
+  | { readonly credit_alphanum4: AlphaNum4 }
+  | { readonly credit_alphanum12: AlphaNum12 };
 export const Asset: XdrCodec<Asset> = taggedUnion({
   switchOn: AssetType,
   arms: [
-    { tags: ['Native'] },
-    { tags: ['CreditAlphanum4'], codec: AlphaNum4 },
-    { tags: ['CreditAlphanum12'], codec: AlphaNum12 },
+    { tags: ['native'] },
+    { tags: ['credit_alphanum4'], codec: AlphaNum4 },
+    { tags: ['credit_alphanum12'], codec: AlphaNum12 },
   ],
 }) as XdrCodec<Asset>;
 
@@ -225,23 +227,23 @@ export const Asset: XdrCodec<Asset> = taggedUnion({
 // ============================================================
 
 export type OperationType =
-  | 'CreateAccount'
-  | 'Payment'
-  | 'ChangeTrust';
+  | 'create_account'
+  | 'payment'
+  | 'change_trust';
 export const OperationType = xdrEnum({
-  CreateAccount: 0,
-  Payment: 1,
-  ChangeTrust: 6,
+  create_account: 0,
+  payment: 1,
+  change_trust: 6,
 });
 
 export interface CreateAccountOp {
   readonly destination: AccountId;
-  readonly startingBalance: bigint;
+  readonly starting_balance: bigint;
 }
 export const CreateAccountOp: XdrCodec<CreateAccountOp> =
   xdrStruct<CreateAccountOp>([
     ['destination', AccountId],
-    ['startingBalance', Int64],
+    ['starting_balance', Int64],
   ]);
 
 export interface PaymentOp {
@@ -257,16 +259,17 @@ export const PaymentOp: XdrCodec<PaymentOp> = xdrStruct<PaymentOp>([
 
 // ChangeTrustAsset — simplified (only native & credit types)
 export type ChangeTrustAsset =
-  | { readonly tag: 'Native' }
-  | { readonly tag: 'CreditAlphanum4'; readonly value: AlphaNum4 }
-  | { readonly tag: 'CreditAlphanum12'; readonly value: AlphaNum12 };
+  | 'native'
+  | { readonly credit_alphanum4: AlphaNum4 }
+  | { readonly credit_alphanum12: AlphaNum12 }
+  | 'pool_share';
 export const ChangeTrustAsset: XdrCodec<ChangeTrustAsset> = taggedUnion({
   switchOn: AssetType,
   arms: [
-    { tags: ['Native'] },
-    { tags: ['CreditAlphanum4'], codec: AlphaNum4 },
-    { tags: ['CreditAlphanum12'], codec: AlphaNum12 },
-    { tags: ['PoolShare'] }, // void arm for completeness
+    { tags: ['native'] },
+    { tags: ['credit_alphanum4'], codec: AlphaNum4 },
+    { tags: ['credit_alphanum12'], codec: AlphaNum12 },
+    { tags: ['pool_share'] }, // void arm for completeness
   ],
 }) as XdrCodec<ChangeTrustAsset>;
 
@@ -281,24 +284,24 @@ export const ChangeTrustOp: XdrCodec<ChangeTrustOp> =
   ]);
 
 export type OperationBody =
-  | { readonly tag: 'CreateAccount'; readonly value: CreateAccountOp }
-  | { readonly tag: 'Payment'; readonly value: PaymentOp }
-  | { readonly tag: 'ChangeTrust'; readonly value: ChangeTrustOp };
+  | { readonly create_account: CreateAccountOp }
+  | { readonly payment: PaymentOp }
+  | { readonly change_trust: ChangeTrustOp };
 export const OperationBody: XdrCodec<OperationBody> = taggedUnion({
   switchOn: OperationType,
   arms: [
-    { tags: ['CreateAccount'], codec: CreateAccountOp },
-    { tags: ['Payment'], codec: PaymentOp },
-    { tags: ['ChangeTrust'], codec: ChangeTrustOp },
+    { tags: ['create_account'], codec: CreateAccountOp },
+    { tags: ['payment'], codec: PaymentOp },
+    { tags: ['change_trust'], codec: ChangeTrustOp },
   ],
 }) as XdrCodec<OperationBody>;
 
 export interface Operation {
-  readonly sourceAccount: MuxedAccount | undefined;
+  readonly source_account: MuxedAccount | null;
   readonly body: OperationBody;
 }
 export const Operation: XdrCodec<Operation> = xdrStruct<Operation>([
-  ['sourceAccount', option(MuxedAccount)],
+  ['source_account', option(MuxedAccount)],
   ['body', OperationBody],
 ]);
 
@@ -306,25 +309,25 @@ export const Operation: XdrCodec<Operation> = xdrStruct<Operation>([
 // Transaction
 // ============================================================
 
-export type TransactionExt = { readonly tag: 0 };
+export type TransactionExt = 'v0';
 export const TransactionExt: XdrCodec<TransactionExt> = taggedUnion({
   switchOn: int32,
-  arms: [{ tags: [0] }],
+  arms: [{ tags: [0], key: 'v0' }],
 }) as XdrCodec<TransactionExt>;
 
 export interface Transaction {
-  readonly sourceAccount: MuxedAccount;
+  readonly source_account: MuxedAccount;
   readonly fee: number;
-  readonly seqNum: bigint;
+  readonly seq_num: bigint;
   readonly cond: Preconditions;
   readonly memo: Memo;
   readonly operations: readonly Operation[];
   readonly ext: TransactionExt;
 }
 export const Transaction: XdrCodec<Transaction> = xdrStruct<Transaction>([
-  ['sourceAccount', MuxedAccount],
+  ['source_account', MuxedAccount],
   ['fee', uint32],
-  ['seqNum', SequenceNumber],
+  ['seq_num', SequenceNumber],
   ['cond', Preconditions],
   ['memo', Memo],
   ['operations', varArray(100, Operation)],
@@ -356,37 +359,36 @@ export const TransactionV1Envelope: XdrCodec<TransactionV1Envelope> =
   ]);
 
 export type EnvelopeType =
-  | 'TxV0'
-  | 'Scp'
-  | 'Tx'
-  | 'Auth'
-  | 'ScpValue'
-  | 'TxFeeBump'
-  | 'OpId'
-  | 'PoolRevokeOpId'
-  | 'ContractId'
-  | 'SorobanAuthorization';
+  | 'tx_v0'
+  | 'scp'
+  | 'tx'
+  | 'auth'
+  | 'scp_value'
+  | 'tx_fee_bump'
+  | 'op_id'
+  | 'pool_revoke_op_id'
+  | 'contract_id'
+  | 'soroban_authorization';
 export const EnvelopeType = xdrEnum({
-  TxV0: 0,
-  Scp: 1,
-  Tx: 2,
-  Auth: 3,
-  ScpValue: 4,
-  TxFeeBump: 5,
-  OpId: 6,
-  PoolRevokeOpId: 7,
-  ContractId: 8,
-  SorobanAuthorization: 9,
+  tx_v0: 0,
+  scp: 1,
+  tx: 2,
+  auth: 3,
+  scp_value: 4,
+  tx_fee_bump: 5,
+  op_id: 6,
+  pool_revoke_op_id: 7,
+  contract_id: 8,
+  soroban_authorization: 9,
 });
 
 // Simplified: only Tx arm (V0 and FeeBump omitted for test subset)
 export type TransactionEnvelope = {
-  readonly tag: 'Tx';
-  readonly value: TransactionV1Envelope;
+  readonly tx: TransactionV1Envelope;
 };
 export const TransactionEnvelope: XdrCodec<TransactionEnvelope> = taggedUnion({
   switchOn: EnvelopeType,
-  arms: [{ tags: ['Tx'], codec: TransactionV1Envelope }],
+  arms: [{ tags: ['tx'], codec: TransactionV1Envelope }],
 }) as XdrCodec<TransactionEnvelope>;
 
 // ============================================================

@@ -166,12 +166,12 @@ describe('containers', () => {
 
     it('roundtrips absent value', () => {
       const codec = option(int32);
-      expect(codec.fromXdr(codec.toXdr(undefined))).toBeUndefined();
+      expect(codec.fromXdr(codec.toXdr(null))).toBeNull();
     });
 
     it('encodes None as 0x00000000', () => {
       const codec = option(int32);
-      const xdr = codec.toXdr(undefined);
+      const xdr = codec.toXdr(null);
       expect(xdr).toEqual(new Uint8Array([0, 0, 0, 0]));
     });
 

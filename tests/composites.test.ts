@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { xdrStruct, xdrEnum, taggedUnion } from '../src/composites.js';
+import { xdrStruct, xdrEnum, taggedUnion, is } from '../src/composites.js';
 import { int32, uint32, bool } from '../src/primitives.js';
 import { varOpaque, xdrString, option } from '../src/containers.js';
 import { XdrErrorCode } from '../src/errors.js';
@@ -22,7 +22,7 @@ describe('composites', () => {
     it('roundtrips struct with optional field', () => {
       interface Foo {
         readonly x: number;
-        readonly y: number | undefined;
+        readonly y: number | null;
       }
       const Foo = xdrStruct<Foo>([
         ['x', int32],
@@ -32,9 +32,9 @@ describe('composites', () => {
         x: 1,
         y: 42,
       });
-      expect(Foo.fromXdr(Foo.toXdr({ x: 1, y: undefined }))).toEqual({
+      expect(Foo.fromXdr(Foo.toXdr({ x: 1, y: null }))).toEqual({
         x: 1,
-        y: undefined,
+        y: null,
       });
     });
 
@@ -73,33 +73,33 @@ describe('composites', () => {
 
   describe('xdrEnum', () => {
     it('has member properties', () => {
-      const Color = xdrEnum({ Red: 0, Green: 1, Blue: 2 });
-      expect(Color.Red).toBe(0);
-      expect(Color.Green).toBe(1);
-      expect(Color.Blue).toBe(2);
+      const Color = xdrEnum({ red: 0, green: 1, blue: 2 });
+      expect(Color.red).toBe(0);
+      expect(Color.green).toBe(1);
+      expect(Color.blue).toBe(2);
     });
 
     it('roundtrips enum values', () => {
-      const Color = xdrEnum({ Red: 0, Green: 1, Blue: 2 });
-      expect(Color.fromXdr(Color.toXdr('Red'))).toBe('Red');
-      expect(Color.fromXdr(Color.toXdr('Green'))).toBe('Green');
-      expect(Color.fromXdr(Color.toXdr('Blue'))).toBe('Blue');
+      const Color = xdrEnum({ red: 0, green: 1, blue: 2 });
+      expect(Color.fromXdr(Color.toXdr('red'))).toBe('red');
+      expect(Color.fromXdr(Color.toXdr('green'))).toBe('green');
+      expect(Color.fromXdr(Color.toXdr('blue'))).toBe('blue');
     });
 
     it('encodes as int32', () => {
-      const Color = xdrEnum({ Red: 0, Green: 1, Blue: 2 });
-      expect(Color.toXdr('Green')).toEqual(new Uint8Array([0, 0, 0, 1]));
+      const Color = xdrEnum({ red: 0, green: 1, blue: 2 });
+      expect(Color.toXdr('green')).toEqual(new Uint8Array([0, 0, 0, 1]));
     });
 
     it('rejects unknown enum name on encode', () => {
-      const Color = xdrEnum({ Red: 0, Green: 1 });
-      expect(() => Color.toXdr('Blue' as any)).toThrow(
+      const Color = xdrEnum({ red: 0, green: 1 });
+      expect(() => Color.toXdr('blue' as any)).toThrow(
         XdrErrorCode.InvalidEnumValue,
       );
     });
 
     it('rejects unknown numeric value on decode', () => {
-      const Color = xdrEnum({ Red: 0, Green: 1 });
+      const Color = xdrEnum({ red: 0, green: 1 });
       const xdr = int32.toXdr(99);
       expect(() => Color.fromXdr(xdr)).toThrow(XdrErrorCode.InvalidEnumValue);
     });
@@ -110,132 +110,127 @@ describe('composites', () => {
     });
 
     it('base64 roundtrip', () => {
-      const Color = xdrEnum({ Red: 0, Green: 1, Blue: 2 });
-      const b64 = Color.toBase64('Blue');
-      expect(Color.fromBase64(b64)).toBe('Blue');
+      const Color = xdrEnum({ red: 0, green: 1, blue: 2 });
+      const b64 = Color.toBase64('blue');
+      expect(Color.fromBase64(b64)).toBe('blue');
     });
   });
 
   describe('taggedUnion', () => {
     describe('enum-discriminated', () => {
       const AssetType = xdrEnum({
-        Native: 0,
-        CreditAlphanum4: 1,
+        native: 0,
+        credit_alphanum4: 1,
       });
 
       interface AlphaNum4 {
-        readonly assetCode: Uint8Array;
+        readonly asset_code: Uint8Array;
       }
 
       const AlphaNum4 = xdrStruct<AlphaNum4>([
-        ['assetCode', varOpaque(4)],
+        ['asset_code', varOpaque(4)],
       ]);
 
       type Asset =
-        | { readonly tag: 'Native' }
-        | { readonly tag: 'CreditAlphanum4'; readonly value: AlphaNum4 };
+        | 'native'
+        | { readonly credit_alphanum4: AlphaNum4 };
 
       const Asset = taggedUnion({
         switchOn: AssetType,
         arms: [
-          { tags: ['Native'] },
-          { tags: ['CreditAlphanum4'], codec: AlphaNum4 },
+          { tags: ['native'] },
+          { tags: ['credit_alphanum4'], codec: AlphaNum4 },
         ],
       }) as import('../src/codec.js').XdrCodec<Asset>;
 
       it('roundtrips void arm', () => {
-        const val: Asset = { tag: 'Native' };
+        const val: Asset = 'native';
         const result = Asset.fromXdr(Asset.toXdr(val));
-        expect(result).toEqual({ tag: 'Native' });
-        expect('value' in result).toBe(false);
+        expect(result).toBe('native');
       });
 
       it('roundtrips value arm', () => {
         const val: Asset = {
-          tag: 'CreditAlphanum4',
-          value: { assetCode: new Uint8Array([85, 83, 68, 67]) },
+          credit_alphanum4: { asset_code: new Uint8Array([85, 83, 68, 67]) },
         };
         const result = Asset.fromXdr(Asset.toXdr(val));
-        expect(result.tag).toBe('CreditAlphanum4');
+        expect(typeof result).toBe('object');
         expect(
-          (result as { tag: 'CreditAlphanum4'; value: AlphaNum4 }).value
-            .assetCode,
+          (result as { credit_alphanum4: AlphaNum4 }).credit_alphanum4
+            .asset_code,
         ).toEqual(new Uint8Array([85, 83, 68, 67]));
       });
     });
 
     describe('int-discriminated', () => {
       type Ext =
-        | { readonly tag: 0 }
-        | { readonly tag: 1; readonly value: number };
+        | 'v0'
+        | { readonly v1: number };
 
       const Ext = taggedUnion({
         switchOn: int32,
         arms: [
-          { tags: [0] },
-          { tags: [1], codec: uint32 },
+          { tags: [0], key: 'v0' },
+          { tags: [1], key: 'v1', codec: uint32 },
         ],
       }) as import('../src/codec.js').XdrCodec<Ext>;
 
       it('roundtrips void arm', () => {
-        const val: Ext = { tag: 0 };
+        const val: Ext = 'v0';
         const result = Ext.fromXdr(Ext.toXdr(val));
-        expect(result).toEqual({ tag: 0 });
+        expect(result).toBe('v0');
       });
 
       it('roundtrips value arm', () => {
-        const val: Ext = { tag: 1, value: 999 };
+        const val: Ext = { v1: 999 };
         const result = Ext.fromXdr(Ext.toXdr(val));
-        expect(result).toEqual({ tag: 1, value: 999 });
+        expect(result).toEqual({ v1: 999 });
       });
     });
 
     describe('default arm', () => {
       type MyUnion =
-        | { readonly tag: 0 }
-        | { readonly tag: number; readonly value: Uint8Array };
+        | 'v0'
+        | { readonly [key: string]: Uint8Array };
 
       const MyUnion = taggedUnion({
         switchOn: int32,
-        arms: [{ tags: [0] }],
+        arms: [{ tags: [0], key: 'v0' }],
         defaultArm: { codec: varOpaque(100) },
       }) as import('../src/codec.js').XdrCodec<MyUnion>;
 
       it('roundtrips known arm', () => {
-        const val: MyUnion = { tag: 0 };
-        expect(MyUnion.fromXdr(MyUnion.toXdr(val))).toEqual({ tag: 0 });
+        const val: MyUnion = 'v0';
+        expect(MyUnion.fromXdr(MyUnion.toXdr(val))).toBe('v0');
       });
 
       it('roundtrips default arm', () => {
-        const val: MyUnion = { tag: 42, value: new Uint8Array([1, 2, 3]) };
+        const val = { '42': new Uint8Array([1, 2, 3]) };
         const result = MyUnion.fromXdr(MyUnion.toXdr(val));
-        expect(result.tag).toBe(42);
-        expect((result as { tag: number; value: Uint8Array }).value).toEqual(
-          new Uint8Array([1, 2, 3]),
-        );
+        expect(typeof result).toBe('object');
+        expect((result as any)['42']).toEqual(new Uint8Array([1, 2, 3]));
       });
     });
 
     describe('void default arm', () => {
       const U = taggedUnion({
         switchOn: int32,
-        arms: [{ tags: [0], codec: uint32 }],
+        arms: [{ tags: [0], key: 'v0', codec: uint32 }],
         defaultArm: {},
       });
 
       it('default arm with no codec produces void', () => {
-        const result = U.fromXdr(U.toXdr({ tag: 99 }));
-        expect(result).toEqual({ tag: 99 });
-        expect('value' in result).toBe(false);
+        const result = U.fromXdr(U.toXdr('99'));
+        expect(result).toBe('99');
       });
     });
 
     it('rejects unknown discriminant without default', () => {
       const U = taggedUnion({
         switchOn: int32,
-        arms: [{ tags: [0] }],
+        arms: [{ tags: [0], key: 'v0' }],
       });
-      expect(() => U.toXdr({ tag: 99 })).toThrow(
+      expect(() => U.toXdr('unknown_key')).toThrow(
         XdrErrorCode.InvalidUnionDiscriminant,
       );
     });
@@ -244,24 +239,77 @@ describe('composites', () => {
       const U = taggedUnion({
         switchOn: int32,
         arms: [
-          { tags: [1, 2, 3], codec: xdrString(100) },
-          { tags: [0] },
+          { tags: [1, 2, 3], key: 'val', codec: xdrString(100) },
+          { tags: [0], key: 'v0' },
         ],
       });
 
       it('all tags in the same arm work', () => {
-        expect(U.fromXdr(U.toXdr({ tag: 1, value: 'a' }))).toEqual({
-          tag: 1,
-          value: 'a',
+        // Tags 1, 2, 3 all map to key 'val', so encoding { val: 'a' }
+        // will use the first tag (1) from the reverse map.
+        // But on decode, tags 1, 2, 3 all produce { val: ... }
+        const encoded1 = U.toXdr({ val: 'a' });
+        expect(U.fromXdr(encoded1)).toEqual({ val: 'a' });
+      });
+    });
+
+    describe('is() helper', () => {
+      it('returns true for matching key', () => {
+        const val: string | Record<string, unknown> = { credit_alphanum4: {} };
+        expect(is(val, 'credit_alphanum4')).toBe(true);
+      });
+
+      it('returns false for non-matching key', () => {
+        const val: string | Record<string, unknown> = { credit_alphanum4: {} };
+        expect(is(val, 'native')).toBe(false);
+      });
+
+      it('returns false for string values', () => {
+        const val: string | Record<string, unknown> = 'native';
+        expect(is(val, 'native')).toBe(false);
+      });
+    });
+
+    describe('JSON roundtrip', () => {
+      const AssetType = xdrEnum({
+        native: 0,
+        credit_alphanum4: 1,
+      });
+
+      interface AlphaNum4 {
+        readonly asset_code: Uint8Array;
+      }
+
+      const AlphaNum4 = xdrStruct<AlphaNum4>([
+        ['asset_code', varOpaque(4)],
+      ]);
+
+      const Asset = taggedUnion({
+        switchOn: AssetType,
+        arms: [
+          { tags: ['native'] },
+          { tags: ['credit_alphanum4'], codec: AlphaNum4 },
+        ],
+      });
+
+      it('JSON roundtrips void arm', () => {
+        const json = Asset.toJson('native');
+        expect(Asset.fromJson(json)).toBe('native');
+      });
+
+      it('JSON roundtrips value arm', () => {
+        const val = {
+          credit_alphanum4: { asset_code: new Uint8Array([85, 83, 68, 67]) },
+        };
+        const json = Asset.toJson(val);
+        const parsed = JSON.parse(json);
+        expect(parsed).toEqual({
+          credit_alphanum4: { asset_code: '55534443' },
         });
-        expect(U.fromXdr(U.toXdr({ tag: 2, value: 'b' }))).toEqual({
-          tag: 2,
-          value: 'b',
-        });
-        expect(U.fromXdr(U.toXdr({ tag: 3, value: 'c' }))).toEqual({
-          tag: 3,
-          value: 'c',
-        });
+        const restored = Asset.fromJson(json);
+        expect((restored as any).credit_alphanum4.asset_code).toEqual(
+          new Uint8Array([85, 83, 68, 67]),
+        );
       });
     });
   });

@@ -14,6 +14,7 @@ import {
   xdrStruct,
   xdrEnum,
   taggedUnion,
+  is,
   XdrError,
   XdrErrorCode,
   encodeBase64,
@@ -25,83 +26,83 @@ describe('integration', () => {
   // Simulate generated Stellar types
 
   const AssetType = xdrEnum({
-    Native: 0,
-    CreditAlphanum4: 1,
-    CreditAlphanum12: 2,
+    native: 0,
+    credit_alphanum4: 1,
+    credit_alphanum12: 2,
   });
 
   interface AlphaNum4 {
-    readonly assetCode: Uint8Array;
+    readonly asset_code: Uint8Array;
     readonly issuer: Uint8Array;
   }
   const AlphaNum4: XdrCodec<AlphaNum4> = xdrStruct<AlphaNum4>([
-    ['assetCode', fixedOpaque(4)],
+    ['asset_code', fixedOpaque(4)],
     ['issuer', fixedOpaque(32)],
   ]);
 
   interface AlphaNum12 {
-    readonly assetCode: Uint8Array;
+    readonly asset_code: Uint8Array;
     readonly issuer: Uint8Array;
   }
   const AlphaNum12: XdrCodec<AlphaNum12> = xdrStruct<AlphaNum12>([
-    ['assetCode', fixedOpaque(12)],
+    ['asset_code', fixedOpaque(12)],
     ['issuer', fixedOpaque(32)],
   ]);
 
   type Asset =
-    | { readonly tag: 'Native' }
-    | { readonly tag: 'CreditAlphanum4'; readonly value: AlphaNum4 }
-    | { readonly tag: 'CreditAlphanum12'; readonly value: AlphaNum12 };
+    | 'native'
+    | { readonly credit_alphanum4: AlphaNum4 }
+    | { readonly credit_alphanum12: AlphaNum12 };
 
   const Asset: XdrCodec<Asset> = taggedUnion({
     switchOn: AssetType,
     arms: [
-      { tags: ['Native'] },
-      { tags: ['CreditAlphanum4'], codec: AlphaNum4 },
-      { tags: ['CreditAlphanum12'], codec: AlphaNum12 },
+      { tags: ['native'] },
+      { tags: ['credit_alphanum4'], codec: AlphaNum4 },
+      { tags: ['credit_alphanum12'], codec: AlphaNum12 },
     ],
   }) as XdrCodec<Asset>;
 
   describe('Asset union', () => {
-    it('roundtrips Native', () => {
-      const native: Asset = { tag: 'Native' };
+    it('roundtrips native', () => {
+      const native: Asset = 'native';
       const xdr = Asset.toXdr(native);
       const decoded = Asset.fromXdr(xdr);
-      expect(decoded).toEqual({ tag: 'Native' });
+      expect(decoded).toBe('native');
     });
 
-    it('roundtrips CreditAlphanum4', () => {
+    it('roundtrips credit_alphanum4', () => {
       const usdc: Asset = {
-        tag: 'CreditAlphanum4',
-        value: {
-          assetCode: new Uint8Array([85, 83, 68, 67]), // USDC
+        credit_alphanum4: {
+          asset_code: new Uint8Array([85, 83, 68, 67]), // USDC
           issuer: new Uint8Array(32),
         },
       };
       const decoded = Asset.fromXdr(Asset.toXdr(usdc));
-      expect(decoded.tag).toBe('CreditAlphanum4');
-      expect(
-        (decoded as { tag: 'CreditAlphanum4'; value: AlphaNum4 }).value
-          .assetCode,
-      ).toEqual(new Uint8Array([85, 83, 68, 67]));
+      expect(is(decoded, 'credit_alphanum4')).toBe(true);
+      if (is(decoded, 'credit_alphanum4')) {
+        expect(decoded.credit_alphanum4.asset_code).toEqual(
+          new Uint8Array([85, 83, 68, 67]),
+        );
+      }
     });
 
     it('base64 roundtrip', () => {
-      const native: Asset = { tag: 'Native' };
+      const native: Asset = 'native';
       const b64 = Asset.toBase64(native);
-      expect(Asset.fromBase64(b64)).toEqual({ tag: 'Native' });
+      expect(Asset.fromBase64(b64)).toBe('native');
     });
   });
 
   describe('enum access pattern', () => {
     it('enum has numeric members', () => {
-      expect(AssetType.Native).toBe(0);
-      expect(AssetType.CreditAlphanum4).toBe(1);
-      expect(AssetType.CreditAlphanum12).toBe(2);
+      expect(AssetType.native).toBe(0);
+      expect(AssetType.credit_alphanum4).toBe(1);
+      expect(AssetType.credit_alphanum12).toBe(2);
     });
 
     it('enum encodes/decodes string names', () => {
-      expect(AssetType.fromXdr(AssetType.toXdr('Native'))).toBe('Native');
+      expect(AssetType.fromXdr(AssetType.toXdr('native'))).toBe('native');
     });
   });
 
@@ -139,19 +140,19 @@ describe('integration', () => {
     ]);
 
     interface AccountEntry {
-      readonly accountId: Uint8Array;
+      readonly account_id: Uint8Array;
       readonly balance: bigint;
       readonly signers: readonly Signer[];
     }
     const AccountEntry: XdrCodec<AccountEntry> = xdrStruct<AccountEntry>([
-      ['accountId', fixedOpaque(32)],
+      ['account_id', fixedOpaque(32)],
       ['balance', uint64],
       ['signers', varArray(MAX_SIGNERS, Signer)],
     ]);
 
     it('roundtrips complex struct', () => {
       const entry: AccountEntry = {
-        accountId: new Uint8Array(32).fill(0x01),
+        account_id: new Uint8Array(32).fill(0x01),
         balance: 10000000n,
         signers: [
           { key: new Uint8Array(32).fill(0x02), weight: 1 },
@@ -159,7 +160,7 @@ describe('integration', () => {
         ],
       };
       const decoded = AccountEntry.fromXdr(AccountEntry.toXdr(entry));
-      expect(decoded.accountId).toEqual(entry.accountId);
+      expect(decoded.account_id).toEqual(entry.account_id);
       expect(decoded.balance).toBe(entry.balance);
       expect(decoded.signers.length).toBe(2);
       expect(decoded.signers[0]!.weight).toBe(1);
@@ -257,6 +258,64 @@ describe('integration', () => {
 
     it('default uint32 is 0', () => {
       expect(uint32.fromXdr(new Uint8Array([0, 0, 0, 0]))).toBe(0);
+    });
+  });
+
+  describe('JSON methods', () => {
+    it('struct toJson/fromJson roundtrip', () => {
+      interface Point {
+        readonly x: number;
+        readonly y: number;
+      }
+      const Point = xdrStruct<Point>([
+        ['x', int32],
+        ['y', int32],
+      ]);
+      const val: Point = { x: 10, y: 20 };
+      const json = Point.toJson(val);
+      expect(Point.fromJson(json)).toEqual(val);
+    });
+
+    it('bigint serializes as string in JSON', () => {
+      const val = 123456789012345n;
+      const json = uint64.toJson(val);
+      expect(json).toBe('"123456789012345"');
+      expect(uint64.fromJson(json)).toBe(val);
+    });
+
+    it('opaque serializes as hex in JSON', () => {
+      const codec = fixedOpaque(4);
+      const val = new Uint8Array([0xde, 0xad, 0xbe, 0xef]);
+      const jsonVal = codec.toJsonValue(val);
+      expect(jsonVal).toBe('deadbeef');
+    });
+
+    it('option null in JSON', () => {
+      const codec = option(int32);
+      expect(codec.toJsonValue(null)).toBeNull();
+      expect(codec.fromJsonValue(null)).toBeNull();
+      expect(codec.toJsonValue(42)).toBe(42);
+      expect(codec.fromJsonValue(42)).toBe(42);
+    });
+
+    it('Asset union JSON roundtrip', () => {
+      const nativeJson = Asset.toJson('native');
+      expect(Asset.fromJson(nativeJson)).toBe('native');
+
+      const usdc: Asset = {
+        credit_alphanum4: {
+          asset_code: new Uint8Array([85, 83, 68, 67]),
+          issuer: new Uint8Array(32),
+        },
+      };
+      const usdcJson = Asset.toJson(usdc);
+      const restored = Asset.fromJson(usdcJson);
+      expect(is(restored, 'credit_alphanum4')).toBe(true);
+      if (is(restored, 'credit_alphanum4')) {
+        expect(restored.credit_alphanum4.asset_code).toEqual(
+          new Uint8Array([85, 83, 68, 67]),
+        );
+      }
     });
   });
 });
