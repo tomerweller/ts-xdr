@@ -114,15 +114,19 @@ export interface AccountRecord {
   subentry_count: number;
   last_modified_ledger: number;
   last_modified_time: string;
+  inflation_destination?: string;
+  home_domain?: string;
   thresholds: AccountThresholds;
   flags: Flags;
   balances: BalanceLine[];
   signers: AccountSigner[];
   data: Record<string, string>;
+  data_attr: Record<string, string>;
   sponsor?: string;
   num_sponsoring: number;
   num_sponsored: number;
   paging_token: string;
+  [key: string]: any;
 }
 
 export interface AccountDataRecord {

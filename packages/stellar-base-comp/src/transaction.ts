@@ -22,6 +22,7 @@ import {
 } from '@stellar/xdr';
 import { hash, networkId } from './signing.js';
 import { Memo } from './memo.js';
+import { Operation } from './operation.js';
 import type { Keypair } from './keypair.js';
 
 const ENVELOPE_TYPE_TX = new Uint8Array([0, 0, 0, 2]);
@@ -61,7 +62,7 @@ function muxedAccountToAddress(muxed: any): string {
   throw new Error('Unknown muxed account type');
 }
 
-export class Transaction {
+export class Transaction<TMemo extends Memo = Memo, TOps extends any[] = any[]> {
   readonly source: string;
   readonly fee: string;
   readonly sequence: string;
@@ -92,7 +93,7 @@ export class Transaction {
     this.fee = this._tx.fee.toString();
     this.sequence = this._tx.seqNum.toString();
     this.memo = Memo._fromModern(this._tx.memo);
-    this.operations = this._tx.operations.map(op => op); // pass through for now
+    this.operations = this._tx.operations.map(op => Operation.fromXDRObject(op));
 
     if (is(this._tx.cond, 'Time')) {
       this.timeBounds = {
@@ -131,6 +132,16 @@ export class Transaction {
 
   hash(): Uint8Array {
     return this._hash;
+  }
+
+  signatureBase(): Uint8Array {
+    const nid = networkId(this.networkPassphrase);
+    const txBytes = TransactionCodec.toXdr(this._tx);
+    const tagged = new Uint8Array(nid.length + ENVELOPE_TYPE_TX.length + txBytes.length);
+    tagged.set(nid, 0);
+    tagged.set(ENVELOPE_TYPE_TX, nid.length);
+    tagged.set(txBytes, nid.length + ENVELOPE_TYPE_TX.length);
+    return tagged;
   }
 
   get signatures(): ModernDecoratedSignature[] {
@@ -198,6 +209,10 @@ export class FeeBumpTransaction {
     );
   }
 
+  get operations(): any[] {
+    return this.innerTransaction.operations;
+  }
+
   sign(...keypairs: Keypair[]): void {
     for (const kp of keypairs) {
       this._signatures.push(kp.signDecorated(this._hash));
@@ -206,6 +221,16 @@ export class FeeBumpTransaction {
 
   hash(): Uint8Array {
     return this._hash;
+  }
+
+  signatureBase(): Uint8Array {
+    const nid = networkId(this.networkPassphrase);
+    const txBytes = FeeBumpTransactionCodec.toXdr(this._tx);
+    const tagged = new Uint8Array(nid.length + ENVELOPE_TYPE_TX_FEE_BUMP.length + txBytes.length);
+    tagged.set(nid, 0);
+    tagged.set(ENVELOPE_TYPE_TX_FEE_BUMP, nid.length);
+    tagged.set(txBytes, nid.length + ENVELOPE_TYPE_TX_FEE_BUMP.length);
+    return tagged;
   }
 
   get signatures(): ModernDecoratedSignature[] {

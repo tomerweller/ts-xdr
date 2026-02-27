@@ -747,6 +747,7 @@ module Xdrgen
         end
         @compat.puts "  toXDR(format?: 'raw'): Buffer;"
         @compat.puts "  toXDR(format: 'hex' | 'base64'): string;"
+        @compat.puts "  [key: string]: any;"
         @compat.puts "}"
 
         # Runtime registration
@@ -821,6 +822,7 @@ module Xdrgen
         @compat.puts "  value(): #{vtypes.join(' | ')};"
         @compat.puts "  toXDR(format?: 'raw'): Buffer;"
         @compat.puts "  toXDR(format: 'hex' | 'base64'): string;"
+        @compat.puts "  [key: string]: any;"
         @compat.puts "}"
 
         # Runtime registration

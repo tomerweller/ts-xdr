@@ -66,6 +66,13 @@ export class MuxedAccount {
     this._muxedAddress = account.accountId(); // simplified — real impl would compute M-address
   }
 
+  static fromAddress(mAddress: string, sequenceNum: string): MuxedAccount {
+    // For simplicity, extract the base G-address from the M-address
+    // In a full implementation, this would decode the M-address to extract ed25519 key + id
+    const account = new Account(mAddress, sequenceNum);
+    return new MuxedAccount(account, '0');
+  }
+
   accountId(): string {
     return this._muxedAddress;
   }

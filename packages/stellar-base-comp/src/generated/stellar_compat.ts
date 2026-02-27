@@ -39,6 +39,7 @@ export interface ConfigSettingContractExecutionLanesV0 {
   ledgerMaxTxCount(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractExecutionLanesV0 = createCompatStruct({
   codec: modern.ConfigSettingContractExecutionLanesV0,
@@ -68,6 +69,7 @@ export interface ConfigSettingContractComputeV0 {
   txMemoryLimit(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractComputeV0 = createCompatStruct({
   codec: modern.ConfigSettingContractComputeV0,
@@ -94,6 +96,7 @@ export interface ConfigSettingContractParallelComputeV0 {
   ledgerMaxDependentTxClusters(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractParallelComputeV0 = createCompatStruct({
   codec: modern.ConfigSettingContractParallelComputeV0,
@@ -131,6 +134,7 @@ export interface ConfigSettingContractLedgerCostV0 {
   sorobanStateRentFeeGrowthFactor(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractLedgerCostV0 = createCompatStruct({
   codec: modern.ConfigSettingContractLedgerCostV0,
@@ -169,6 +173,7 @@ export interface ConfigSettingContractLedgerCostExtV0 {
   feeWrite1Kb(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractLedgerCostExtV0 = createCompatStruct({
   codec: modern.ConfigSettingContractLedgerCostExtV0,
@@ -193,6 +198,7 @@ export interface ConfigSettingContractHistoricalDataV0 {
   feeHistorical1Kb(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractHistoricalDataV0 = createCompatStruct({
   codec: modern.ConfigSettingContractHistoricalDataV0,
@@ -217,6 +223,7 @@ export interface ConfigSettingContractEventsV0 {
   feeContractEvents1Kb(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractEventsV0 = createCompatStruct({
   codec: modern.ConfigSettingContractEventsV0,
@@ -243,6 +250,7 @@ export interface ConfigSettingContractBandwidthV0 {
   feeTxSize1Kb(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingContractBandwidthV0 = createCompatStruct({
   codec: modern.ConfigSettingContractBandwidthV0,
@@ -451,6 +459,7 @@ export interface ExtensionPoint {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ExtensionPoint = createCompatUnion({
   codec: modern.ExtensionPoint,
@@ -477,6 +486,7 @@ export interface ContractCostParamEntry {
   linearTerm(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractCostParamEntry = createCompatStruct({
   codec: modern.ContractCostParamEntry,
@@ -511,6 +521,7 @@ export interface StateArchivalSettings {
   startingEvictionScanLevel(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _StateArchivalSettings = createCompatStruct({
   codec: modern.StateArchivalSettings,
@@ -548,6 +559,7 @@ export interface EvictionIterator {
   bucketFileOffset(value?: Uint64): Uint64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _EvictionIterator = createCompatStruct({
   codec: modern.EvictionIterator,
@@ -577,6 +589,7 @@ export interface ConfigSettingScpTiming {
   ballotTimeoutIncrementMilliseconds(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingScpTiming = createCompatStruct({
   codec: modern.ConfigSettingSCPTiming,
@@ -673,6 +686,7 @@ export interface ConfigSettingEntry {
   value(): Uint32 | ConfigSettingContractComputeV0 | ConfigSettingContractLedgerCostV0 | ConfigSettingContractHistoricalDataV0 | ConfigSettingContractEventsV0 | ConfigSettingContractBandwidthV0 | ContractCostParams | ContractCostParams | Uint32 | Uint32 | StateArchivalSettings | ConfigSettingContractExecutionLanesV0 | Uint64[] | EvictionIterator | ConfigSettingContractParallelComputeV0 | ConfigSettingContractLedgerCostExtV0 | ConfigSettingScpTiming;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigSettingEntry = createCompatUnion({
   codec: modern.ConfigSettingEntry,
@@ -744,6 +758,7 @@ export interface ScEnvMetaEntryInterfaceVersion {
   preRelease(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScEnvMetaEntryInterfaceVersion = createCompatStruct({
   codec: modern.SCEnvMetaEntryInterfaceVersion,
@@ -770,6 +785,7 @@ export interface ScEnvMetaEntry {
   value(): ScEnvMetaEntryInterfaceVersion;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScEnvMetaEntry = createCompatUnion({
   codec: modern.SCEnvMetaEntry,
@@ -795,6 +811,7 @@ export interface ScMetaV0 {
   val(value?: string | Buffer): string | Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScMetaV0 = createCompatStruct({
   codec: modern.SCMetaV0,
@@ -835,6 +852,7 @@ export interface ScMetaEntry {
   value(): ScMetaV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScMetaEntry = createCompatUnion({
   codec: modern.SCMetaEntry,
@@ -926,6 +944,7 @@ export interface ScSpecTypeResult {
   errorType(value?: ScSpecTypeDef): ScSpecTypeDef;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeResult = createCompatStruct({
   codec: modern.SCSpecTypeResult,
@@ -950,6 +969,7 @@ export interface ScSpecTypeVec {
   elementType(value?: ScSpecTypeDef): ScSpecTypeDef;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeVec = createCompatStruct({
   codec: modern.SCSpecTypeVec,
@@ -974,6 +994,7 @@ export interface ScSpecTypeMap {
   valueType(value?: ScSpecTypeDef): ScSpecTypeDef;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeMap = createCompatStruct({
   codec: modern.SCSpecTypeMap,
@@ -998,6 +1019,7 @@ export interface ScSpecTypeTuple {
   valueTypes(value?: ScSpecTypeDef[]): ScSpecTypeDef[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeTuple = createCompatStruct({
   codec: modern.SCSpecTypeTuple,
@@ -1021,6 +1043,7 @@ export interface ScSpecTypeBytesN {
   n(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeBytesN = createCompatStruct({
   codec: modern.SCSpecTypeBytesN,
@@ -1044,6 +1067,7 @@ export interface ScSpecTypeUdt {
   name(value?: string | Buffer): string | Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeUdt = createCompatStruct({
   codec: modern.SCSpecTypeUDT,
@@ -1075,6 +1099,7 @@ export interface ScSpecTypeDef {
   value(): ScSpecTypeOption | ScSpecTypeResult | ScSpecTypeVec | ScSpecTypeMap | ScSpecTypeTuple | ScSpecTypeBytesN | ScSpecTypeUdt | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeDef = createCompatUnion({
   codec: modern.SCSpecTypeDef,
@@ -1131,6 +1156,7 @@ export interface ScSpecTypeOption {
   valueType(value?: ScSpecTypeDef): ScSpecTypeDef;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecTypeOption = createCompatStruct({
   codec: modern.SCSpecTypeOption,
@@ -1156,6 +1182,7 @@ export interface ScSpecUdtStructFieldV0 {
   type(value?: ScSpecTypeDef): ScSpecTypeDef;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtStructFieldV0 = createCompatStruct({
   codec: modern.SCSpecUDTStructFieldV0,
@@ -1184,6 +1211,7 @@ export interface ScSpecUdtStructV0 {
   fields(value?: ScSpecUdtStructFieldV0[]): ScSpecUdtStructFieldV0[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtStructV0 = createCompatStruct({
   codec: modern.SCSpecUDTStructV0,
@@ -1211,6 +1239,7 @@ export interface ScSpecUdtUnionCaseVoidV0 {
   name(value?: string | Buffer): string | Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtUnionCaseVoidV0 = createCompatStruct({
   codec: modern.SCSpecUDTUnionCaseVoidV0,
@@ -1237,6 +1266,7 @@ export interface ScSpecUdtUnionCaseTupleV0 {
   type(value?: ScSpecTypeDef[]): ScSpecTypeDef[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtUnionCaseTupleV0 = createCompatStruct({
   codec: modern.SCSpecUDTUnionCaseTupleV0,
@@ -1281,6 +1311,7 @@ export interface ScSpecUdtUnionCaseV0 {
   value(): ScSpecUdtUnionCaseVoidV0 | ScSpecUdtUnionCaseTupleV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtUnionCaseV0 = createCompatUnion({
   codec: modern.SCSpecUDTUnionCaseV0,
@@ -1310,6 +1341,7 @@ export interface ScSpecUdtUnionV0 {
   cases(value?: ScSpecUdtUnionCaseV0[]): ScSpecUdtUnionCaseV0[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtUnionV0 = createCompatStruct({
   codec: modern.SCSpecUDTUnionV0,
@@ -1338,6 +1370,7 @@ export interface ScSpecUdtEnumCaseV0 {
   value(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtEnumCaseV0 = createCompatStruct({
   codec: modern.SCSpecUDTEnumCaseV0,
@@ -1366,6 +1399,7 @@ export interface ScSpecUdtEnumV0 {
   cases(value?: ScSpecUdtEnumCaseV0[]): ScSpecUdtEnumCaseV0[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtEnumV0 = createCompatStruct({
   codec: modern.SCSpecUDTEnumV0,
@@ -1394,6 +1428,7 @@ export interface ScSpecUdtErrorEnumCaseV0 {
   value(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtErrorEnumCaseV0 = createCompatStruct({
   codec: modern.SCSpecUDTErrorEnumCaseV0,
@@ -1422,6 +1457,7 @@ export interface ScSpecUdtErrorEnumV0 {
   cases(value?: ScSpecUdtErrorEnumCaseV0[]): ScSpecUdtErrorEnumCaseV0[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecUdtErrorEnumV0 = createCompatStruct({
   codec: modern.SCSpecUDTErrorEnumV0,
@@ -1450,6 +1486,7 @@ export interface ScSpecFunctionInputV0 {
   type(value?: ScSpecTypeDef): ScSpecTypeDef;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecFunctionInputV0 = createCompatStruct({
   codec: modern.SCSpecFunctionInputV0,
@@ -1483,6 +1520,7 @@ export interface ScSpecFunctionV0 {
   outputs(value?: ScSpecTypeDef[]): ScSpecTypeDef[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecFunctionV0 = createCompatStruct({
   codec: modern.SCSpecFunctionV0,
@@ -1528,6 +1566,7 @@ export interface ScSpecEventParamV0 {
   location(value?: ScSpecEventParamLocationV0): ScSpecEventParamLocationV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecEventParamV0 = createCompatStruct({
   codec: modern.SCSpecEventParamV0,
@@ -1577,6 +1616,7 @@ export interface ScSpecEventV0 {
   dataFormat(value?: ScSpecEventDataFormat): ScSpecEventDataFormat;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecEventV0 = createCompatStruct({
   codec: modern.SCSpecEventV0,
@@ -1636,6 +1676,7 @@ export interface ScSpecEntry {
   value(): ScSpecFunctionV0 | ScSpecUdtStructV0 | ScSpecUdtUnionV0 | ScSpecUdtEnumV0 | ScSpecUdtErrorEnumV0 | ScSpecEventV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScSpecEntry = createCompatUnion({
   codec: modern.SCSpecEntry,
@@ -1793,6 +1834,7 @@ export interface ScError {
   value(): Uint32 | ScErrorCode;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScError = createCompatUnion({
   codec: modern.SCError,
@@ -1828,6 +1870,7 @@ export interface UInt128Parts {
   lo(value?: Uint64): Uint64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _UInt128Parts = createCompatStruct({
   codec: modern.UInt128Parts,
@@ -1853,6 +1896,7 @@ export interface Int128Parts {
   lo(value?: Uint64): Uint64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Int128Parts = createCompatStruct({
   codec: modern.Int128Parts,
@@ -1880,6 +1924,7 @@ export interface UInt256Parts {
   loLo(value?: Uint64): Uint64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _UInt256Parts = createCompatStruct({
   codec: modern.UInt256Parts,
@@ -1909,6 +1954,7 @@ export interface Int256Parts {
   loLo(value?: Uint64): Uint64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Int256Parts = createCompatStruct({
   codec: modern.Int256Parts,
@@ -1956,6 +2002,7 @@ export interface ContractExecutable {
   value(): Hash | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractExecutable = createCompatUnion({
   codec: modern.ContractExecutable,
@@ -2008,6 +2055,7 @@ export interface MuxedEd25519Account {
   ed25519(value?: Uint256): Uint256;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _MuxedEd25519Account = createCompatStruct({
   codec: modern.MuxedEd25519Account,
@@ -2048,6 +2096,7 @@ export interface PublicKey {
   value(): Uint256;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PublicKey = createCompatUnion({
   codec: modern.PublicKey,
@@ -2092,6 +2141,7 @@ export interface ClaimableBalanceId {
   value(): Hash;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimableBalanceId = createCompatUnion({
   codec: modern.ClaimableBalanceID,
@@ -2124,6 +2174,7 @@ export interface ScAddress {
   value(): AccountId | ContractId | MuxedEd25519Account | ClaimableBalanceId | PoolId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScAddress = createCompatUnion({
   codec: modern.SCAddress,
@@ -2170,6 +2221,7 @@ export interface ScMapEntry {
   val(value?: ScVal): ScVal;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScMapEntry = createCompatStruct({
   codec: modern.SCMapEntry,
@@ -2198,6 +2250,7 @@ export interface ScContractInstance {
   storage(value?: null | ScMap): null | ScMap;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScContractInstance = createCompatStruct({
   codec: modern.SCContractInstance,
@@ -2222,6 +2275,7 @@ export interface ScNonceKey {
   nonce(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScNonceKey = createCompatStruct({
   codec: modern.SCNonceKey,
@@ -2266,6 +2320,7 @@ export interface ScVal {
   value(): boolean | ScError | Uint32 | Int32 | Uint64 | Int64 | TimePoint | Duration | UInt128Parts | Int128Parts | UInt256Parts | Int256Parts | ScBytes | ScString | ScSymbol | null | ScVec | null | ScMap | ScAddress | ScContractInstance | ScNonceKey | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScVal = createCompatUnion({
   codec: modern.SCVal,
@@ -2360,6 +2415,7 @@ export interface LedgerCloseValueSignature {
   signature(value?: Signature): Signature;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseValueSignature = createCompatStruct({
   codec: modern.LedgerCloseValueSignature,
@@ -2386,6 +2442,7 @@ export interface StellarValueExt {
   value(): LedgerCloseValueSignature | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _StellarValueExt = createCompatUnion({
   codec: modern.StellarValueExt,
@@ -2415,6 +2472,7 @@ export interface StellarValue {
   ext(value?: StellarValueExt): StellarValueExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _StellarValue = createCompatStruct({
   codec: modern.StellarValue,
@@ -2442,6 +2500,7 @@ export interface LedgerHeaderExtensionV1Ext {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerHeaderExtensionV1Ext = createCompatUnion({
   codec: modern.LedgerHeaderExtensionV1Ext,
@@ -2467,6 +2526,7 @@ export interface LedgerHeaderExtensionV1 {
   ext(value?: LedgerHeaderExtensionV1Ext): LedgerHeaderExtensionV1Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerHeaderExtensionV1 = createCompatStruct({
   codec: modern.LedgerHeaderExtensionV1,
@@ -2493,6 +2553,7 @@ export interface LedgerHeaderExt {
   value(): LedgerHeaderExtensionV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerHeaderExt = createCompatUnion({
   codec: modern.LedgerHeaderExt,
@@ -2533,6 +2594,7 @@ export interface LedgerHeader {
   ext(value?: LedgerHeaderExt): LedgerHeaderExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerHeader = createCompatStruct({
   codec: modern.LedgerHeader,
@@ -2571,6 +2633,7 @@ export interface LedgerHeaderHistoryEntryExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerHeaderHistoryEntryExt = createCompatUnion({
   codec: modern.LedgerHeaderHistoryEntryExt,
@@ -2597,6 +2660,7 @@ export interface LedgerHeaderHistoryEntry {
   ext(value?: LedgerHeaderHistoryEntryExt): LedgerHeaderHistoryEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerHeaderHistoryEntry = createCompatStruct({
   codec: modern.LedgerHeaderHistoryEntry,
@@ -2657,6 +2721,7 @@ export interface TimeBounds {
   maxTime(value?: TimePoint): TimePoint;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeBounds = createCompatStruct({
   codec: modern.TimeBounds,
@@ -2708,6 +2773,7 @@ export interface Memo {
   value(): string | Buffer | Uint64 | Hash | Hash | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Memo = createCompatUnion({
   codec: modern.Memo,
@@ -2763,6 +2829,7 @@ export interface MuxedAccountMed25519 {
   ed25519(value?: Uint256): Uint256;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _MuxedAccountMed25519 = createCompatStruct({
   codec: modern.MuxedAccountMed25519,
@@ -2790,6 +2857,7 @@ export interface MuxedAccount {
   value(): Uint256 | MuxedAccountMed25519;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _MuxedAccount = createCompatUnion({
   codec: modern.MuxedAccount,
@@ -2883,6 +2951,7 @@ export interface CreateAccountOp {
   startingBalance(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreateAccountOp = createCompatStruct({
   codec: modern.CreateAccountOp,
@@ -2931,6 +3000,7 @@ export interface AlphaNum4 {
   issuer(value?: AccountId): AccountId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AlphaNum4 = createCompatStruct({
   codec: modern.AlphaNum4,
@@ -2959,6 +3029,7 @@ export interface AlphaNum12 {
   issuer(value?: AccountId): AccountId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AlphaNum12 = createCompatStruct({
   codec: modern.AlphaNum12,
@@ -2986,6 +3057,7 @@ export interface Asset {
   value(): AlphaNum4 | AlphaNum12 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Asset = createCompatUnion({
   codec: modern.Asset,
@@ -3016,6 +3088,7 @@ export interface PaymentOp {
   amount(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PaymentOp = createCompatStruct({
   codec: modern.PaymentOp,
@@ -3046,6 +3119,7 @@ export interface PathPaymentStrictReceiveOp {
   path(value?: Asset[]): Asset[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PathPaymentStrictReceiveOp = createCompatStruct({
   codec: modern.PathPaymentStrictReceiveOp,
@@ -3075,6 +3149,7 @@ export interface Price {
   d(value?: Int32): Int32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Price = createCompatStruct({
   codec: modern.Price,
@@ -3103,6 +3178,7 @@ export interface ManageSellOfferOp {
   offerId(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageSellOfferOp = createCompatStruct({
   codec: modern.ManageSellOfferOp,
@@ -3133,6 +3209,7 @@ export interface CreatePassiveSellOfferOp {
   price(value?: Price): Price;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreatePassiveSellOfferOp = createCompatStruct({
   codec: modern.CreatePassiveSellOfferOp,
@@ -3183,6 +3260,7 @@ export interface SignerKeyEd25519SignedPayload {
   payload(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SignerKeyEd25519SignedPayload = createCompatStruct({
   codec: modern.SignerKeyEd25519SignedPayload,
@@ -3212,6 +3290,7 @@ export interface SignerKey {
   value(): Uint256 | Uint256 | Uint256 | SignerKeyEd25519SignedPayload;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SignerKey = createCompatUnion({
   codec: modern.SignerKey,
@@ -3243,6 +3322,7 @@ export interface Signer {
   weight(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Signer = createCompatStruct({
   codec: modern.Signer,
@@ -3275,6 +3355,7 @@ export interface SetOptionsOp {
   signer(value?: null | Signer): null | Signer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SetOptionsOp = createCompatStruct({
   codec: modern.SetOptionsOp,
@@ -3322,6 +3403,7 @@ export interface LiquidityPoolConstantProductParameters {
   fee(value?: Int32): Int32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolConstantProductParameters = createCompatStruct({
   codec: modern.LiquidityPoolConstantProductParameters,
@@ -3349,6 +3431,7 @@ export interface LiquidityPoolParameters {
   value(): LiquidityPoolConstantProductParameters;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolParameters = createCompatUnion({
   codec: modern.LiquidityPoolParameters,
@@ -3377,6 +3460,7 @@ export interface ChangeTrustAsset {
   value(): AlphaNum4 | AlphaNum12 | LiquidityPoolParameters | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ChangeTrustAsset = createCompatUnion({
   codec: modern.ChangeTrustAsset,
@@ -3408,6 +3492,7 @@ export interface ChangeTrustOp {
   limit(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ChangeTrustOp = createCompatStruct({
   codec: modern.ChangeTrustOp,
@@ -3435,6 +3520,7 @@ export interface AssetCode {
   value(): AssetCode4 | AssetCode12;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AssetCode = createCompatUnion({
   codec: modern.AssetCode,
@@ -3463,6 +3549,7 @@ export interface AllowTrustOp {
   authorize(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AllowTrustOp = createCompatStruct({
   codec: modern.AllowTrustOp,
@@ -3495,6 +3582,7 @@ export interface ManageDataOp {
   dataValue(value?: null | DataValue): null | DataValue;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageDataOp = createCompatStruct({
   codec: modern.ManageDataOp,
@@ -3519,6 +3607,7 @@ export interface BumpSequenceOp {
   bumpTo(value?: SequenceNumber): SequenceNumber;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BumpSequenceOp = createCompatStruct({
   codec: modern.BumpSequenceOp,
@@ -3546,6 +3635,7 @@ export interface ManageBuyOfferOp {
   offerId(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageBuyOfferOp = createCompatStruct({
   codec: modern.ManageBuyOfferOp,
@@ -3578,6 +3668,7 @@ export interface PathPaymentStrictSendOp {
   path(value?: Asset[]): Asset[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PathPaymentStrictSendOp = createCompatStruct({
   codec: modern.PathPaymentStrictSendOp,
@@ -3650,6 +3741,7 @@ export interface ClaimPredicate {
   value(): ClaimPredicate[] | ClaimPredicate[] | null | ClaimPredicate | Int64 | Int64 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimPredicate = createCompatUnion({
   codec: modern.ClaimPredicate,
@@ -3685,6 +3777,7 @@ export interface ClaimantV0 {
   predicate(value?: ClaimPredicate): ClaimPredicate;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimantV0 = createCompatStruct({
   codec: modern.ClaimantV0,
@@ -3711,6 +3804,7 @@ export interface Claimant {
   value(): ClaimantV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Claimant = createCompatUnion({
   codec: modern.Claimant,
@@ -3737,6 +3831,7 @@ export interface CreateClaimableBalanceOp {
   claimants(value?: Claimant[]): Claimant[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreateClaimableBalanceOp = createCompatStruct({
   codec: modern.CreateClaimableBalanceOp,
@@ -3762,6 +3857,7 @@ export interface ClaimClaimableBalanceOp {
   balanceId(value?: ClaimableBalanceId): ClaimableBalanceId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimClaimableBalanceOp = createCompatStruct({
   codec: modern.ClaimClaimableBalanceOp,
@@ -3785,6 +3881,7 @@ export interface BeginSponsoringFutureReservesOp {
   sponsoredId(value?: AccountId): AccountId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BeginSponsoringFutureReservesOp = createCompatStruct({
   codec: modern.BeginSponsoringFutureReservesOp,
@@ -3856,6 +3953,7 @@ export interface LedgerKeyAccount {
   accountId(value?: AccountId): AccountId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyAccount = createCompatStruct({
   codec: modern.LedgerKeyAccount,
@@ -3883,6 +3981,7 @@ export interface TrustLineAsset {
   value(): AlphaNum4 | AlphaNum12 | PoolId | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineAsset = createCompatUnion({
   codec: modern.TrustLineAsset,
@@ -3914,6 +4013,7 @@ export interface LedgerKeyTrustLine {
   asset(value?: TrustLineAsset): TrustLineAsset;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyTrustLine = createCompatStruct({
   codec: modern.LedgerKeyTrustLine,
@@ -3939,6 +4039,7 @@ export interface LedgerKeyOffer {
   offerId(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyOffer = createCompatStruct({
   codec: modern.LedgerKeyOffer,
@@ -3964,6 +4065,7 @@ export interface LedgerKeyData {
   dataName(value?: String64): String64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyData = createCompatStruct({
   codec: modern.LedgerKeyData,
@@ -3988,6 +4090,7 @@ export interface LedgerKeyClaimableBalance {
   balanceId(value?: ClaimableBalanceId): ClaimableBalanceId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyClaimableBalance = createCompatStruct({
   codec: modern.LedgerKeyClaimableBalance,
@@ -4011,6 +4114,7 @@ export interface LedgerKeyLiquidityPool {
   liquidityPoolId(value?: PoolId): PoolId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyLiquidityPool = createCompatStruct({
   codec: modern.LedgerKeyLiquidityPool,
@@ -4052,6 +4156,7 @@ export interface LedgerKeyContractData {
   durability(value?: ContractDataDurability): ContractDataDurability;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyContractData = createCompatStruct({
   codec: modern.LedgerKeyContractData,
@@ -4077,6 +4182,7 @@ export interface LedgerKeyContractCode {
   hash(value?: Hash): Hash;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyContractCode = createCompatStruct({
   codec: modern.LedgerKeyContractCode,
@@ -4100,6 +4206,7 @@ export interface LedgerKeyConfigSetting {
   configSettingId(value?: ConfigSettingId): ConfigSettingId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyConfigSetting = createCompatStruct({
   codec: modern.LedgerKeyConfigSetting,
@@ -4123,6 +4230,7 @@ export interface LedgerKeyTtl {
   keyHash(value?: Hash): Hash;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKeyTtl = createCompatStruct({
   codec: modern.LedgerKeyTtl,
@@ -4157,6 +4265,7 @@ export interface LedgerKey {
   value(): LedgerKeyAccount | LedgerKeyTrustLine | LedgerKeyOffer | LedgerKeyData | LedgerKeyClaimableBalance | LedgerKeyLiquidityPool | LedgerKeyContractData | LedgerKeyContractCode | LedgerKeyConfigSetting | LedgerKeyTtl;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerKey = createCompatUnion({
   codec: modern.LedgerKey,
@@ -4200,6 +4309,7 @@ export interface RevokeSponsorshipOpSigner {
   signerKey(value?: SignerKey): SignerKey;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _RevokeSponsorshipOpSigner = createCompatStruct({
   codec: modern.RevokeSponsorshipOpSigner,
@@ -4227,6 +4337,7 @@ export interface RevokeSponsorshipOp {
   value(): LedgerKey | RevokeSponsorshipOpSigner;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _RevokeSponsorshipOp = createCompatUnion({
   codec: modern.RevokeSponsorshipOp,
@@ -4255,6 +4366,7 @@ export interface ClawbackOp {
   amount(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClawbackOp = createCompatStruct({
   codec: modern.ClawbackOp,
@@ -4280,6 +4392,7 @@ export interface ClawbackClaimableBalanceOp {
   balanceId(value?: ClaimableBalanceId): ClaimableBalanceId;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClawbackClaimableBalanceOp = createCompatStruct({
   codec: modern.ClawbackClaimableBalanceOp,
@@ -4306,6 +4419,7 @@ export interface SetTrustLineFlagsOp {
   setFlags(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SetTrustLineFlagsOp = createCompatStruct({
   codec: modern.SetTrustLineFlagsOp,
@@ -4336,6 +4450,7 @@ export interface LiquidityPoolDepositOp {
   maxPrice(value?: Price): Price;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolDepositOp = createCompatStruct({
   codec: modern.LiquidityPoolDepositOp,
@@ -4366,6 +4481,7 @@ export interface LiquidityPoolWithdrawOp {
   minAmountB(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolWithdrawOp = createCompatStruct({
   codec: modern.LiquidityPoolWithdrawOp,
@@ -4414,6 +4530,7 @@ export interface InvokeContractArgs {
   args(value?: ScVal[]): ScVal[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InvokeContractArgs = createCompatStruct({
   codec: modern.InvokeContractArgs,
@@ -4456,6 +4573,7 @@ export interface ContractIdPreimageFromAddress {
   salt(value?: Uint256): Uint256;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractIdPreimageFromAddress = createCompatStruct({
   codec: modern.ContractIDPreimageFromAddress,
@@ -4483,6 +4601,7 @@ export interface ContractIdPreimage {
   value(): ContractIdPreimageFromAddress | Asset;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractIdPreimage = createCompatUnion({
   codec: modern.ContractIDPreimage,
@@ -4510,6 +4629,7 @@ export interface CreateContractArgs {
   executable(value?: ContractExecutable): ContractExecutable;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreateContractArgs = createCompatStruct({
   codec: modern.CreateContractArgs,
@@ -4536,6 +4656,7 @@ export interface CreateContractArgsV2 {
   constructorArgs(value?: ScVal[]): ScVal[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreateContractArgsV2 = createCompatStruct({
   codec: modern.CreateContractArgsV2,
@@ -4566,6 +4687,7 @@ export interface HostFunction {
   value(): InvokeContractArgs | CreateContractArgs | Buffer | CreateContractArgsV2;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HostFunction = createCompatUnion({
   codec: modern.HostFunction,
@@ -4615,6 +4737,7 @@ export interface SorobanAddressCredentials {
   signature(value?: ScVal): ScVal;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanAddressCredentials = createCompatStruct({
   codec: modern.SorobanAddressCredentials,
@@ -4643,6 +4766,7 @@ export interface SorobanCredentials {
   value(): SorobanAddressCredentials | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanCredentials = createCompatUnion({
   codec: modern.SorobanCredentials,
@@ -4691,6 +4815,7 @@ export interface SorobanAuthorizedFunction {
   value(): InvokeContractArgs | CreateContractArgs | CreateContractArgsV2;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanAuthorizedFunction = createCompatUnion({
   codec: modern.SorobanAuthorizedFunction,
@@ -4720,6 +4845,7 @@ export interface SorobanAuthorizedInvocation {
   subInvocations(value?: SorobanAuthorizedInvocation[]): SorobanAuthorizedInvocation[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanAuthorizedInvocation = createCompatStruct({
   codec: modern.SorobanAuthorizedInvocation,
@@ -4745,6 +4871,7 @@ export interface SorobanAuthorizationEntry {
   rootInvocation(value?: SorobanAuthorizedInvocation): SorobanAuthorizedInvocation;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanAuthorizationEntry = createCompatStruct({
   codec: modern.SorobanAuthorizationEntry,
@@ -4770,6 +4897,7 @@ export interface InvokeHostFunctionOp {
   auth(value?: SorobanAuthorizationEntry[]): SorobanAuthorizationEntry[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InvokeHostFunctionOp = createCompatStruct({
   codec: modern.InvokeHostFunctionOp,
@@ -4795,6 +4923,7 @@ export interface ExtendFootprintTtlOp {
   extendTo(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ExtendFootprintTtlOp = createCompatStruct({
   codec: modern.ExtendFootprintTTLOp,
@@ -4819,6 +4948,7 @@ export interface RestoreFootprintOp {
   ext(value?: ExtensionPoint): ExtensionPoint;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _RestoreFootprintOp = createCompatStruct({
   codec: modern.RestoreFootprintOp,
@@ -4868,6 +4998,7 @@ export interface OperationBody {
   value(): CreateAccountOp | PaymentOp | PathPaymentStrictReceiveOp | ManageSellOfferOp | CreatePassiveSellOfferOp | SetOptionsOp | ChangeTrustOp | AllowTrustOp | MuxedAccount | ManageDataOp | BumpSequenceOp | ManageBuyOfferOp | PathPaymentStrictSendOp | CreateClaimableBalanceOp | ClaimClaimableBalanceOp | BeginSponsoringFutureReservesOp | RevokeSponsorshipOp | ClawbackOp | ClawbackClaimableBalanceOp | SetTrustLineFlagsOp | LiquidityPoolDepositOp | LiquidityPoolWithdrawOp | InvokeHostFunctionOp | ExtendFootprintTtlOp | RestoreFootprintOp | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OperationBody = createCompatUnion({
   codec: modern.OperationBody,
@@ -4945,6 +5076,7 @@ export interface Operation {
   body(value?: OperationBody): OperationBody;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Operation = createCompatStruct({
   codec: modern.Operation,
@@ -4972,6 +5104,7 @@ export interface TransactionV0Ext {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionV0Ext = createCompatUnion({
   codec: modern.TransactionV0Ext,
@@ -5002,6 +5135,7 @@ export interface TransactionV0 {
   ext(value?: TransactionV0Ext): TransactionV0Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionV0 = createCompatStruct({
   codec: modern.TransactionV0,
@@ -5035,6 +5169,7 @@ export interface DecoratedSignature {
   signature(value?: Signature): Signature;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _DecoratedSignature = createCompatStruct({
   codec: modern.DecoratedSignature,
@@ -5060,6 +5195,7 @@ export interface TransactionV0Envelope {
   signatures(value?: DecoratedSignature[]): DecoratedSignature[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionV0Envelope = createCompatStruct({
   codec: modern.TransactionV0Envelope,
@@ -5103,6 +5239,7 @@ export interface LedgerBounds {
   maxLedger(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerBounds = createCompatStruct({
   codec: modern.LedgerBounds,
@@ -5132,6 +5269,7 @@ export interface PreconditionsV2 {
   extraSigners(value?: SignerKey[]): SignerKey[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PreconditionsV2 = createCompatStruct({
   codec: modern.PreconditionsV2,
@@ -5163,6 +5301,7 @@ export interface Preconditions {
   value(): TimeBounds | PreconditionsV2 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Preconditions = createCompatUnion({
   codec: modern.Preconditions,
@@ -5191,6 +5330,7 @@ export interface SorobanResourcesExtV0 {
   archivedSorobanEntries(value?: Uint32[]): Uint32[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanResourcesExtV0 = createCompatStruct({
   codec: modern.SorobanResourcesExtV0,
@@ -5216,6 +5356,7 @@ export interface SorobanTransactionDataExt {
   value(): SorobanResourcesExtV0 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanTransactionDataExt = createCompatUnion({
   codec: modern.SorobanTransactionDataExt,
@@ -5243,6 +5384,7 @@ export interface LedgerFootprint {
   readWrite(value?: LedgerKey[]): LedgerKey[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerFootprint = createCompatStruct({
   codec: modern.LedgerFootprint,
@@ -5270,6 +5412,7 @@ export interface SorobanResources {
   writeBytes(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanResources = createCompatStruct({
   codec: modern.SorobanResources,
@@ -5298,6 +5441,7 @@ export interface SorobanTransactionData {
   resourceFee(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanTransactionData = createCompatStruct({
   codec: modern.SorobanTransactionData,
@@ -5325,6 +5469,7 @@ export interface TransactionExt {
   value(): SorobanTransactionData | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionExt = createCompatUnion({
   codec: modern.TransactionExt,
@@ -5357,6 +5502,7 @@ export interface Transaction {
   ext(value?: TransactionExt): TransactionExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Transaction = createCompatStruct({
   codec: modern.Transaction,
@@ -5387,6 +5533,7 @@ export interface TransactionV1Envelope {
   signatures(value?: DecoratedSignature[]): DecoratedSignature[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionV1Envelope = createCompatStruct({
   codec: modern.TransactionV1Envelope,
@@ -5413,6 +5560,7 @@ export interface FeeBumpTransactionInnerTx {
   value(): TransactionV1Envelope;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _FeeBumpTransactionInnerTx = createCompatUnion({
   codec: modern.FeeBumpTransactionInnerTx,
@@ -5438,6 +5586,7 @@ export interface FeeBumpTransactionExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _FeeBumpTransactionExt = createCompatUnion({
   codec: modern.FeeBumpTransactionExt,
@@ -5465,6 +5614,7 @@ export interface FeeBumpTransaction {
   ext(value?: FeeBumpTransactionExt): FeeBumpTransactionExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _FeeBumpTransaction = createCompatStruct({
   codec: modern.FeeBumpTransaction,
@@ -5492,6 +5642,7 @@ export interface FeeBumpTransactionEnvelope {
   signatures(value?: DecoratedSignature[]): DecoratedSignature[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _FeeBumpTransactionEnvelope = createCompatStruct({
   codec: modern.FeeBumpTransactionEnvelope,
@@ -5520,6 +5671,7 @@ export interface TransactionEnvelope {
   value(): TransactionV0Envelope | TransactionV1Envelope | FeeBumpTransactionEnvelope;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionEnvelope = createCompatUnion({
   codec: modern.TransactionEnvelope,
@@ -5549,6 +5701,7 @@ export interface TransactionSet {
   txes(value?: TransactionEnvelope[]): TransactionEnvelope[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionSet = createCompatStruct({
   codec: modern.TransactionSet,
@@ -5672,6 +5825,7 @@ export interface CreateAccountResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreateAccountResult = createCompatUnion({
   codec: modern.CreateAccountResult,
@@ -5734,6 +5888,7 @@ export interface PaymentResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PaymentResult = createCompatUnion({
   codec: modern.PaymentResult,
@@ -5829,6 +5984,7 @@ export interface ClaimOfferAtomV0 {
   amountBought(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimOfferAtomV0 = createCompatStruct({
   codec: modern.ClaimOfferAtomV0,
@@ -5862,6 +6018,7 @@ export interface ClaimOfferAtom {
   amountBought(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimOfferAtom = createCompatStruct({
   codec: modern.ClaimOfferAtom,
@@ -5894,6 +6051,7 @@ export interface ClaimLiquidityAtom {
   amountBought(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimLiquidityAtom = createCompatStruct({
   codec: modern.ClaimLiquidityAtom,
@@ -5925,6 +6083,7 @@ export interface ClaimAtom {
   value(): ClaimOfferAtomV0 | ClaimOfferAtom | ClaimLiquidityAtom;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimAtom = createCompatUnion({
   codec: modern.ClaimAtom,
@@ -5955,6 +6114,7 @@ export interface SimplePaymentResult {
   amount(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SimplePaymentResult = createCompatStruct({
   codec: modern.SimplePaymentResult,
@@ -5981,6 +6141,7 @@ export interface PathPaymentStrictReceiveResultSuccess {
   last(value?: SimplePaymentResult): SimplePaymentResult;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PathPaymentStrictReceiveResultSuccess = createCompatStruct({
   codec: modern.PathPaymentStrictReceiveResultSuccess,
@@ -6008,6 +6169,7 @@ export interface PathPaymentStrictReceiveResult {
   value(): PathPaymentStrictReceiveResultSuccess | Asset | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PathPaymentStrictReceiveResult = createCompatUnion({
   codec: modern.PathPaymentStrictReceiveResult,
@@ -6104,6 +6266,7 @@ export interface OfferEntryExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OfferEntryExt = createCompatUnion({
   codec: modern.OfferEntryExt,
@@ -6135,6 +6298,7 @@ export interface OfferEntry {
   ext(value?: OfferEntryExt): OfferEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OfferEntry = createCompatStruct({
   codec: modern.OfferEntry,
@@ -6167,6 +6331,7 @@ export interface ManageOfferSuccessResultOffer {
   value(): OfferEntry | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageOfferSuccessResultOffer = createCompatUnion({
   codec: modern.ManageOfferSuccessResultOffer,
@@ -6195,6 +6360,7 @@ export interface ManageOfferSuccessResult {
   offer(value?: ManageOfferSuccessResultOffer): ManageOfferSuccessResultOffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageOfferSuccessResult = createCompatStruct({
   codec: modern.ManageOfferSuccessResult,
@@ -6221,6 +6387,7 @@ export interface ManageSellOfferResult {
   value(): ManageOfferSuccessResult | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageSellOfferResult = createCompatUnion({
   codec: modern.ManageSellOfferResult,
@@ -6293,6 +6460,7 @@ export interface SetOptionsResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SetOptionsResult = createCompatUnion({
   codec: modern.SetOptionsResult,
@@ -6359,6 +6527,7 @@ export interface ChangeTrustResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ChangeTrustResult = createCompatUnion({
   codec: modern.ChangeTrustResult,
@@ -6419,6 +6588,7 @@ export interface AllowTrustResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AllowTrustResult = createCompatUnion({
   codec: modern.AllowTrustResult,
@@ -6480,6 +6650,7 @@ export interface AccountMergeResult {
   value(): Int64 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountMergeResult = createCompatUnion({
   codec: modern.AccountMergeResult,
@@ -6529,6 +6700,7 @@ export interface InflationPayout {
   amount(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InflationPayout = createCompatStruct({
   codec: modern.InflationPayout,
@@ -6555,6 +6727,7 @@ export interface InflationResult {
   value(): InflationPayout[] | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InflationResult = createCompatUnion({
   codec: modern.InflationResult,
@@ -6604,6 +6777,7 @@ export interface ManageDataResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageDataResult = createCompatUnion({
   codec: modern.ManageDataResult,
@@ -6650,6 +6824,7 @@ export interface BumpSequenceResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BumpSequenceResult = createCompatUnion({
   codec: modern.BumpSequenceResult,
@@ -6716,6 +6891,7 @@ export interface ManageBuyOfferResult {
   value(): ManageOfferSuccessResult | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ManageBuyOfferResult = createCompatUnion({
   codec: modern.ManageBuyOfferResult,
@@ -6792,6 +6968,7 @@ export interface PathPaymentStrictSendResultSuccess {
   last(value?: SimplePaymentResult): SimplePaymentResult;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PathPaymentStrictSendResultSuccess = createCompatStruct({
   codec: modern.PathPaymentStrictSendResultSuccess,
@@ -6819,6 +6996,7 @@ export interface PathPaymentStrictSendResult {
   value(): PathPaymentStrictSendResultSuccess | Asset | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PathPaymentStrictSendResult = createCompatUnion({
   codec: modern.PathPaymentStrictSendResult,
@@ -6884,6 +7062,7 @@ export interface CreateClaimableBalanceResult {
   value(): ClaimableBalanceId | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _CreateClaimableBalanceResult = createCompatUnion({
   codec: modern.CreateClaimableBalanceResult,
@@ -6939,6 +7118,7 @@ export interface ClaimClaimableBalanceResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimClaimableBalanceResult = createCompatUnion({
   codec: modern.ClaimClaimableBalanceResult,
@@ -6990,6 +7170,7 @@ export interface BeginSponsoringFutureReservesResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BeginSponsoringFutureReservesResult = createCompatUnion({
   codec: modern.BeginSponsoringFutureReservesResult,
@@ -7035,6 +7216,7 @@ export interface EndSponsoringFutureReservesResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _EndSponsoringFutureReservesResult = createCompatUnion({
   codec: modern.EndSponsoringFutureReservesResult,
@@ -7086,6 +7268,7 @@ export interface RevokeSponsorshipResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _RevokeSponsorshipResult = createCompatUnion({
   codec: modern.RevokeSponsorshipResult,
@@ -7139,6 +7322,7 @@ export interface ClawbackResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClawbackResult = createCompatUnion({
   codec: modern.ClawbackResult,
@@ -7189,6 +7373,7 @@ export interface ClawbackClaimableBalanceResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClawbackClaimableBalanceResult = createCompatUnion({
   codec: modern.ClawbackClaimableBalanceResult,
@@ -7242,6 +7427,7 @@ export interface SetTrustLineFlagsResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SetTrustLineFlagsResult = createCompatUnion({
   codec: modern.SetTrustLineFlagsResult,
@@ -7301,6 +7487,7 @@ export interface LiquidityPoolDepositResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolDepositResult = createCompatUnion({
   codec: modern.LiquidityPoolDepositResult,
@@ -7358,6 +7545,7 @@ export interface LiquidityPoolWithdrawResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolWithdrawResult = createCompatUnion({
   codec: modern.LiquidityPoolWithdrawResult,
@@ -7414,6 +7602,7 @@ export interface InvokeHostFunctionResult {
   value(): Hash | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InvokeHostFunctionResult = createCompatUnion({
   codec: modern.InvokeHostFunctionResult,
@@ -7465,6 +7654,7 @@ export interface ExtendFootprintTtlResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ExtendFootprintTtlResult = createCompatUnion({
   codec: modern.ExtendFootprintTTLResult,
@@ -7514,6 +7704,7 @@ export interface RestoreFootprintResult {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _RestoreFootprintResult = createCompatUnion({
   codec: modern.RestoreFootprintResult,
@@ -7570,6 +7761,7 @@ export interface OperationResultTr {
   value(): CreateAccountResult | PaymentResult | PathPaymentStrictReceiveResult | ManageSellOfferResult | ManageSellOfferResult | SetOptionsResult | ChangeTrustResult | AllowTrustResult | AccountMergeResult | InflationResult | ManageDataResult | BumpSequenceResult | ManageBuyOfferResult | PathPaymentStrictSendResult | CreateClaimableBalanceResult | ClaimClaimableBalanceResult | BeginSponsoringFutureReservesResult | EndSponsoringFutureReservesResult | RevokeSponsorshipResult | ClawbackResult | ClawbackClaimableBalanceResult | SetTrustLineFlagsResult | LiquidityPoolDepositResult | LiquidityPoolWithdrawResult | InvokeHostFunctionResult | ExtendFootprintTtlResult | RestoreFootprintResult;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OperationResultTr = createCompatUnion({
   codec: modern.OperationResultTr,
@@ -7648,6 +7840,7 @@ export interface OperationResult {
   value(): OperationResultTr | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OperationResult = createCompatUnion({
   codec: modern.OperationResult,
@@ -7681,6 +7874,7 @@ export interface InnerTransactionResultResult {
   value(): OperationResult[] | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InnerTransactionResultResult = createCompatUnion({
   codec: modern.InnerTransactionResultResult,
@@ -7723,6 +7917,7 @@ export interface InnerTransactionResultExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InnerTransactionResultExt = createCompatUnion({
   codec: modern.InnerTransactionResultExt,
@@ -7749,6 +7944,7 @@ export interface InnerTransactionResult {
   ext(value?: InnerTransactionResultExt): InnerTransactionResultExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InnerTransactionResult = createCompatStruct({
   codec: modern.InnerTransactionResult,
@@ -7775,6 +7971,7 @@ export interface InnerTransactionResultPair {
   result(value?: InnerTransactionResult): InnerTransactionResult;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InnerTransactionResultPair = createCompatStruct({
   codec: modern.InnerTransactionResultPair,
@@ -7802,6 +7999,7 @@ export interface TransactionResultResult {
   value(): InnerTransactionResultPair | OperationResult[] | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResultResult = createCompatUnion({
   codec: modern.TransactionResultResult,
@@ -7847,6 +8045,7 @@ export interface TransactionResultExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResultExt = createCompatUnion({
   codec: modern.TransactionResultExt,
@@ -7873,6 +8072,7 @@ export interface TransactionResult {
   ext(value?: TransactionResultExt): TransactionResultExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResult = createCompatStruct({
   codec: modern.TransactionResult,
@@ -7899,6 +8099,7 @@ export interface TransactionResultPair {
   result(value?: TransactionResult): TransactionResult;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResultPair = createCompatStruct({
   codec: modern.TransactionResultPair,
@@ -7951,6 +8152,7 @@ export interface Liabilities {
   selling(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Liabilities = createCompatStruct({
   codec: modern.Liabilities,
@@ -7980,6 +8182,7 @@ export interface AccountEntryExtensionV3 {
   seqTime(value?: TimePoint): TimePoint;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntryExtensionV3 = createCompatStruct({
   codec: modern.AccountEntryExtensionV3,
@@ -8007,6 +8210,7 @@ export interface AccountEntryExtensionV2Ext {
   value(): AccountEntryExtensionV3 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntryExtensionV2Ext = createCompatUnion({
   codec: modern.AccountEntryExtensionV2Ext,
@@ -8036,6 +8240,7 @@ export interface AccountEntryExtensionV2 {
   ext(value?: AccountEntryExtensionV2Ext): AccountEntryExtensionV2Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntryExtensionV2 = createCompatStruct({
   codec: modern.AccountEntryExtensionV2,
@@ -8064,6 +8269,7 @@ export interface AccountEntryExtensionV1Ext {
   value(): AccountEntryExtensionV2 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntryExtensionV1Ext = createCompatUnion({
   codec: modern.AccountEntryExtensionV1Ext,
@@ -8091,6 +8297,7 @@ export interface AccountEntryExtensionV1 {
   ext(value?: AccountEntryExtensionV1Ext): AccountEntryExtensionV1Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntryExtensionV1 = createCompatStruct({
   codec: modern.AccountEntryExtensionV1,
@@ -8117,6 +8324,7 @@ export interface AccountEntryExt {
   value(): AccountEntryExtensionV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntryExt = createCompatUnion({
   codec: modern.AccountEntryExt,
@@ -8152,6 +8360,7 @@ export interface AccountEntry {
   ext(value?: AccountEntryExt): AccountEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AccountEntry = createCompatStruct({
   codec: modern.AccountEntry,
@@ -8185,6 +8394,7 @@ export interface TrustLineEntryExtensionV2Ext {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineEntryExtensionV2Ext = createCompatUnion({
   codec: modern.TrustLineEntryExtensionV2Ext,
@@ -8210,6 +8420,7 @@ export interface TrustLineEntryExtensionV2 {
   ext(value?: TrustLineEntryExtensionV2Ext): TrustLineEntryExtensionV2Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineEntryExtensionV2 = createCompatStruct({
   codec: modern.TrustLineEntryExtensionV2,
@@ -8236,6 +8447,7 @@ export interface TrustLineEntryV1Ext {
   value(): TrustLineEntryExtensionV2 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineEntryV1Ext = createCompatUnion({
   codec: modern.TrustLineEntryV1Ext,
@@ -8263,6 +8475,7 @@ export interface TrustLineEntryV1 {
   ext(value?: TrustLineEntryV1Ext): TrustLineEntryV1Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineEntryV1 = createCompatStruct({
   codec: modern.TrustLineEntryV1,
@@ -8289,6 +8502,7 @@ export interface TrustLineEntryExt {
   value(): TrustLineEntryV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineEntryExt = createCompatUnion({
   codec: modern.TrustLineEntryExt,
@@ -8320,6 +8534,7 @@ export interface TrustLineEntry {
   ext(value?: TrustLineEntryExt): TrustLineEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TrustLineEntry = createCompatStruct({
   codec: modern.TrustLineEntry,
@@ -8349,6 +8564,7 @@ export interface DataEntryExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _DataEntryExt = createCompatUnion({
   codec: modern.DataEntryExt,
@@ -8376,6 +8592,7 @@ export interface DataEntry {
   ext(value?: DataEntryExt): DataEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _DataEntry = createCompatStruct({
   codec: modern.DataEntry,
@@ -8403,6 +8620,7 @@ export interface ClaimableBalanceEntryExtensionV1Ext {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimableBalanceEntryExtensionV1Ext = createCompatUnion({
   codec: modern.ClaimableBalanceEntryExtensionV1Ext,
@@ -8428,6 +8646,7 @@ export interface ClaimableBalanceEntryExtensionV1 {
   flags(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimableBalanceEntryExtensionV1 = createCompatStruct({
   codec: modern.ClaimableBalanceEntryExtensionV1,
@@ -8454,6 +8673,7 @@ export interface ClaimableBalanceEntryExt {
   value(): ClaimableBalanceEntryExtensionV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimableBalanceEntryExt = createCompatUnion({
   codec: modern.ClaimableBalanceEntryExt,
@@ -8484,6 +8704,7 @@ export interface ClaimableBalanceEntry {
   ext(value?: ClaimableBalanceEntryExt): ClaimableBalanceEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ClaimableBalanceEntry = createCompatStruct({
   codec: modern.ClaimableBalanceEntry,
@@ -8515,6 +8736,7 @@ export interface LiquidityPoolEntryConstantProduct {
   poolSharesTrustLineCount(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolEntryConstantProduct = createCompatStruct({
   codec: modern.LiquidityPoolEntryConstantProduct,
@@ -8544,6 +8766,7 @@ export interface LiquidityPoolEntryBody {
   value(): LiquidityPoolEntryConstantProduct;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolEntryBody = createCompatUnion({
   codec: modern.LiquidityPoolEntryBody,
@@ -8569,6 +8792,7 @@ export interface LiquidityPoolEntry {
   body(value?: LiquidityPoolEntryBody): LiquidityPoolEntryBody;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LiquidityPoolEntry = createCompatStruct({
   codec: modern.LiquidityPoolEntry,
@@ -8597,6 +8821,7 @@ export interface ContractDataEntry {
   val(value?: ScVal): ScVal;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractDataEntry = createCompatStruct({
   codec: modern.ContractDataEntry,
@@ -8634,6 +8859,7 @@ export interface ContractCodeCostInputs {
   nDataSegmentBytes(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractCodeCostInputs = createCompatStruct({
   codec: modern.ContractCodeCostInputs,
@@ -8668,6 +8894,7 @@ export interface ContractCodeEntryV1 {
   costInputs(value?: ContractCodeCostInputs): ContractCodeCostInputs;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractCodeEntryV1 = createCompatStruct({
   codec: modern.ContractCodeEntryV1,
@@ -8694,6 +8921,7 @@ export interface ContractCodeEntryExt {
   value(): ContractCodeEntryV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractCodeEntryExt = createCompatUnion({
   codec: modern.ContractCodeEntryExt,
@@ -8722,6 +8950,7 @@ export interface ContractCodeEntry {
   code(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractCodeEntry = createCompatStruct({
   codec: modern.ContractCodeEntry,
@@ -8748,6 +8977,7 @@ export interface TtlEntry {
   liveUntilLedgerSeq(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TtlEntry = createCompatStruct({
   codec: modern.TTLEntry,
@@ -8783,6 +9013,7 @@ export interface LedgerEntryData {
   value(): AccountEntry | TrustLineEntry | OfferEntry | DataEntry | ClaimableBalanceEntry | LiquidityPoolEntry | ContractDataEntry | ContractCodeEntry | ConfigSettingEntry | TtlEntry;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerEntryData = createCompatUnion({
   codec: modern.LedgerEntryData,
@@ -8826,6 +9057,7 @@ export interface LedgerEntryExtensionV1Ext {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerEntryExtensionV1Ext = createCompatUnion({
   codec: modern.LedgerEntryExtensionV1Ext,
@@ -8851,6 +9083,7 @@ export interface LedgerEntryExtensionV1 {
   ext(value?: LedgerEntryExtensionV1Ext): LedgerEntryExtensionV1Ext;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerEntryExtensionV1 = createCompatStruct({
   codec: modern.LedgerEntryExtensionV1,
@@ -8877,6 +9110,7 @@ export interface LedgerEntryExt {
   value(): LedgerEntryExtensionV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerEntryExt = createCompatUnion({
   codec: modern.LedgerEntryExt,
@@ -8905,6 +9139,7 @@ export interface LedgerEntry {
   ext(value?: LedgerEntryExt): LedgerEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerEntry = createCompatStruct({
   codec: modern.LedgerEntry,
@@ -8936,6 +9171,7 @@ export interface LedgerEntryChange {
   value(): LedgerEntry | LedgerEntry | LedgerKey | LedgerEntry | LedgerEntry;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerEntryChange = createCompatUnion({
   codec: modern.LedgerEntryChange,
@@ -8971,6 +9207,7 @@ export interface OperationMeta {
   changes(value?: LedgerEntryChanges): LedgerEntryChanges;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OperationMeta = createCompatStruct({
   codec: modern.OperationMeta,
@@ -8995,6 +9232,7 @@ export interface TransactionMetaV1 {
   operations(value?: OperationMeta[]): OperationMeta[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionMetaV1 = createCompatStruct({
   codec: modern.TransactionMetaV1,
@@ -9021,6 +9259,7 @@ export interface TransactionMetaV2 {
   txChangesAfter(value?: LedgerEntryChanges): LedgerEntryChanges;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionMetaV2 = createCompatStruct({
   codec: modern.TransactionMetaV2,
@@ -9049,6 +9288,7 @@ export interface SorobanTransactionMetaExtV1 {
   rentFeeCharged(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanTransactionMetaExtV1 = createCompatStruct({
   codec: modern.SorobanTransactionMetaExtV1,
@@ -9077,6 +9317,7 @@ export interface SorobanTransactionMetaExt {
   value(): SorobanTransactionMetaExtV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanTransactionMetaExt = createCompatUnion({
   codec: modern.SorobanTransactionMetaExt,
@@ -9122,6 +9363,7 @@ export interface ContractEventV0 {
   data(value?: ScVal): ScVal;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractEventV0 = createCompatStruct({
   codec: modern.ContractEventV0,
@@ -9148,6 +9390,7 @@ export interface ContractEventBody {
   value(): ContractEventV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractEventBody = createCompatUnion({
   codec: modern.ContractEventBody,
@@ -9175,6 +9418,7 @@ export interface ContractEvent {
   body(value?: ContractEventBody): ContractEventBody;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ContractEvent = createCompatStruct({
   codec: modern.ContractEvent,
@@ -9202,6 +9446,7 @@ export interface DiagnosticEvent {
   event(value?: ContractEvent): ContractEvent;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _DiagnosticEvent = createCompatStruct({
   codec: modern.DiagnosticEvent,
@@ -9229,6 +9474,7 @@ export interface SorobanTransactionMeta {
   diagnosticEvents(value?: DiagnosticEvent[]): DiagnosticEvent[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanTransactionMeta = createCompatStruct({
   codec: modern.SorobanTransactionMeta,
@@ -9259,6 +9505,7 @@ export interface TransactionMetaV3 {
   sorobanMeta(value?: null | SorobanTransactionMeta): null | SorobanTransactionMeta;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionMetaV3 = createCompatStruct({
   codec: modern.TransactionMetaV3,
@@ -9288,6 +9535,7 @@ export interface OperationMetaV2 {
   events(value?: ContractEvent[]): ContractEvent[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _OperationMetaV2 = createCompatStruct({
   codec: modern.OperationMetaV2,
@@ -9314,6 +9562,7 @@ export interface SorobanTransactionMetaV2 {
   returnValue(value?: null | ScVal): null | ScVal;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SorobanTransactionMetaV2 = createCompatStruct({
   codec: modern.SorobanTransactionMetaV2,
@@ -9357,6 +9606,7 @@ export interface TransactionEvent {
   event(value?: ContractEvent): ContractEvent;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionEvent = createCompatStruct({
   codec: modern.TransactionEvent,
@@ -9387,6 +9637,7 @@ export interface TransactionMetaV4 {
   diagnosticEvents(value?: DiagnosticEvent[]): DiagnosticEvent[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionMetaV4 = createCompatStruct({
   codec: modern.TransactionMetaV4,
@@ -9422,6 +9673,7 @@ export interface TransactionMeta {
   value(): OperationMeta[] | TransactionMetaV1 | TransactionMetaV2 | TransactionMetaV3 | TransactionMetaV4;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionMeta = createCompatUnion({
   codec: modern.TransactionMeta,
@@ -9456,6 +9708,7 @@ export interface TransactionResultMeta {
   txApplyProcessing(value?: TransactionMeta): TransactionMeta;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResultMeta = createCompatStruct({
   codec: modern.TransactionResultMeta,
@@ -9508,6 +9761,7 @@ export interface ConfigUpgradeSetKey {
   contentHash(value?: Hash): Hash;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigUpgradeSetKey = createCompatStruct({
   codec: modern.ConfigUpgradeSetKey,
@@ -9540,6 +9794,7 @@ export interface LedgerUpgrade {
   value(): Uint32 | Uint32 | Uint32 | Uint32 | Uint32 | ConfigUpgradeSetKey | Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerUpgrade = createCompatUnion({
   codec: modern.LedgerUpgrade,
@@ -9577,6 +9832,7 @@ export interface UpgradeEntryMeta {
   changes(value?: LedgerEntryChanges): LedgerEntryChanges;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _UpgradeEntryMeta = createCompatStruct({
   codec: modern.UpgradeEntryMeta,
@@ -9603,6 +9859,7 @@ export interface ScpQuorumSet {
   innerSets(value?: ScpQuorumSet[]): ScpQuorumSet[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpQuorumSet = createCompatStruct({
   codec: modern.SCPQuorumSet,
@@ -9652,6 +9909,7 @@ export interface ScpBallot {
   value(value?: Value): Value;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpBallot = createCompatStruct({
   codec: modern.SCPBallot,
@@ -9681,6 +9939,7 @@ export interface ScpStatementPrepare {
   nH(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpStatementPrepare = createCompatStruct({
   codec: modern.SCPStatementPrepare,
@@ -9713,6 +9972,7 @@ export interface ScpStatementConfirm {
   quorumSetHash(value?: Hash): Hash;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpStatementConfirm = createCompatStruct({
   codec: modern.SCPStatementConfirm,
@@ -9742,6 +10002,7 @@ export interface ScpStatementExternalize {
   commitQuorumSetHash(value?: Hash): Hash;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpStatementExternalize = createCompatStruct({
   codec: modern.SCPStatementExternalize,
@@ -9769,6 +10030,7 @@ export interface ScpNomination {
   accepted(value?: Value[]): Value[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpNomination = createCompatStruct({
   codec: modern.SCPNomination,
@@ -9799,6 +10061,7 @@ export interface ScpStatementPledges {
   value(): ScpStatementPrepare | ScpStatementConfirm | ScpStatementExternalize | ScpNomination;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpStatementPledges = createCompatUnion({
   codec: modern.SCPStatementPledges,
@@ -9831,6 +10094,7 @@ export interface ScpStatement {
   pledges(value?: ScpStatementPledges): ScpStatementPledges;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpStatement = createCompatStruct({
   codec: modern.SCPStatement,
@@ -9857,6 +10121,7 @@ export interface ScpEnvelope {
   signature(value?: Signature): Signature;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpEnvelope = createCompatStruct({
   codec: modern.SCPEnvelope,
@@ -9882,6 +10147,7 @@ export interface LedgerScpMessages {
   messages(value?: ScpEnvelope[]): ScpEnvelope[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerScpMessages = createCompatStruct({
   codec: modern.LedgerSCPMessages,
@@ -9907,6 +10173,7 @@ export interface ScpHistoryEntryV0 {
   ledgerMessages(value?: LedgerScpMessages): LedgerScpMessages;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpHistoryEntryV0 = createCompatStruct({
   codec: modern.SCPHistoryEntryV0,
@@ -9933,6 +10200,7 @@ export interface ScpHistoryEntry {
   value(): ScpHistoryEntryV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ScpHistoryEntry = createCompatUnion({
   codec: modern.SCPHistoryEntry,
@@ -9961,6 +10229,7 @@ export interface LedgerCloseMetaV0 {
   scpInfo(value?: ScpHistoryEntry[]): ScpHistoryEntry[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMetaV0 = createCompatStruct({
   codec: modern.LedgerCloseMetaV0,
@@ -9989,6 +10258,7 @@ export interface LedgerCloseMetaExtV1 {
   sorobanFeeWrite1Kb(value?: Int64): Int64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMetaExtV1 = createCompatStruct({
   codec: modern.LedgerCloseMetaExtV1,
@@ -10015,6 +10285,7 @@ export interface LedgerCloseMetaExt {
   value(): LedgerCloseMetaExtV1 | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMetaExt = createCompatUnion({
   codec: modern.LedgerCloseMetaExt,
@@ -10056,6 +10327,7 @@ export interface TxSetComponentTxsMaybeDiscountedFee {
   txes(value?: TransactionEnvelope[]): TransactionEnvelope[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TxSetComponentTxsMaybeDiscountedFee = createCompatStruct({
   codec: modern.TxSetComponentTxsMaybeDiscountedFee,
@@ -10082,6 +10354,7 @@ export interface TxSetComponent {
   value(): TxSetComponentTxsMaybeDiscountedFee;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TxSetComponent = createCompatUnion({
   codec: modern.TxSetComponent,
@@ -10113,6 +10386,7 @@ export interface ParallelTxsComponent {
   executionStages(value?: ParallelTxExecutionStage[]): ParallelTxExecutionStage[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ParallelTxsComponent = createCompatStruct({
   codec: modern.ParallelTxsComponent,
@@ -10140,6 +10414,7 @@ export interface TransactionPhase {
   value(): TxSetComponent[] | ParallelTxsComponent;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionPhase = createCompatUnion({
   codec: modern.TransactionPhase,
@@ -10167,6 +10442,7 @@ export interface TransactionSetV1 {
   phases(value?: TransactionPhase[]): TransactionPhase[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionSetV1 = createCompatStruct({
   codec: modern.TransactionSetV1,
@@ -10193,6 +10469,7 @@ export interface GeneralizedTransactionSet {
   value(): TransactionSetV1;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _GeneralizedTransactionSet = createCompatUnion({
   codec: modern.GeneralizedTransactionSet,
@@ -10225,6 +10502,7 @@ export interface LedgerCloseMetaV1 {
   unused(value?: LedgerEntry[]): LedgerEntry[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMetaV1 = createCompatStruct({
   codec: modern.LedgerCloseMetaV1,
@@ -10260,6 +10538,7 @@ export interface TransactionResultMetaV1 {
   postTxApplyFeeProcessing(value?: LedgerEntryChanges): LedgerEntryChanges;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResultMetaV1 = createCompatStruct({
   codec: modern.TransactionResultMetaV1,
@@ -10294,6 +10573,7 @@ export interface LedgerCloseMetaV2 {
   evictedKeys(value?: LedgerKey[]): LedgerKey[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMetaV2 = createCompatStruct({
   codec: modern.LedgerCloseMetaV2,
@@ -10328,6 +10608,7 @@ export interface LedgerCloseMeta {
   value(): LedgerCloseMetaV0 | LedgerCloseMetaV1 | LedgerCloseMetaV2;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMeta = createCompatUnion({
   codec: modern.LedgerCloseMeta,
@@ -10358,6 +10639,7 @@ export interface LedgerCloseMetaBatch {
   ledgerCloseMeta(value?: LedgerCloseMeta[]): LedgerCloseMeta[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _LedgerCloseMetaBatch = createCompatStruct({
   codec: modern.LedgerCloseMetaBatch,
@@ -10386,6 +10668,7 @@ export interface StoredTransactionSet {
   value(): TransactionSet | GeneralizedTransactionSet;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _StoredTransactionSet = createCompatUnion({
   codec: modern.StoredTransactionSet,
@@ -10414,6 +10697,7 @@ export interface StoredDebugTransactionSet {
   scpValue(value?: StellarValue): StellarValue;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _StoredDebugTransactionSet = createCompatStruct({
   codec: modern.StoredDebugTransactionSet,
@@ -10441,6 +10725,7 @@ export interface PersistedScpStateV0 {
   txSets(value?: StoredTransactionSet[]): StoredTransactionSet[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PersistedScpStateV0 = createCompatStruct({
   codec: modern.PersistedSCPStateV0,
@@ -10467,6 +10752,7 @@ export interface PersistedScpStateV1 {
   quorumSets(value?: ScpQuorumSet[]): ScpQuorumSet[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PersistedScpStateV1 = createCompatStruct({
   codec: modern.PersistedSCPStateV1,
@@ -10494,6 +10780,7 @@ export interface PersistedScpState {
   value(): PersistedScpStateV0 | PersistedScpStateV1;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PersistedScpState = createCompatUnion({
   codec: modern.PersistedSCPState,
@@ -10676,6 +10963,7 @@ export interface BucketMetadataExt {
   value(): BucketListType | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BucketMetadataExt = createCompatUnion({
   codec: modern.BucketMetadataExt,
@@ -10703,6 +10991,7 @@ export interface BucketMetadata {
   ext(value?: BucketMetadataExt): BucketMetadataExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BucketMetadata = createCompatStruct({
   codec: modern.BucketMetadata,
@@ -10731,6 +11020,7 @@ export interface BucketEntry {
   value(): LedgerEntry | LedgerKey | BucketMetadata;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _BucketEntry = createCompatUnion({
   codec: modern.BucketEntry,
@@ -10764,6 +11054,7 @@ export interface HotArchiveBucketEntry {
   value(): LedgerEntry | LedgerKey | BucketMetadata;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HotArchiveBucketEntry = createCompatUnion({
   codec: modern.HotArchiveBucketEntry,
@@ -10812,6 +11103,7 @@ export interface ConfigUpgradeSet {
   updatedEntry(value?: ConfigSettingEntry[]): ConfigSettingEntry[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ConfigUpgradeSet = createCompatStruct({
   codec: modern.ConfigUpgradeSet,
@@ -10835,6 +11127,7 @@ export interface TransactionResultSet {
   results(value?: TransactionResultPair[]): TransactionResultPair[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionResultSet = createCompatStruct({
   codec: modern.TransactionResultSet,
@@ -10860,6 +11153,7 @@ export interface TransactionHistoryEntryExt {
   value(): GeneralizedTransactionSet | void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionHistoryEntryExt = createCompatUnion({
   codec: modern.TransactionHistoryEntryExt,
@@ -10888,6 +11182,7 @@ export interface TransactionHistoryEntry {
   ext(value?: TransactionHistoryEntryExt): TransactionHistoryEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionHistoryEntry = createCompatStruct({
   codec: modern.TransactionHistoryEntry,
@@ -10914,6 +11209,7 @@ export interface TransactionHistoryResultEntryExt {
   value(): void;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionHistoryResultEntryExt = createCompatUnion({
   codec: modern.TransactionHistoryResultEntryExt,
@@ -10940,6 +11236,7 @@ export interface TransactionHistoryResultEntry {
   ext(value?: TransactionHistoryResultEntryExt): TransactionHistoryResultEntryExt;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionHistoryResultEntry = createCompatStruct({
   codec: modern.TransactionHistoryResultEntry,
@@ -10966,6 +11263,7 @@ export interface InvokeHostFunctionSuccessPreImage {
   events(value?: ContractEvent[]): ContractEvent[];
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _InvokeHostFunctionSuccessPreImage = createCompatStruct({
   codec: modern.InvokeHostFunctionSuccessPreImage,
@@ -11013,6 +11311,7 @@ export interface Error {
   msg(value?: string | Buffer): string | Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Error = createCompatStruct({
   codec: modern.Error,
@@ -11037,6 +11336,7 @@ export interface SendMore {
   numMessages(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SendMore = createCompatStruct({
   codec: modern.SendMore,
@@ -11061,6 +11361,7 @@ export interface SendMoreExtended {
   numBytes(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SendMoreExtended = createCompatStruct({
   codec: modern.SendMoreExtended,
@@ -11085,6 +11386,7 @@ export interface Curve25519Public {
   key(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Curve25519Public = createCompatStruct({
   codec: modern.Curve25519Public,
@@ -11110,6 +11412,7 @@ export interface AuthCert {
   sig(value?: Signature): Signature;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AuthCert = createCompatStruct({
   codec: modern.AuthCert,
@@ -11143,6 +11446,7 @@ export interface Hello {
   nonce(value?: Uint256): Uint256;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Hello = createCompatStruct({
   codec: modern.Hello,
@@ -11176,6 +11480,7 @@ export interface Auth {
   flags(value?: number): number;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Auth = createCompatStruct({
   codec: modern.Auth,
@@ -11218,6 +11523,7 @@ export interface PeerAddressIp {
   value(): Buffer | Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PeerAddressIp = createCompatUnion({
   codec: modern.PeerAddressIp,
@@ -11246,6 +11552,7 @@ export interface PeerAddress {
   numFailures(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PeerAddress = createCompatStruct({
   codec: modern.PeerAddress,
@@ -11326,6 +11633,7 @@ export interface DontHave {
   reqHash(value?: Uint256): Uint256;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _DontHave = createCompatStruct({
   codec: modern.DontHave,
@@ -11380,6 +11688,7 @@ export interface TimeSlicedSurveyStartCollectingMessage {
   ledgerNum(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeSlicedSurveyStartCollectingMessage = createCompatStruct({
   codec: modern.TimeSlicedSurveyStartCollectingMessage,
@@ -11406,6 +11715,7 @@ export interface SignedTimeSlicedSurveyStartCollectingMessage {
   startCollecting(value?: TimeSlicedSurveyStartCollectingMessage): TimeSlicedSurveyStartCollectingMessage;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SignedTimeSlicedSurveyStartCollectingMessage = createCompatStruct({
   codec: modern.SignedTimeSlicedSurveyStartCollectingMessage,
@@ -11432,6 +11742,7 @@ export interface TimeSlicedSurveyStopCollectingMessage {
   ledgerNum(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeSlicedSurveyStopCollectingMessage = createCompatStruct({
   codec: modern.TimeSlicedSurveyStopCollectingMessage,
@@ -11458,6 +11769,7 @@ export interface SignedTimeSlicedSurveyStopCollectingMessage {
   stopCollecting(value?: TimeSlicedSurveyStopCollectingMessage): TimeSlicedSurveyStopCollectingMessage;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SignedTimeSlicedSurveyStopCollectingMessage = createCompatStruct({
   codec: modern.SignedTimeSlicedSurveyStopCollectingMessage,
@@ -11486,6 +11798,7 @@ export interface SurveyRequestMessage {
   commandType(value?: SurveyMessageCommandType): SurveyMessageCommandType;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SurveyRequestMessage = createCompatStruct({
   codec: modern.SurveyRequestMessage,
@@ -11516,6 +11829,7 @@ export interface TimeSlicedSurveyRequestMessage {
   outboundPeersIndex(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeSlicedSurveyRequestMessage = createCompatStruct({
   codec: modern.TimeSlicedSurveyRequestMessage,
@@ -11543,6 +11857,7 @@ export interface SignedTimeSlicedSurveyRequestMessage {
   request(value?: TimeSlicedSurveyRequestMessage): TimeSlicedSurveyRequestMessage;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SignedTimeSlicedSurveyRequestMessage = createCompatStruct({
   codec: modern.SignedTimeSlicedSurveyRequestMessage,
@@ -11574,6 +11889,7 @@ export interface SurveyResponseMessage {
   encryptedBody(value?: EncryptedBody): EncryptedBody;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SurveyResponseMessage = createCompatStruct({
   codec: modern.SurveyResponseMessage,
@@ -11602,6 +11918,7 @@ export interface TimeSlicedSurveyResponseMessage {
   nonce(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeSlicedSurveyResponseMessage = createCompatStruct({
   codec: modern.TimeSlicedSurveyResponseMessage,
@@ -11627,6 +11944,7 @@ export interface SignedTimeSlicedSurveyResponseMessage {
   response(value?: TimeSlicedSurveyResponseMessage): TimeSlicedSurveyResponseMessage;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SignedTimeSlicedSurveyResponseMessage = createCompatStruct({
   codec: modern.SignedTimeSlicedSurveyResponseMessage,
@@ -11665,6 +11983,7 @@ export interface PeerStats {
   duplicateFetchMessageRecv(value?: Uint64): Uint64;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _PeerStats = createCompatStruct({
   codec: modern.PeerStats,
@@ -11711,6 +12030,7 @@ export interface TimeSlicedNodeData {
   maxOutboundPeerCount(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeSlicedNodeData = createCompatStruct({
   codec: modern.TimeSlicedNodeData,
@@ -11744,6 +12064,7 @@ export interface TimeSlicedPeerData {
   averageLatencyMs(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TimeSlicedPeerData = createCompatStruct({
   codec: modern.TimeSlicedPeerData,
@@ -11773,6 +12094,7 @@ export interface TopologyResponseBodyV2 {
   nodeData(value?: TimeSlicedNodeData): TimeSlicedNodeData;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TopologyResponseBodyV2 = createCompatStruct({
   codec: modern.TopologyResponseBodyV2,
@@ -11800,6 +12122,7 @@ export interface SurveyResponseBody {
   value(): TopologyResponseBodyV2;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SurveyResponseBody = createCompatUnion({
   codec: modern.SurveyResponseBody,
@@ -11829,6 +12152,7 @@ export interface FloodAdvert {
   txHashes(value?: TxAdvertVector): TxAdvertVector;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _FloodAdvert = createCompatStruct({
   codec: modern.FloodAdvert,
@@ -11857,6 +12181,7 @@ export interface FloodDemand {
   txHashes(value?: TxDemandVector): TxDemandVector;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _FloodDemand = createCompatStruct({
   codec: modern.FloodDemand,
@@ -11902,6 +12227,7 @@ export interface StellarMessage {
   value(): Error | Hello | Auth | DontHave | PeerAddress[] | Uint256 | TransactionSet | GeneralizedTransactionSet | TransactionEnvelope | SignedTimeSlicedSurveyRequestMessage | SignedTimeSlicedSurveyResponseMessage | SignedTimeSlicedSurveyStartCollectingMessage | SignedTimeSlicedSurveyStopCollectingMessage | Uint256 | ScpQuorumSet | ScpEnvelope | Uint32 | SendMore | SendMoreExtended | FloodAdvert | FloodDemand;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _StellarMessage = createCompatUnion({
   codec: modern.StellarMessage,
@@ -11966,6 +12292,7 @@ export interface HmacSha256Mac {
   mac(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HmacSha256Mac = createCompatStruct({
   codec: modern.HmacSha256Mac,
@@ -11991,6 +12318,7 @@ export interface AuthenticatedMessageV0 {
   mac(value?: HmacSha256Mac): HmacSha256Mac;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AuthenticatedMessageV0 = createCompatStruct({
   codec: modern.AuthenticatedMessageV0,
@@ -12018,6 +12346,7 @@ export interface AuthenticatedMessage {
   value(): AuthenticatedMessageV0;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _AuthenticatedMessage = createCompatUnion({
   codec: modern.AuthenticatedMessage,
@@ -12049,6 +12378,7 @@ export interface HashIdPreimageOperationId {
   opNum(value?: Uint32): Uint32;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HashIdPreimageOperationId = createCompatStruct({
   codec: modern.HashIDPreimageOperationID,
@@ -12078,6 +12408,7 @@ export interface HashIdPreimageRevokeId {
   asset(value?: Asset): Asset;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HashIdPreimageRevokeId = createCompatStruct({
   codec: modern.HashIDPreimageRevokeID,
@@ -12106,6 +12437,7 @@ export interface HashIdPreimageContractId {
   contractIdPreimage(value?: ContractIdPreimage): ContractIdPreimage;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HashIdPreimageContractId = createCompatStruct({
   codec: modern.HashIDPreimageContractID,
@@ -12133,6 +12465,7 @@ export interface HashIdPreimageSorobanAuthorization {
   invocation(value?: SorobanAuthorizedInvocation): SorobanAuthorizedInvocation;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HashIdPreimageSorobanAuthorization = createCompatStruct({
   codec: modern.HashIDPreimageSorobanAuthorization,
@@ -12164,6 +12497,7 @@ export interface HashIdPreimage {
   value(): HashIdPreimageOperationId | HashIdPreimageRevokeId | HashIdPreimageContractId | HashIdPreimageSorobanAuthorization;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HashIdPreimage = createCompatUnion({
   codec: modern.HashIDPreimage,
@@ -12197,6 +12531,7 @@ export interface TransactionSignaturePayloadTaggedTransaction {
   value(): Transaction | FeeBumpTransaction;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionSignaturePayloadTaggedTransaction = createCompatUnion({
   codec: modern.TransactionSignaturePayloadTaggedTransaction,
@@ -12224,6 +12559,7 @@ export interface TransactionSignaturePayload {
   taggedTransaction(value?: TransactionSignaturePayloadTaggedTransaction): TransactionSignaturePayloadTaggedTransaction;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _TransactionSignaturePayload = createCompatStruct({
   codec: modern.TransactionSignaturePayload,
@@ -12248,6 +12584,7 @@ export interface Curve25519Secret {
   key(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _Curve25519Secret = createCompatStruct({
   codec: modern.Curve25519Secret,
@@ -12271,6 +12608,7 @@ export interface HmacSha256Key {
   key(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _HmacSha256Key = createCompatStruct({
   codec: modern.HmacSha256Key,
@@ -12294,6 +12632,7 @@ export interface ShortHashSeed {
   seed(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _ShortHashSeed = createCompatStruct({
   codec: modern.ShortHashSeed,
@@ -12343,6 +12682,7 @@ export interface SerializedBinaryFuseFilter {
   fingerprints(value?: Buffer): Buffer;
   toXDR(format?: 'raw'): Buffer;
   toXDR(format: 'hex' | 'base64'): string;
+  [key: string]: any;
 }
 const _SerializedBinaryFuseFilter = createCompatStruct({
   codec: modern.SerializedBinaryFuseFilter,

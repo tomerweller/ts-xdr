@@ -91,10 +91,53 @@ export class AccountResponse extends Account {
 }
 
 // ---------------------------------------------------------------------------
+// Type aliases for Freighter compat
+// ---------------------------------------------------------------------------
+
+export type TransactionResponse = import('@stellar/horizon-client').SubmitTransactionResponse;
+export type PaymentPathRecord = import('@stellar/horizon-client').PathRecord;
+
+// ---------------------------------------------------------------------------
+// Reserve — used by Freighter for liquidity pool reserve info
+// ---------------------------------------------------------------------------
+
+export interface Reserve {
+  asset_type: string;
+  asset_code?: string;
+  asset_issuer?: string;
+  asset?: string;
+  amount: string;
+  [key: string]: any;
+}
+
+// ---------------------------------------------------------------------------
+// ErrorResponseData — nested namespace used by Freighter
+// ---------------------------------------------------------------------------
+
+export namespace ErrorResponseData {
+  export interface TransactionFailed {
+    type: string;
+    title: string;
+    status: number;
+    detail: string;
+    extras?: {
+      envelope_xdr?: string;
+      result_xdr?: string;
+      result_codes?: {
+        transaction?: string;
+        operations?: string[];
+      };
+      [key: string]: any;
+    };
+    [key: string]: any;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // OperationResponseType — runtime enum matching the official SDK
 // ---------------------------------------------------------------------------
 
-export const OperationResponseType = {
+const _OperationResponseType = {
   createAccount: 'create_account' as const,
   payment: 'payment' as const,
   pathPayment: 'path_payment_strict_receive' as const,
@@ -122,4 +165,5 @@ export const OperationResponseType = {
   invokeHostFunction: 'invoke_host_function' as const,
   bumpFootprintExpiration: 'bump_footprint_expiration' as const,
   restoreFootprint: 'restore_footprint' as const,
-};
+} as const;
+export const OperationResponseType = _OperationResponseType;

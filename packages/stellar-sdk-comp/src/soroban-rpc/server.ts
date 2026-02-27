@@ -68,7 +68,11 @@ export class Server {
     } else {
       envelope = tx;
     }
-    const result = await this._client.simulateTransaction(envelope);
+    const result = await this._client.simulateTransaction(envelope) as any;
+    // Official SDK adds `result` (singular) from `results[0]` for success responses
+    if (result.results && result.results.length > 0 && !result.result) {
+      result.result = result.results[0];
+    }
     return result as any;
   }
 
@@ -91,7 +95,11 @@ export class Server {
     } else {
       envelope = tx;
     }
-    const result = await this._client.sendTransaction(envelope);
+    const result = await this._client.sendTransaction(envelope) as any;
+    // Official SDK exposes `errorResult` alongside `errorResultXdr`
+    if (result.errorResultXdr && !result.errorResult) {
+      result.errorResult = result.errorResultXdr;
+    }
     return result as any;
   }
 

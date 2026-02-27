@@ -56,6 +56,14 @@ export class Asset {
     return this._issuer === null;
   }
 
+  get code(): string {
+    return this._code;
+  }
+
+  get issuer(): string | undefined {
+    return this._issuer ?? undefined;
+  }
+
   getCode(): string {
     return this._code;
   }

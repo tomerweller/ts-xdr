@@ -20,5 +20,8 @@ export { AccountRequiresMemoError } from '@stellar/seps';
 // Contract namespace
 export * as contract from './contract/index.js';
 
+// Top-level re-exports from @stellar/contracts
+export { walkInvocationTree, buildInvocationTree } from '@stellar/contracts';
+
 // Helpers
 export { basicNodeSigner } from './basic-node-signer.js';

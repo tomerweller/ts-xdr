@@ -17,7 +17,7 @@ export { Asset } from './asset.js';
 export { Memo, type MemoType } from './memo.js';
 
 // Transaction layer
-export { Operation } from './operation.js';
+export { Operation, OperationType } from './operation.js';
 export { Transaction, FeeBumpTransaction } from './transaction.js';
 export { TransactionBuilder } from './transaction-builder.js';
 

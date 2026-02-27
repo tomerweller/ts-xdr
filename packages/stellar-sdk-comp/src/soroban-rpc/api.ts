@@ -33,7 +33,9 @@ export interface SimulateTransactionResponse {
   minResourceFee?: string;
   events?: string[];
   results?: Array<{ xdr: string }>;
+  result?: { retval: any; auth?: any[] };
   error?: string;
+  [key: string]: any;
 }
 
 export interface SendTransactionResponse {
@@ -42,7 +44,9 @@ export interface SendTransactionResponse {
   latestLedger: number;
   latestLedgerCloseTime: string;
   errorResultXdr?: string;
+  errorResult?: any;
   diagnosticEventsXdr?: string[];
+  [key: string]: any;
 }
 
 export interface GetTransactionResponse {
@@ -59,6 +63,7 @@ export interface GetTransactionResponse {
   resultXdr?: string;
   resultMetaXdr?: string;
   returnValue?: any;
+  [key: string]: any;
 }
 
 export interface GetEventsResponse {
@@ -82,9 +87,20 @@ export interface GetLedgerEntriesResponse {
   entries: Array<{
     key: string;
     xdr: string;
+    val?: any;
     lastModifiedLedgerSeq: number;
     liveUntilLedgerSeq?: number;
   }>;
+  latestLedger: number;
+}
+
+export interface RawGetLedgerEntriesResponse {
+  entries: Array<{
+    key: string;
+    xdr: string;
+    lastModifiedLedgerSeq: number;
+    liveUntilLedgerSeq?: number;
+  }> | null;
   latestLedger: number;
 }
 
@@ -99,11 +115,16 @@ export const SendTransactionStatus = {
   ERROR: 'ERROR' as const,
 };
 
+// Type alias for the same name — allows `SorobanRpc.Api.SendTransactionStatus` as a type
+export type SendTransactionStatus = 'PENDING' | 'DUPLICATE' | 'TRY_AGAIN_LATER' | 'ERROR';
+
 export const GetTransactionStatus = {
   SUCCESS: 'SUCCESS' as const,
   NOT_FOUND: 'NOT_FOUND' as const,
   FAILED: 'FAILED' as const,
 };
+
+export type GetTransactionStatus = 'SUCCESS' | 'NOT_FOUND' | 'FAILED';
 
 // Re-export types from rpc-client that may be needed
 export type {

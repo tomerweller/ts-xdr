@@ -16,7 +16,7 @@ import { UnsignedHyper } from './xdr-compat/hyper.js';
 
 export type MemoType = 'none' | 'text' | 'id' | 'hash' | 'return';
 
-export class Memo {
+export class Memo<T extends MemoType = MemoType> {
   readonly type: MemoType;
   readonly value: string | Uint8Array | null;
 
