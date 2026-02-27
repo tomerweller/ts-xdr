@@ -14,6 +14,7 @@ import type { Converter } from './converters.js';
 
 export interface StructFieldConfig {
   name: string;
+  modernName?: string;
   convert: Converter<any, any>;
 }
 
@@ -50,7 +51,8 @@ export function createCompatStruct(config: CompatStructConfig): CompatStructClas
     _toModern(): any {
       const result: Record<string, any> = {};
       for (const field of fields) {
-        result[field.name] = field.convert.toModern(this._attributes[field.name]);
+        const mName = field.modernName ?? field.name;
+        result[mName] = field.convert.toModern(this._attributes[field.name]);
       }
       return result;
     }
@@ -58,7 +60,8 @@ export function createCompatStruct(config: CompatStructConfig): CompatStructClas
     static _fromModern(modern: any): any {
       const attrs: Record<string, any> = {};
       for (const field of fields) {
-        attrs[field.name] = field.convert.toCompat(modern[field.name]);
+        const mName = field.modernName ?? field.name;
+        attrs[field.name] = field.convert.toCompat(modern[mName]);
       }
       return new CompatStruct(attrs);
     }

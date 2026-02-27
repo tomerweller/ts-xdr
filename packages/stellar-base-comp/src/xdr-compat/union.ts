@@ -14,10 +14,10 @@ import { XdrTypeBase } from './base.js';
 import type { Converter } from './converters.js';
 
 export interface UnionArmConfig {
-  /** Compat switch value names that map to this arm (e.g. ['assetTypeNative']) */
-  switchValues: string[];
-  /** Modern arm key (e.g. 'Native') */
-  modern: string;
+  /** Compat switch value names/numbers that map to this arm (e.g. ['assetTypeNative'] or [0, 1]) */
+  switchValues: (string | number)[];
+  /** Modern arm key (e.g. 'Native' or 0) */
+  modern: string | number;
   /** Arm accessor name — omit for void arms (e.g. 'alphaNum4') */
   arm?: string;
   /** Converter for the arm value — omit for void arms */
@@ -26,7 +26,7 @@ export interface UnionArmConfig {
 
 export interface CompatUnionConfig {
   codec: XdrCodec<any>;
-  switchEnum: any; // CompatEnumClass
+  switchEnum: any | null; // CompatEnumClass or null for int-discriminated unions
   arms: UnionArmConfig[];
 }
 
@@ -42,11 +42,13 @@ export interface CompatUnionClass {
 export function createCompatUnion(config: CompatUnionConfig): CompatUnionClass {
   const { codec, switchEnum, arms } = config;
 
+  const isIntDiscriminant = switchEnum === null;
+
   // Build lookup maps
-  // switchCompat → arm config
-  const switchToArm = new Map<string, UnionArmConfig>();
+  // switchCompat → arm config (key is string for enum, string|number for int)
+  const switchToArm = new Map<string | number, UnionArmConfig>();
   // modern key → arm config
-  const modernToArm = new Map<string, UnionArmConfig>();
+  const modernToArm = new Map<string | number, UnionArmConfig>();
   // arm accessor name → arm config
   const armNameToConfig = new Map<string, UnionArmConfig>();
 
@@ -87,15 +89,15 @@ export function createCompatUnion(config: CompatUnionConfig): CompatUnionClass {
     }
 
     _toModern(): any {
-      const switchName: string = typeof this._switch === 'string'
+      const switchKey: string | number = isIntDiscriminant
         ? this._switch
-        : this._switch.name;
-      const armConfig = switchToArm.get(switchName);
+        : (typeof this._switch === 'string' ? this._switch : this._switch.name);
+      const armConfig = switchToArm.get(switchKey);
       if (!armConfig) {
-        throw new Error(`Unknown switch value: ${switchName}`);
+        throw new Error(`Unknown switch value: ${switchKey}`);
       }
       if (!armConfig.arm) {
-        // Void arm — return string literal
+        // Void arm — return string literal or number
         return armConfig.modern;
       }
       // Value arm — return { ModernKey: convertedValue }
@@ -106,25 +108,30 @@ export function createCompatUnion(config: CompatUnionConfig): CompatUnionClass {
     }
 
     static _fromModern(modern: any): CompatUnion {
-      if (typeof modern === 'string') {
-        // Void arm
+      if (typeof modern === 'string' || typeof modern === 'number') {
+        // Void arm (string for enum, number for int discriminant)
         const armConfig = modernToArm.get(modern);
         if (!armConfig) {
           throw new Error(`Unknown modern union key: ${modern}`);
         }
-        const switchName = armConfig.switchValues[0]!;
-        const switchVal = (switchEnum as any)[switchName]();
+        const sv = armConfig.switchValues[0]!;
+        const switchVal = isIntDiscriminant ? sv : (switchEnum as any)[sv]();
         return new CompatUnion(switchVal, undefined, undefined);
       }
       // Value arm — { ModernKey: value }
       const modernKey = Object.keys(modern)[0]!;
       const modernValue = modern[modernKey];
-      const armConfig = modernToArm.get(modernKey);
+      // Try string key first, then numeric
+      let armConfig = modernToArm.get(modernKey);
+      if (!armConfig) {
+        const numKey = Number(modernKey);
+        if (!isNaN(numKey)) armConfig = modernToArm.get(numKey);
+      }
       if (!armConfig) {
         throw new Error(`Unknown modern union key: ${modernKey}`);
       }
-      const switchName = armConfig.switchValues[0]!;
-      const switchVal = (switchEnum as any)[switchName]();
+      const sv = armConfig.switchValues[0]!;
+      const switchVal = isIntDiscriminant ? sv : (switchEnum as any)[sv]();
       const compatValue = armConfig.convert
         ? armConfig.convert.toCompat(modernValue)
         : modernValue;
@@ -136,7 +143,7 @@ export function createCompatUnion(config: CompatUnionConfig): CompatUnionClass {
   for (const arm of arms) {
     for (const sv of arm.switchValues) {
       (CompatUnion as any)[sv] = (value?: any) => {
-        const switchVal = (switchEnum as any)[sv]();
+        const switchVal = isIntDiscriminant ? sv : (switchEnum as any)[sv]();
         if (!arm.arm) {
           return new CompatUnion(switchVal, undefined, undefined);
         }
