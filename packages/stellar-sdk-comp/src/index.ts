@@ -1,8 +1,9 @@
 // Re-export everything from stellar-base-comp
 export * from '@stellar/stellar-base-comp';
 
-// SorobanRpc namespace
+// SorobanRpc namespace (official SDK exports as `rpc`, Freighter aliases to SorobanRpc)
 export * as SorobanRpc from './soroban-rpc/index.js';
+export * as rpc from './soroban-rpc/index.js';
 
 // Horizon namespace
 export * as Horizon from './horizon/index.js';

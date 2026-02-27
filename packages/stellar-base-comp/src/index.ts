@@ -37,3 +37,10 @@ export { LiquidityPoolAsset } from '@stellar/contracts';
 export { ScInt } from '@stellar/contracts';
 export { scValToBigInt } from '@stellar/contracts';
 export { extractBaseAddress } from '@stellar/contracts';
+
+// XdrLargeInt compat (official SDK signature: new XdrLargeInt(type, value))
+export { XdrLargeInt } from './xdr-large-int.js';
+
+// Types
+export type { Signer, SignerKeyOptions } from './signer.js';
+export type { AssetType } from './asset-type.js';

@@ -89,3 +89,37 @@ export class AccountResponse extends Account {
     Object.assign(this, record);
   }
 }
+
+// ---------------------------------------------------------------------------
+// OperationResponseType — runtime enum matching the official SDK
+// ---------------------------------------------------------------------------
+
+export const OperationResponseType = {
+  createAccount: 'create_account' as const,
+  payment: 'payment' as const,
+  pathPayment: 'path_payment_strict_receive' as const,
+  createPassiveOffer: 'create_passive_sell_offer' as const,
+  manageOffer: 'manage_sell_offer' as const,
+  setOptions: 'set_options' as const,
+  changeTrust: 'change_trust' as const,
+  allowTrust: 'allow_trust' as const,
+  accountMerge: 'account_merge' as const,
+  inflation: 'inflation' as const,
+  manageData: 'manage_data' as const,
+  bumpSequence: 'bump_sequence' as const,
+  manageBuyOffer: 'manage_buy_offer' as const,
+  pathPaymentStrictSend: 'path_payment_strict_send' as const,
+  createClaimableBalance: 'create_claimable_balance' as const,
+  claimClaimableBalance: 'claim_claimable_balance' as const,
+  beginSponsoringFutureReserves: 'begin_sponsoring_future_reserves' as const,
+  endSponsoringFutureReserves: 'end_sponsoring_future_reserves' as const,
+  revokeSponsorship: 'revoke_sponsorship' as const,
+  clawback: 'clawback' as const,
+  clawbackClaimableBalance: 'clawback_claimable_balance' as const,
+  setTrustLineFlags: 'set_trust_line_flags' as const,
+  liquidityPoolDeposit: 'liquidity_pool_deposit' as const,
+  liquidityPoolWithdraw: 'liquidity_pool_withdraw' as const,
+  invokeHostFunction: 'invoke_host_function' as const,
+  bumpFootprintExpiration: 'bump_footprint_expiration' as const,
+  restoreFootprint: 'restore_footprint' as const,
+};
