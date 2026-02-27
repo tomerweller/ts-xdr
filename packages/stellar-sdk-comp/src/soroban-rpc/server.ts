@@ -23,6 +23,10 @@ import type {
   GetTransactionResponse,
   GetEventsResponse,
   GetLedgerEntriesResponse,
+  GetVersionInfoResponse,
+  GetFeeStatsResponse,
+  GetTransactionsResponse,
+  GetLedgersResponse,
 } from './api.js';
 
 export interface ServerOptions {
@@ -117,6 +121,35 @@ export class Server {
 
   async getLedgerEntries(...keys: any[]): Promise<GetLedgerEntriesResponse> {
     const result = await this._client.getLedgerEntries(keys.flat());
+    return result as any;
+  }
+
+  async getVersionInfo(): Promise<GetVersionInfoResponse> {
+    return this._client.getVersionInfo() as any;
+  }
+
+  async getFeeStats(): Promise<GetFeeStatsResponse> {
+    return this._client.getFeeStats() as any;
+  }
+
+  async getTransactions(req: any): Promise<GetTransactionsResponse> {
+    const result = await this._client.getTransactions(req);
+    return result as any;
+  }
+
+  async getLedgers(req: any): Promise<GetLedgersResponse> {
+    const result = await this._client.getLedgers(req);
+    return result as any;
+  }
+
+  async getContractData(contractId: string, key: any, durability?: string): Promise<any> {
+    const dur = durability === 'temporary' ? 'temporary' : 'persistent';
+    const result = await this._client.getContractData(contractId, key, dur as any);
+    return result;
+  }
+
+  async pollTransaction(hash: string, opts?: { attempts?: number; sleepStrategy?: (attempt: number) => number }): Promise<GetTransactionResponse> {
+    const result = await this._client.pollTransaction(hash, opts);
     return result as any;
   }
 }

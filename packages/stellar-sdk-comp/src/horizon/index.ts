@@ -17,10 +17,15 @@ export {
   StrictSendPathCallBuilder,
   TradeAggregationCallBuilder,
   OfferTradesCallBuilder,
+  FriendbotBuilder,
 } from './call-builder.js';
 export {
   AccountResponse,
   type CollectionPage,
+  SUBMIT_TRANSACTION_TIMEOUT,
+  SERVER_TIME_MAP,
+  getCurrentServerTime,
+  OperationResponseType,
 } from './api.js';
 export type * from './api.js';
 export { AccountRequiresMemoError } from '@stellar/seps';

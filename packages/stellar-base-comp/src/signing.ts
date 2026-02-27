@@ -1,9 +1,16 @@
 /**
- * Sync hashing utilities via @noble/hashes.
+ * Sync hashing and signing utilities via @noble/hashes and @noble/ed25519.
  */
 
 import { sha256 as nobleSha256 } from '@noble/hashes/sha256';
+import { sha512 } from '@noble/hashes/sha512';
+import { sign as ed25519Sign, verify as ed25519Verify, etc } from '@noble/ed25519';
 import { encodeBase64 } from '@stellar/xdr';
+
+// Ensure sync sha512 is configured for ed25519
+if (!etc.sha512Sync) {
+  etc.sha512Sync = (...msgs: Uint8Array[]) => sha512(etc.concatBytes(...msgs));
+}
 
 const encoder = new TextEncoder();
 
@@ -52,6 +59,16 @@ function augmentBuffersDeep(obj: any): any {
     return result;
   }
   return obj;
+}
+
+/** Ed25519 sign (sync) — returns signature bytes */
+export function sign(data: Uint8Array, rawSecret: Uint8Array): any {
+  return augmentBuffer(ed25519Sign(data, rawSecret));
+}
+
+/** Ed25519 verify (sync) */
+export function verify(data: Uint8Array, signature: Uint8Array, rawPublicKey: Uint8Array): boolean {
+  return ed25519Verify(signature, data, rawPublicKey);
 }
 
 export { augmentBuffer, augmentBuffersDeep };

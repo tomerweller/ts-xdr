@@ -3,6 +3,12 @@
  * Stores address and sequence as strings.
  */
 
+import {
+  decodeStrkey,
+  encodeStrkey,
+  STRKEY_ED25519_PUBLIC,
+  STRKEY_MUXED_ED25519,
+} from '@stellar/strkey';
 import { StrKey } from './strkey.js';
 
 export class Account {
@@ -57,20 +63,32 @@ export class Account {
 
 export class MuxedAccount {
   private readonly _account: Account;
-  private readonly _muxedAddress: string;
-  private readonly _id: string;
+  private _muxedAddress: string;
+  private _id: string;
 
   constructor(account: Account, id: string) {
     this._account = account;
     this._id = id;
-    this._muxedAddress = account.accountId(); // simplified — real impl would compute M-address
+    // Compute the M-address from the base G-address and id
+    const rawKey = decodeStrkey(account.accountId()).payload;
+    const payload = new Uint8Array(40);
+    payload.set(rawKey, 0);
+    const view = new DataView(payload.buffer);
+    view.setBigUint64(32, BigInt(id), false);
+    this._muxedAddress = encodeStrkey(STRKEY_MUXED_ED25519, payload);
   }
 
   static fromAddress(mAddress: string, sequenceNum: string): MuxedAccount {
-    // For simplicity, extract the base G-address from the M-address
-    // In a full implementation, this would decode the M-address to extract ed25519 key + id
-    const account = new Account(mAddress, sequenceNum);
-    return new MuxedAccount(account, '0');
+    const { version, payload } = decodeStrkey(mAddress);
+    if (version !== STRKEY_MUXED_ED25519) {
+      throw new Error('Expected M-address (muxed ed25519)');
+    }
+    const rawKey = payload.slice(0, 32);
+    const view = new DataView(payload.buffer, payload.byteOffset + 32, 8);
+    const id = view.getBigUint64(0, false);
+    const gAddress = encodeStrkey(STRKEY_ED25519_PUBLIC, rawKey);
+    const account = new Account(gAddress, sequenceNum);
+    return new MuxedAccount(account, id.toString());
   }
 
   accountId(): string {
@@ -83,6 +101,32 @@ export class MuxedAccount {
 
   id(): string {
     return this._id;
+  }
+
+  setId(id: string): MuxedAccount {
+    this._id = id;
+    // Recompute M-address
+    const rawKey = decodeStrkey(this._account.accountId()).payload;
+    const payload = new Uint8Array(40);
+    payload.set(rawKey, 0);
+    const view = new DataView(payload.buffer);
+    view.setBigUint64(32, BigInt(id), false);
+    this._muxedAddress = encodeStrkey(STRKEY_MUXED_ED25519, payload);
+    return this;
+  }
+
+  toXDRObject(): any {
+    const rawKey = decodeStrkey(this._account.accountId()).payload;
+    return {
+      MuxedEd25519: {
+        id: BigInt(this._id),
+        ed25519: rawKey,
+      },
+    };
+  }
+
+  equals(other: MuxedAccount): boolean {
+    return this._muxedAddress === other._muxedAddress;
   }
 
   sequenceNumber(): string {

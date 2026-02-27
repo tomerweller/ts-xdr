@@ -27,35 +27,64 @@ const ENVELOPE_TYPE_TX_FEE_BUMP = new Uint8Array([0, 0, 0, 5]);
 
 export interface TransactionBuilderOpts {
   fee: string;
-  networkPassphrase: string;
+  networkPassphrase?: string;
   memo?: Memo;
-  timebounds?: { minTime: number | string; maxTime: number | string };
+  timebounds?: { minTime?: number | string | Date; maxTime?: number | string | Date };
+  ledgerbounds?: { minLedger?: number; maxLedger?: number };
+  minAccountSequence?: string;
+  minAccountSequenceAge?: number;
+  minAccountSequenceLedgerGap?: number;
+  extraSigners?: string[];
   withMuxing?: boolean;
+  sorobanData?: any;
 }
 
 export class TransactionBuilder {
   private readonly _source: Account | MuxedAccount;
   private readonly _fee: string;
-  private readonly _networkPassphrase: string;
+  private _networkPassphrase: string;
   private _memo: Memo;
   private _operations: ModernOperation[] = [];
   private _timeBounds: { minTime: bigint; maxTime: bigint } | null;
+  private _ledgerBounds: { minLedger: number; maxLedger: number } | null = null;
+  private _minAccountSequence: bigint | null = null;
+  private _minAccountSequenceAge: bigint | null = null;
+  private _minAccountSequenceLedgerGap: number | null = null;
+  private _extraSigners: string[] = [];
+  private _sorobanData: any = null;
   private _timeout: number | null = null;
 
   constructor(source: Account | MuxedAccount, opts: TransactionBuilderOpts) {
     this._source = source;
     this._fee = opts.fee;
-    this._networkPassphrase = opts.networkPassphrase;
+    this._networkPassphrase = opts.networkPassphrase ?? '';
     this._memo = opts.memo ?? Memo.none();
 
     if (opts.timebounds) {
+      const toTimestamp = (v: string | number | Date | undefined): bigint => {
+        if (v instanceof Date) return BigInt(Math.floor(v.getTime() / 1000));
+        return BigInt(v ?? 0);
+      };
       this._timeBounds = {
-        minTime: BigInt(opts.timebounds.minTime),
-        maxTime: BigInt(opts.timebounds.maxTime),
+        minTime: toTimestamp(opts.timebounds.minTime),
+        maxTime: toTimestamp(opts.timebounds.maxTime),
       };
     } else {
       this._timeBounds = null;
     }
+
+    if (opts.ledgerbounds) {
+      this._ledgerBounds = {
+        minLedger: opts.ledgerbounds.minLedger ?? 0,
+        maxLedger: opts.ledgerbounds.maxLedger ?? 0,
+      };
+    }
+
+    if (opts.minAccountSequence) this._minAccountSequence = BigInt(opts.minAccountSequence);
+    if (opts.minAccountSequenceAge != null) this._minAccountSequenceAge = BigInt(opts.minAccountSequenceAge);
+    if (opts.minAccountSequenceLedgerGap != null) this._minAccountSequenceLedgerGap = opts.minAccountSequenceLedgerGap;
+    if (opts.extraSigners) this._extraSigners = opts.extraSigners;
+    if (opts.sorobanData) this._sorobanData = opts.sorobanData;
   }
 
   addOperation(op: any): this {
@@ -65,6 +94,22 @@ export class TransactionBuilder {
     } else {
       this._operations.push(op);
     }
+    return this;
+  }
+
+  addOperationAt(op: any, index: number): this {
+    const modernOp = op._toModern ? op._toModern() : op;
+    this._operations.splice(index, 0, modernOp);
+    return this;
+  }
+
+  clearOperations(): this {
+    this._operations = [];
+    return this;
+  }
+
+  clearOperationAt(index: number): this {
+    this._operations.splice(index, 1);
     return this;
   }
 
@@ -92,6 +137,51 @@ export class TransactionBuilder {
     return this;
   }
 
+  setLedgerbounds(min: number, max: number): this {
+    this._ledgerBounds = { minLedger: min, maxLedger: max };
+    return this;
+  }
+
+  setMinAccountSequence(seq: string): this {
+    this._minAccountSequence = BigInt(seq);
+    return this;
+  }
+
+  setMinAccountSequenceAge(seconds: number): this {
+    this._minAccountSequenceAge = BigInt(seconds);
+    return this;
+  }
+
+  setMinAccountSequenceLedgerGap(gap: number): this {
+    this._minAccountSequenceLedgerGap = gap;
+    return this;
+  }
+
+  setExtraSigners(signers: string[]): this {
+    this._extraSigners = signers;
+    return this;
+  }
+
+  setNetworkPassphrase(passphrase: string): this {
+    this._networkPassphrase = passphrase;
+    return this;
+  }
+
+  setSorobanData(data: any): this {
+    this._sorobanData = typeof data === 'string' ? data : data;
+    return this;
+  }
+
+  hasV2Preconditions(): boolean {
+    return !!(
+      this._ledgerBounds ||
+      this._minAccountSequence !== null ||
+      this._minAccountSequenceAge !== null ||
+      this._minAccountSequenceLedgerGap !== null ||
+      this._extraSigners.length > 0
+    );
+  }
+
   /**
    * Synchronous build — computes transaction hash via @noble/hashes/sha256.
    */
@@ -109,14 +199,30 @@ export class TransactionBuilder {
 
     const fee = parseInt(this._fee, 10) * this._operations.length;
 
-    const cond: ModernPreconditions = this._timeBounds
-      ? {
-          Time: {
-            minTime: this._timeBounds.minTime,
-            maxTime: this._timeBounds.maxTime,
-          },
-        }
-      : 'None';
+    let cond: ModernPreconditions;
+    if (this.hasV2Preconditions()) {
+      cond = {
+        V2: {
+          timeBounds: this._timeBounds
+            ? { minTime: this._timeBounds.minTime, maxTime: this._timeBounds.maxTime }
+            : null,
+          ledgerBounds: this._ledgerBounds ?? null,
+          minSeqNum: this._minAccountSequence,
+          minSeqAge: this._minAccountSequenceAge ?? 0n,
+          minSeqLedgerGap: this._minAccountSequenceLedgerGap ?? 0,
+          extraSigners: this._extraSigners as any,
+        },
+      };
+    } else if (this._timeBounds) {
+      cond = {
+        Time: {
+          minTime: this._timeBounds.minTime,
+          maxTime: this._timeBounds.maxTime,
+        },
+      };
+    } else {
+      cond = 'None';
+    }
 
     const sourceAddress = this._source instanceof Account
       ? (this._source as Account).accountId()
@@ -145,6 +251,29 @@ export class TransactionBuilder {
     const envelope: ModernTransactionEnvelope = { Tx: { tx, signatures: [] } };
     const base64 = encodeBase64(TransactionEnvelopeCodec.toXdr(envelope));
     return new Transaction(base64, this._networkPassphrase);
+  }
+
+  /**
+   * Clone a Transaction into a new TransactionBuilder for modification.
+   */
+  static cloneFrom(
+    tx: Transaction,
+    opts?: Partial<TransactionBuilderOpts>,
+  ): TransactionBuilder {
+    const account = new Account(tx.source, (BigInt(tx.sequence) - 1n).toString());
+    const builder = new TransactionBuilder(account, {
+      fee: (parseInt(tx.fee, 10) / (tx.operations.length || 1)).toString(),
+      networkPassphrase: tx.networkPassphrase,
+      ...(opts || {}),
+    });
+    if (tx.timeBounds) {
+      builder.setTimebounds(tx.timeBounds.minTime, tx.timeBounds.maxTime);
+    }
+    builder.addMemo(tx.memo);
+    for (const op of tx.operations) {
+      builder.addOperation(op);
+    }
+    return builder;
   }
 
   /**

@@ -6,6 +6,7 @@ import {
   TransactionEnvelope as TransactionEnvelopeCodec,
   Transaction as TransactionCodec,
   FeeBumpTransaction as FeeBumpTransactionCodec,
+  MuxedAccount as MuxedAccountCodec,
   type TransactionEnvelope as ModernTransactionEnvelope,
   type TransactionV1Envelope as ModernTransactionV1Envelope,
   type Transaction as ModernTransaction,
@@ -69,6 +70,11 @@ export class Transaction<TMemo extends Memo = Memo, TOps extends any[] = Operati
   readonly memo: Memo;
   readonly operations: TOps;
   readonly timeBounds: { minTime: string; maxTime: string } | null;
+  readonly ledgerBounds: { minLedger: number; maxLedger: number } | null;
+  readonly minAccountSequence: string | null;
+  readonly minAccountSequenceAge: string | null;
+  readonly minAccountSequenceLedgerGap: number | null;
+  readonly extraSigners: string[];
   readonly networkPassphrase: string;
 
   private readonly _tx: ModernTransaction;
@@ -95,16 +101,30 @@ export class Transaction<TMemo extends Memo = Memo, TOps extends any[] = Operati
     this.memo = Memo._fromModern(this._tx.memo);
     this.operations = this._tx.operations.map(op => Operation.fromXDRObject(op)) as unknown as TOps;
 
+    // Parse preconditions
+    this.ledgerBounds = null;
+    this.minAccountSequence = null;
+    this.minAccountSequenceAge = null;
+    this.minAccountSequenceLedgerGap = null;
+    this.extraSigners = [];
+
     if (is(this._tx.cond, 'Time')) {
       this.timeBounds = {
         minTime: this._tx.cond.Time.minTime.toString(),
         maxTime: this._tx.cond.Time.maxTime.toString(),
       };
-    } else if (is(this._tx.cond, 'V2') && this._tx.cond.V2.timeBounds) {
-      this.timeBounds = {
-        minTime: this._tx.cond.V2.timeBounds.minTime.toString(),
-        maxTime: this._tx.cond.V2.timeBounds.maxTime.toString(),
-      };
+    } else if (is(this._tx.cond, 'V2')) {
+      const v2 = this._tx.cond.V2;
+      this.timeBounds = v2.timeBounds
+        ? { minTime: v2.timeBounds.minTime.toString(), maxTime: v2.timeBounds.maxTime.toString() }
+        : null;
+      this.ledgerBounds = v2.ledgerBounds
+        ? { minLedger: v2.ledgerBounds.minLedger, maxLedger: v2.ledgerBounds.maxLedger }
+        : null;
+      this.minAccountSequence = v2.minSeqNum !== null ? v2.minSeqNum.toString() : null;
+      this.minAccountSequenceAge = v2.minSeqAge !== undefined ? v2.minSeqAge.toString() : null;
+      this.minAccountSequenceLedgerGap = v2.minSeqLedgerGap ?? null;
+      this.extraSigners = [...(v2.extraSigners ?? [])] as any[];
     } else {
       this.timeBounds = null;
     }
@@ -153,6 +173,51 @@ export class Transaction<TMemo extends Memo = Memo, TOps extends any[] = Operati
     const { payload } = decodeStrkey(publicKey);
     const hint = payload.slice(-4);
     this._signatures.push({ hint, signature: sigBytes });
+  }
+
+  addDecoratedSignature(decoratedSig: ModernDecoratedSignature): void {
+    this._signatures.push(decoratedSig);
+  }
+
+  getKeypairSignature(keypair: Keypair): string {
+    return encodeBase64(keypair.sign(this._hash));
+  }
+
+  /**
+   * Add a hash-X preimage as a signature (the hint is the last 4 bytes of SHA-256 of the preimage).
+   */
+  signHashX(preimage: Uint8Array): void {
+    const preimageHash = hash(preimage);
+    const hint = preimageHash.slice(-4);
+    // The signature is the preimage itself
+    this._signatures.push({ hint, signature: preimage });
+  }
+
+  /**
+   * Calculate the claimable balance ID for an operation at the given index.
+   */
+  getClaimableBalanceId(operationIndex: number): string {
+    // envelopeTypeOpID = 0
+    const envelopeTypeBuf = new Uint8Array([0, 0, 0, 0]);
+    const sourceXdr = MuxedAccountCodec.toXdr(this._tx.sourceAccount);
+
+    const seqBuf = new Uint8Array(8);
+    new DataView(seqBuf.buffer).setBigUint64(0, this._tx.seqNum, false);
+
+    const opIdxBuf = new Uint8Array(4);
+    new DataView(opIdxBuf.buffer).setUint32(0, operationIndex, false);
+
+    const preimage = new Uint8Array(
+      envelopeTypeBuf.length + sourceXdr.length + seqBuf.length + opIdxBuf.length,
+    );
+    let offset = 0;
+    preimage.set(envelopeTypeBuf, offset); offset += envelopeTypeBuf.length;
+    preimage.set(sourceXdr, offset); offset += sourceXdr.length;
+    preimage.set(seqBuf, offset); offset += seqBuf.length;
+    preimage.set(opIdxBuf, offset);
+
+    const balanceId = hash(preimage);
+    return Array.from(balanceId, (b: number) => b.toString(16).padStart(2, '0')).join('');
   }
 
   toEnvelope(): ModernTransactionEnvelope {
@@ -235,6 +300,27 @@ export class FeeBumpTransaction {
 
   get signatures(): any[] {
     return this._signatures;
+  }
+
+  addSignature(publicKey: string, signature: string): void {
+    const sigBytes = decodeBase64(signature);
+    const { payload } = decodeStrkey(publicKey);
+    const hint = payload.slice(-4);
+    this._signatures.push({ hint, signature: sigBytes });
+  }
+
+  addDecoratedSignature(decoratedSig: ModernDecoratedSignature): void {
+    this._signatures.push(decoratedSig);
+  }
+
+  getKeypairSignature(keypair: Keypair): string {
+    return encodeBase64(keypair.sign(this._hash));
+  }
+
+  signHashX(preimage: Uint8Array): void {
+    const preimageHash = hash(preimage);
+    const hint = preimageHash.slice(-4);
+    this._signatures.push({ hint, signature: preimage });
   }
 
   toEnvelope(): ModernTransactionEnvelope {

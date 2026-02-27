@@ -5,6 +5,7 @@
  * then provides a fully synchronous Keypair class.
  */
 
+import { sha256 as nobleSha256 } from '@noble/hashes/sha256';
 import { sha512 } from '@noble/hashes/sha512';
 import {
   getPublicKey,
@@ -57,6 +58,14 @@ export class Keypair {
     return new Keypair(pub, bytes);
   }
 
+  /**
+   * Returns the master keypair derived from the network passphrase.
+   */
+  static master(networkPassphrase: string): Keypair {
+    const seed = nobleSha256(new TextEncoder().encode(networkPassphrase));
+    return Keypair.fromRawEd25519Seed(seed);
+  }
+
   static fromPublicKey(gAddress: string): Keypair {
     const { version, payload } = decodeStrkey(gAddress);
     if (version !== STRKEY_ED25519_PUBLIC) {
@@ -70,6 +79,10 @@ export class Keypair {
       throw new Error('Public key must be 32 bytes');
     }
     return new Keypair(bytes, null);
+  }
+
+  get type(): string {
+    return 'ed25519';
   }
 
   /** Returns the G-address string (method, not getter — matching js-stellar-base) */
@@ -114,6 +127,21 @@ export class Keypair {
   signDecorated(data: Uint8Array): any {
     const signature = this.sign(data);
     return { hint: this.signatureHint(), signature };
+  }
+
+  /**
+   * Sign data with a XORed hint for payload signers.
+   * The hint is the last 4 bytes of the account XDR, XORed with the last 4 bytes of the payload.
+   */
+  signPayloadDecorated(data: Uint8Array): any {
+    const signature = this.sign(data);
+    const hint = new Uint8Array(this._publicKey.slice(-4));
+    // XOR hint with last 4 bytes of the payload (data)
+    const payloadEnd = data.slice(-4);
+    for (let i = 0; i < 4; i++) {
+      hint[i]! ^= payloadEnd[i] ?? 0;
+    }
+    return { hint: augmentBuffer(hint), signature };
   }
 
   verify(data: Uint8Array, signature: Uint8Array): boolean {

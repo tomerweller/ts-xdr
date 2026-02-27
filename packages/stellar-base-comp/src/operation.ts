@@ -38,8 +38,10 @@ import {
 import {
   is,
   encodeStrkey,
+  decodeStrkey,
   STRKEY_ED25519_PUBLIC,
   STRKEY_MUXED_ED25519,
+  STRKEY_CONTRACT,
   type Operation as ModernOperation,
   type MuxedAccount,
 } from '@stellar/xdr';
@@ -682,6 +684,94 @@ class OperationStatic {
     return wrap(modernRestoreFootprint(opts));
   }
 
+  // Soroban convenience operations
+
+  /**
+   * Create a Stellar Asset Contract (SAC) for a classic asset.
+   */
+  static createStellarAssetContract(opts: OperationOpts & { asset: Asset }) {
+    const hostFunction: any = {
+      CreateContract: {
+        contractIDPreimage: {
+          Asset: opts.asset._toModern(),
+        },
+        executable: 'StellarAsset',
+      },
+    };
+    return wrap(modernInvokeHostFunction({
+      hostFunction,
+      auth: [],
+      source: opts.source,
+    }));
+  }
+
+  /**
+   * Invoke a specific contract function (convenience wrapper).
+   */
+  static invokeContractFunction(opts: OperationOpts & {
+    contract: string; function: string; args: any[]; auth?: any[];
+  }) {
+    const { payload } = decodeStrkey(opts.contract);
+    const hostFunction = {
+      InvokeContract: {
+        contractAddress: { Contract: payload },
+        functionName: opts.function,
+        args: opts.args,
+      },
+    };
+    return wrap(modernInvokeHostFunction({
+      hostFunction,
+      auth: opts.auth ?? [],
+      source: opts.source,
+    }));
+  }
+
+  /**
+   * Create a custom Soroban contract from a WASM hash.
+   */
+  static createCustomContract(opts: OperationOpts & {
+    address: any; wasmHash: Uint8Array; constructorArgs?: any[]; salt?: Uint8Array; auth?: any[];
+  }) {
+    const salt = opts.salt ?? crypto.getRandomValues(new Uint8Array(32));
+    let address: any;
+    if (typeof opts.address === 'string') {
+      const { version, payload } = decodeStrkey(opts.address);
+      if (version === STRKEY_CONTRACT) {
+        address = { Contract: payload };
+      } else {
+        address = { Account: { PublicKeyTypeEd25519: payload } };
+      }
+    } else {
+      address = opts.address;
+    }
+    const hostFunction: any = {
+      CreateContractV2: {
+        contractIDPreimage: {
+          Address: { address, salt },
+        },
+        executable: { Wasm: opts.wasmHash },
+        constructorArgs: opts.constructorArgs ?? [],
+      },
+    };
+    return wrap(modernInvokeHostFunction({
+      hostFunction,
+      auth: opts.auth ?? [],
+      source: opts.source,
+    }));
+  }
+
+  /**
+   * Upload WASM bytecode to the network.
+   */
+  static uploadContractWasm(opts: OperationOpts & { wasm: Uint8Array }) {
+    const hostFunction: any = { UploadContractWasm: opts.wasm };
+    return wrap(modernInvokeHostFunction({
+      hostFunction,
+      auth: [],
+      source: opts.source,
+    }));
+  }
+
   // Amount utilities
   static toStroops(amount: string): string {
     return toStroops(amount);
@@ -689,6 +779,22 @@ class OperationStatic {
 
   static fromStroops(stroops: string): string {
     return fromStroops(stroops);
+  }
+
+  /**
+   * Validate a string amount.
+   * @param value - Amount string to validate
+   * @param allowZero - Whether zero is allowed (default false)
+   */
+  static isValidAmount(value: string, allowZero = false): boolean {
+    try {
+      if (typeof value !== 'string' || value.trim() === '') return false;
+      const n = amountToBigInt(value);
+      if (allowZero) return n >= 0n;
+      return n > 0n;
+    } catch {
+      return false;
+    }
   }
 
   // Decode XDR operation into flat compat object

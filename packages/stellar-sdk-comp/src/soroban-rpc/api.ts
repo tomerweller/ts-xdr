@@ -153,6 +153,98 @@ export interface SimulateTransactionErrorResponse {
   [key: string]: any;
 }
 
+// Additional response types
+export interface GetVersionInfoResponse {
+  version: string;
+  commitHash: string;
+  buildTimestamp: string;
+  captiveCoreVersion: string;
+  protocolVersion: number;
+}
+
+export interface FeeDistribution {
+  max: string;
+  min: string;
+  mode: string;
+  p10: string;
+  p20: string;
+  p30: string;
+  p40: string;
+  p50: string;
+  p60: string;
+  p70: string;
+  p80: string;
+  p90: string;
+  p95: string;
+  p99: string;
+  transactionCount: string;
+  ledgerCount: number;
+}
+
+export interface GetFeeStatsResponse {
+  sorobanInclusionFee: FeeDistribution;
+  inclusionFee: FeeDistribution;
+  latestLedger: number;
+}
+
+export interface TransactionInfo {
+  status: string;
+  txHash: string;
+  ledger: number;
+  createdAt: string;
+  applicationOrder: number;
+  feeBump: boolean;
+  envelopeXdr: string;
+  resultXdr: string;
+  resultMetaXdr: string;
+  [key: string]: any;
+}
+
+export interface GetTransactionsResponse {
+  transactions: TransactionInfo[];
+  latestLedger: number;
+  latestLedgerCloseTimestamp: number;
+  oldestLedger: number;
+  oldestLedgerCloseTimestamp: number;
+  cursor: string;
+}
+
+export interface LedgerInfo {
+  hash: string;
+  sequence: number;
+  ledgerCloseTime: string;
+  headerXdr: string;
+  metadataXdr: string;
+  [key: string]: any;
+}
+
+export interface GetLedgersResponse {
+  ledgers: LedgerInfo[];
+  latestLedger: number;
+  latestLedgerCloseTime: number;
+  oldestLedger: number;
+  oldestLedgerCloseTime: number;
+  cursor: string;
+}
+
+// Durability enum
+export const Durability = {
+  Temporary: 'temporary' as const,
+  Persistent: 'persistent' as const,
+};
+export type Durability = 'temporary' | 'persistent';
+
+// Raw response parsing utilities
+export function parseRawSimulation(raw: any): SimulateTransactionResponse {
+  // In the official SDK, this parses raw JSON-RPC response into typed form.
+  // Our rpc-client already does this internally, so this is a passthrough.
+  return raw as SimulateTransactionResponse;
+}
+
+export function parseRawEvents(raw: any): GetEventsResponse {
+  return raw as GetEventsResponse;
+}
+
 // Re-export additional rpc-client types
 export type {
   SendTransactionResponse as RawSendTransactionResponse,

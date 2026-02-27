@@ -40,6 +40,7 @@ import {
   StrictReceivePathCallBuilder,
   StrictSendPathCallBuilder,
   TradeAggregationCallBuilder,
+  FriendbotBuilder,
 } from './call-builder.js';
 
 export interface ServerOptions extends HorizonClientOptions {}
@@ -209,6 +210,18 @@ export class Server {
       }
     };
     await checkMemoRequired(memoType, operations, loadAccountData);
+  }
+
+  async fetchTimebounds(seconds: number): Promise<{ minTime: number; maxTime: number }> {
+    const now = Math.floor(Date.now() / 1000);
+    return {
+      minTime: 0,
+      maxTime: now + seconds,
+    };
+  }
+
+  friendbot(address: string): FriendbotBuilder {
+    return new FriendbotBuilder(this.serverURL, this._headers, address);
   }
 
   private _extractEnvelope(tx: any): TransactionEnvelope {

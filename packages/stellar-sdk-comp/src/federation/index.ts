@@ -12,6 +12,9 @@ import {
 
 export { FederationError };
 
+/** Maximum federation response size (100KB) */
+export const FEDERATION_RESPONSE_MAX_SIZE = 100 * 1024;
+
 export namespace Api {
   export interface Record {
     account_id: string;

@@ -1,6 +1,7 @@
 export { Server } from './server.js';
 export * as Api from './api.js';
 export type * from './api.js';
+export { Durability, parseRawSimulation, parseRawEvents } from './api.js';
 
 // Wrap type guard functions to accept any SimulateTransactionResponse
 import {

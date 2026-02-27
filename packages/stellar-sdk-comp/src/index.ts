@@ -34,5 +34,23 @@ export function buildInvocationTree(root: any): any {
   return _buildInvocationTree(modernRoot);
 }
 
+// SEP-10 WebAuth
+export {
+  buildChallengeTx,
+  readChallengeTx,
+  verifyChallengeTxSigners,
+  verifyChallengeTxThreshold,
+  gatherTxSigners,
+  verifyTxSignedBy,
+  InvalidChallengeError,
+} from './webauth.js';
+
+// Error classes
+export { NetworkError, BadRequestError, BadResponseError, NotFoundError } from './errors.js';
+
+// Configuration and utilities
+export { Config } from './config.js';
+export { Utils } from './utils.js';
+
 // Helpers
 export { basicNodeSigner } from './basic-node-signer.js';

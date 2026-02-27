@@ -10,6 +10,9 @@ import {
 
 export { StellarTomlError };
 
+/** Maximum response size for stellar.toml (100KB) */
+export const STELLAR_TOML_MAX_SIZE = 100 * 1024;
+
 export namespace Api {
   export interface StellarTomlResolveOptions {
     allowHttp?: boolean;
@@ -29,7 +32,9 @@ export namespace Api {
     VERSION?: string;
     NETWORK_PASSPHRASE?: string;
     DOCUMENTATION?: Documentation;
+    PRINCIPALS?: Principal[];
     CURRENCIES?: Currency[];
+    VALIDATORS?: Validator[];
   }
 
   export interface Documentation {
@@ -50,6 +55,25 @@ export namespace Api {
     ORG_LICENSING_AUTHORITY?: string;
     ORG_LICENSE_TYPE?: string;
     ORG_LICENSE_NUMBER?: string;
+  }
+
+  export interface Validator {
+    ALIAS?: string;
+    DISPLAY_NAME?: string;
+    HOST?: string;
+    PUBLIC_KEY?: string;
+    HISTORY?: string;
+  }
+
+  export interface Principal {
+    name?: string;
+    email?: string;
+    keybase?: string;
+    telegram?: string;
+    twitter?: string;
+    github?: string;
+    id_photo_hash?: string;
+    verification_photo_hash?: string;
   }
 
   export interface Currency {

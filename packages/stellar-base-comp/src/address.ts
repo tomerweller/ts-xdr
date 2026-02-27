@@ -26,6 +26,26 @@ export class Address {
     return new Address(address);
   }
 
+  static account(buffer: Uint8Array): Address {
+    return new Address(encodeStrkey(STRKEY_ED25519_PUBLIC, buffer));
+  }
+
+  static contract(buffer: Uint8Array): Address {
+    return new Address(encodeStrkey(STRKEY_CONTRACT, buffer));
+  }
+
+  static fromScVal(scVal: any): Address {
+    // scVal should have shape { Address: ScAddress }
+    if (scVal.Address) {
+      return Address.fromScAddress(scVal.Address);
+    }
+    // Handle compat ScVal with accessor method
+    if (typeof scVal.address === 'function') {
+      return Address.fromScAddress(scVal.address());
+    }
+    throw new Error('Cannot extract Address from ScVal');
+  }
+
   static fromScAddress(scAddress: any): Address {
     if ('Account' in scAddress) {
       const pk = scAddress.Account;

@@ -175,3 +175,31 @@ export const OperationResponseType: { readonly [key: string]: string } = {
 };
 // Type includes all OperationType values from horizon-client for compat
 export type OperationResponseType = string;
+
+// ---------------------------------------------------------------------------
+// Constants matching official SDK
+// ---------------------------------------------------------------------------
+
+/** Default timeout for submitTransaction (ms) */
+export const SUBMIT_TRANSACTION_TIMEOUT = 60 * 1000;
+
+/** Server time tracking map: serverUrl → { serverTime, localTimeRecorded } */
+export const SERVER_TIME_MAP: Record<string, { serverTime: number; localTimeRecorded: number }> = {};
+
+/** Get the current time for a given Horizon server */
+export function getCurrentServerTime(serverUrl: string): number {
+  const entry = SERVER_TIME_MAP[serverUrl];
+  if (!entry) return Math.floor(Date.now() / 1000);
+  const drift = Math.floor(Date.now() / 1000) - entry.localTimeRecorded;
+  return entry.serverTime + drift;
+}
+
+// ---------------------------------------------------------------------------
+// EventSource / streaming types
+// ---------------------------------------------------------------------------
+
+export interface EventSourceOptions<T> {
+  onmessage?: (record: T) => void;
+  onerror?: (error: Error) => void;
+  reconnectTimeout?: number;
+}

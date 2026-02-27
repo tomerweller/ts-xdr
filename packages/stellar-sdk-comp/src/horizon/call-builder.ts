@@ -659,3 +659,14 @@ export class OfferTradesCallBuilder extends CallBuilder<TradeRecord> {
     super(serverUrl, headers, 'offers', offerId, 'trades');
   }
 }
+
+// ---------------------------------------------------------------------------
+// FriendbotBuilder — for /friendbot?addr=...
+// ---------------------------------------------------------------------------
+
+export class FriendbotBuilder extends CallBuilder<any> {
+  constructor(serverUrl: string, headers: Record<string, string>, address: string) {
+    super(serverUrl, headers, 'friendbot');
+    this._params.addr = address;
+  }
+}
