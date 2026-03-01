@@ -55,6 +55,10 @@ export class Contract {
     return (CompatOperation as any)._fromModern(modernOp);
   }
 
+  toString(): string {
+    return this.contractId();
+  }
+
   getFootprint(): any {
     const modern = {
       ContractData: {

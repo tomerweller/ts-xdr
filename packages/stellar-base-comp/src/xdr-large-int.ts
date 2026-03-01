@@ -6,6 +6,9 @@
  */
 
 import { ScInt, type ScIntType } from '@stellar/contracts';
+import { Hyper, UnsignedHyper } from './xdr-compat/hyper.js';
+import { Int128, Uint128, Int256, Uint256 } from './large-int-classes.js';
+import { ScVal as CompatScVal } from './generated/stellar_compat.js';
 
 /** Combine 2 uint32 parts (low, high) into a uint64 bigint. */
 function u32PairToU64(low: number | bigint, high: number | bigint): bigint {
@@ -97,6 +100,35 @@ export class XdrLargeInt {
 
   toU256() {
     return this._inner.toU256();
+  }
+
+  toTimepoint(): any {
+    return (CompatScVal as any)._fromModern({ Timepoint: this.toBigInt() });
+  }
+
+  toDuration(): any {
+    return (CompatScVal as any)._fromModern({ Duration: this.toBigInt() });
+  }
+
+  toString(): string {
+    return this.toBigInt().toString();
+  }
+
+  toJSON(): { value: string; type: string } {
+    return { value: this.toBigInt().toString(), type: this.type };
+  }
+
+  get int(): any {
+    const v = this.toBigInt();
+    switch (this.type) {
+      case 'i64': return new Hyper(v);
+      case 'u64': return new UnsignedHyper(v);
+      case 'i128': return new Int128(v);
+      case 'u128': return new Uint128(v);
+      case 'i256': return new Int256(v);
+      case 'u256': return new Uint256(v);
+      default: throw new Error(`Unknown type: ${this.type}`);
+    }
   }
 
   /**

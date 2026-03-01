@@ -63,6 +63,11 @@ export class ScInt {
     this._inner = new ModernScInt(value, { type: modernType });
   }
 
+  get int(): XdrLargeInt {
+    const xlType = (EXTENDED_TYPE_MAP[this.type] ?? this.type) as ScIntType;
+    return new XdrLargeInt(xlType, this.toBigInt());
+  }
+
   toBigInt(): bigint {
     return this._inner.toBigInt();
   }

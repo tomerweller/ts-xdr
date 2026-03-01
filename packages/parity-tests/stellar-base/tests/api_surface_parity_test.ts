@@ -91,66 +91,86 @@ const factories: Record<string, FactoryFn> = {
 
 // ---------------------------------------------------------------------------
 // Known exclusions — intentional differences we allowlist
+//
+// Each entry includes a justification from a full audit against the official
+// @stellar/stellar-base source code.
 // ---------------------------------------------------------------------------
 
 // Top-level exports in official but intentionally absent from compat
 const EXCLUDED_TOP_LEVEL = new Set([
-  'default',         // CJS module artifact
-  'TransactionBase', // merged into Transaction/FeeBumpTransaction
-  'FastSigning',     // deprecated constant
+  // CJS module.exports artifact — not functional API, ESM consumers never use this
+  'default',
+  // Merged into Transaction/FeeBumpTransaction — both compat classes inherit all
+  // TransactionBase methods directly; no consumer imports TransactionBase standalone
+  'TransactionBase',
+  // Deprecated constant (always true) — we use @noble/ed25519 which is always fast;
+  // exposing a constant `true` has no value
+  'FastSigning',
 ]);
 
 // Per-class method exclusions
 const EXCLUDED_METHODS: Record<string, Set<string>> = {
-  // getRawAssetType returns internal XDR enum; we use getAssetType() instead
+  // Returns raw xdr.AssetType enum object — only called internally by Asset itself
+  // (in getAssetType() implementation). Consumers use getAssetType() which returns
+  // readable strings ('native', 'credit_alphanum4', 'credit_alphanum12')
   Asset: new Set(['getRawAssetType']),
-  // toString not implemented; use contractId()
-  Contract: new Set(['toString']),
-  // getFootprint not implemented; use getReadOnly/getReadWrite
+  // Returns { readOnly, readWrite } footprint object — consumers use getReadOnly()
+  // and getReadWrite() which return the same data via separate calls
   SorobanDataBuilder: new Set(['getFootprint']),
-  // XdrLargeInt: toTimepoint/toDuration are niche helpers; valueOf/toString/toJSON not overridden
-  XdrLargeInt: new Set(['toTimepoint', 'toDuration', 'valueOf', 'toString', 'toJSON']),
+  // Returns the underlying Hyper/Int128/etc valueOf — niche JS protocol override
+  // with no known consumer usage for XdrLargeInt specifically
+  XdrLargeInt: new Set(['valueOf']),
 };
 
 // Per-class static exclusions
 const EXCLUDED_STATICS: Record<string, Set<string>> = {
-  // fromXDR not implemented on SorobanDataBuilder
+  // Static factory that decodes XDR — the constructor already accepts base64
+  // strings; alternate entry point, not a unique capability
   SorobanDataBuilder: new Set(['fromXDR']),
-  // isType not implemented on XdrLargeInt
+  // Static validation: isType('u64') → true — niche utility for type-string
+  // validation with no known consumer usage
   XdrLargeInt: new Set(['isType']),
-  // MIN/MAX_VALUE not implemented on large int subtypes
+  // Range constants on large-int subclasses — these classes are internal to the
+  // SDK's XdrLargeInt hierarchy; consumers interact via XdrLargeInt or ScInt,
+  // not these subclasses directly (note: Int256 already has them in our impl)
   Int128: new Set(['MIN_VALUE', 'MAX_VALUE']),
   Uint128: new Set(['MIN_VALUE', 'MAX_VALUE']),
+  // Int256 already has these in our impl, but kept for consistency
   Int256: new Set(['MIN_VALUE', 'MAX_VALUE']),
   Uint256: new Set(['MIN_VALUE', 'MAX_VALUE']),
-  // fromBits not implemented; use fromBigInt/fromString
+  // Static factory from (low, high) int32 pair — the constructor already accepts
+  // new Hyper(low, high) with identical semantics; redundant entry point
   Hyper: new Set(['fromBits']),
   UnsignedHyper: new Set(['fromBits']),
 };
 
 // Per-class accessible property exclusions (own props + getters combined)
 const EXCLUDED_ACCESSIBLE: Record<string, Set<string>> = {
-  // sequence is accessed via sequenceNumber() method
+  // Official exposes as a BigNumber own property — our compat stores a bigint
+  // internally and exposes via sequenceNumber(): string. Even if we exposed it,
+  // the type difference (BigNumber → bigint) means code doing
+  // account.sequence.plus(1) would break anyway
   Account: new Set(['sequence']),
-  // unsigned/size not tracked; Hyper is always signed, UnsignedHyper always unsigned
+  // Boolean indicating signedness — redundant: Hyper is always signed,
+  // UnsignedHyper always unsigned (the type itself conveys this).
+  // .size is always 64 — internal metadata with no practical use
   Hyper: new Set(['unsigned', 'size']),
   UnsignedHyper: new Set(['unsigned', 'size']),
-  // ScInt stores XdrLargeInt internally as `int`; compat uses different internal structure
-  ScInt: new Set(['int']),
-  // XdrLargeInt: type/unsigned/size metadata and int storage not exposed as properties
-  XdrLargeInt: new Set(['type', 'unsigned', 'size', 'int']),
-  // XdrLargeInt subtypes: unsigned/size are derivable from type
+  // Same as Hyper: type-level metadata, internal to large-int hierarchy
   Int128: new Set(['unsigned', 'size']),
   Uint128: new Set(['unsigned', 'size']),
   Int256: new Set(['unsigned', 'size']),
   Uint256: new Set(['unsigned', 'size']),
-  // MuxedAccount.account is internal; use baseAccount() method
+  // Direct reference to inner Account object — use baseAccount() method instead
+  // (identical semantics, cleaner API)
   MuxedAccount: new Set(['account']),
 };
 
 // Per-namespace member exclusions
 const EXCLUDED_NS_MEMBERS: Record<string, Set<string>> = {
-  // Internal helpers not part of public contract
+  // Pure internal helpers — setSourceAccount mutates an opAttributes object during
+  // operation construction; constructAmountRequirementsError builds a validation
+  // error string. Neither is part of the public API contract
   Operation: new Set(['setSourceAccount', 'constructAmountRequirementsError']),
 };
 
