@@ -11,6 +11,7 @@
     "chai-as-promised": "^8.0.2"
   },
   "devDependencies": {
+    "@stellar/stellar-base": "^14.1.0",
     "bignumber.js": "^9.3.1",
     "randombytes": "^2.1.0"
   }
